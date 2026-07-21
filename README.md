@@ -23,6 +23,3 @@ Developed as a project for **North South University • Dhaka, Bangladesh**.
 - **Language:** TypeScript
 - **Styling:** Tailwind CSS
 - **Icons:** Bootstrap Icons
-
-1. Clone the re   git clone [https://github.com/YOUR-USERNAME/homeoassist.git](https://github.com/YOUR-USERNAME/homeoassist.git)
-   cd homeoassist
