@@ -9,6 +9,11 @@ export default defineConfig({
     react(),
     tailwindcss(),
   ],
+  server: {
+    host: 'homeoassist.local',
+    port: 3000,
+    allowedHosts: ['homeoassist.local'],
+  },
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
