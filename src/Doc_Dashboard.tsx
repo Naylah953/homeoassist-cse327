@@ -972,7 +972,7 @@ function ProfileView({ profile, onSave, onProfileClick }: { profile: any; onSave
   )
 }
 
-// ── Doc_Dashboard Main Component ──────────────────────────────────────────────
+// ── Doctor App ──────────────────────────────────────────────
 
 export default function Doc_Dashboard({ onLogout }: { onLogout?: () => void }) {
   const [view, setView] = useState<View>('dashboard')

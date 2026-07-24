@@ -2,7 +2,7 @@ import { useState, useRef, useEffect } from 'react'
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 
-type PView = 'dashboard' | 'chat' | 'doctors' | 'appointments' | 'records' | 'emergency'
+type PView = 'dashboard' | 'chat' | 'doctors' | 'appointments' | 'records' | 'emergency' | 'profile'
 
 // ── Icons ─────────────────────────────────────────────────────────────────────
 
@@ -32,7 +32,7 @@ const IC = {
   star:    ["M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"],
   video:   ["M23 7l-7 5 7 5V7z", "M1 5h15a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H1a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2z"],
   mic:     ["M12 1a3 3 0 0 1 3 3v8a3 3 0 0 1-6 0V4a3 3 0 0 1 3-3z", "M19 10v2a7 7 0 0 1-14 0v-2", "M12 19v4", "M8 23h8"],
-  alert:   ["M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z", "M12 9v4", "M12 17h.01"],
+  alert:   ["M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"],
   chevR:   ["M9 18l6-6-6-6"],
   clock:   ["M12 22a10 10 0 1 0 0-20 10 10 0 0 0 0 20z", "M12 6v6l4 2"],
   receipt: ["M4 2h16a1 1 0 0 1 1 1v18l-3-2-2 2-2-2-2 2-2-2-2 2-2-2-3 2V3a1 1 0 0 1 1-1z", "M8 10h8", "M8 14h4"],
@@ -42,6 +42,7 @@ const IC = {
   user:    ["M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2", "M12 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8z"],
   plus:    ["M12 5v14M5 12h14"],
   zap:     ["M13 2L3 14h9l-1 8 10-12h-9l1-8z"],
+  logout:  ["M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4", "M16 17l5-5-5-5", "M21 12H9"],
 }
 
 // ── Utilities ─────────────────────────────────────────────────────────────────
@@ -72,12 +73,90 @@ function Card({ children, className = '', style }: { children: React.ReactNode; 
 // ── Mock Data ─────────────────────────────────────────────────────────────────
 
 const DOCTORS = [
-  { name: 'Dr. Anika Rahman',   specialty: 'Allergies & Respiratory', exp: 12, rating: 4.9, reviews: 214, fee: 800,  available: true,  slots: ['09:00', '11:30', '14:00'], img: 'PS' },
-  { name: 'Dr. Rahim Uddin',     specialty: 'Digestive & IBS',         exp: 9,  rating: 4.7, reviews: 156, fee: 700,  available: true,  slots: ['10:00', '13:30', '16:00'], img: 'RU' },
-  { name: 'Dr. Reema Chowdhury',     specialty: 'Women\'s Health',          exp: 15, rating: 4.8, reviews: 302, fee: 900,  available: false, slots: [],                          img: 'LN' },
-  { name: 'Dr. Imran Shah',    specialty: 'Skin & Dermatology',       exp: 7,  rating: 4.6, reviews: 98,  fee: 650,  available: true,  slots: ['09:30', '12:00'],          img: 'RM' },
-  { name: 'Dr. Shahida Shereen',  specialty: 'Paediatrics',              exp: 11, rating: 4.8, reviews: 187, fee: 750,  available: true,  slots: ['10:30', '15:00', '17:00'], img: 'SV' },
-  { name: 'Dr. Karim Khan',     specialty: 'Joint & Arthritis',        exp: 18, rating: 4.9, reviews: 341, fee: 1000, available: false, slots: [],                          img: 'KB' },
+  {
+    name: 'Dr. Anika Rahman',
+    specialty: 'Allergies & Respiratory',
+    qualifications: 'MD Homeopathy (BHMS, Gold Medalist)',
+    regNo: '#HOM-4821',
+    bio: 'Specialist in chronic respiratory conditions, severe allergic sinusitis, and constitutional homeopathic care with over 12 years of clinical practice.',
+    exp: 12,
+    rating: 4.9,
+    reviews: 214,
+    fee: 800,
+    available: true,
+    slots: ['09:00', '11:30', '14:00'],
+    img: 'AR'
+  },
+  {
+    name: 'Dr. Rahim Uddin',
+    specialty: 'Digestive & IBS',
+    qualifications: 'BHMS, MD (Homeo Gastro)',
+    regNo: '#HOM-3910',
+    bio: 'Focused on holistic gastrointestinal recovery, chronic acid reflux, IBS, and metabolic digestive disorders.',
+    exp: 9,
+    rating: 4.7,
+    reviews: 156,
+    fee: 700,
+    available: true,
+    slots: ['10:00', '13:30', '16:00'],
+    img: 'RU'
+  },
+  {
+    name: 'Dr. Reema Chowdhury',
+    specialty: "Women's Health",
+    qualifications: 'BHMS, FCMH (Gynecology)',
+    regNo: '#HOM-5102',
+    bio: 'Dedicated to women’s hormonal health, PCOS/PCOD management, and natural constitutional wellness care.',
+    exp: 15,
+    rating: 4.8,
+    reviews: 302,
+    fee: 900,
+    available: false,
+    slots: [],
+    img: 'RC'
+  },
+  {
+    name: 'Dr. Imran Shah',
+    specialty: 'Skin & Dermatology',
+    qualifications: 'BHMS, Dip. Homeopathic Dermatology',
+    regNo: '#HOM-2891',
+    bio: 'Expert in non-suppressive treatments for eczema, psoriasis, chronic acne, and allergic skin diseases.',
+    exp: 7,
+    rating: 4.6,
+    reviews: 98,
+    fee: 650,
+    available: true,
+    slots: ['09:30', '12:00'],
+    img: 'IS'
+  },
+  {
+    name: 'Dr. Shahida Shereen',
+    specialty: 'Paediatrics',
+    qualifications: 'BHMS, MD (Paediatric Homeopathy)',
+    regNo: '#HOM-6019',
+    bio: 'Gentle, safe, and holistic care for children, recurring childhood infections, and pediatric immunity boost.',
+    exp: 11,
+    rating: 4.8,
+    reviews: 187,
+    fee: 750,
+    available: true,
+    slots: ['10:30', '15:00', '17:00'],
+    img: 'SS'
+  },
+  {
+    name: 'Dr. Karim Khan',
+    specialty: 'Joint & Arthritis',
+    qualifications: 'BHMS, MD (Homeopathic Rheumatology)',
+    regNo: '#HOM-1108',
+    bio: 'Senior practitioner specializing in osteoarthritis, rheumatoid stiffness, and chronic musculoskeletal conditions.',
+    exp: 18,
+    rating: 4.9,
+    reviews: 341,
+    fee: 1000,
+    available: false,
+    slots: [],
+    img: 'KK'
+  },
 ]
 
 const APPOINTMENTS = [
@@ -94,7 +173,7 @@ const PRESCRIPTIONS = [
 ]
 
 const CHAT_HISTORY = [
-  { role: 'ai',      text: "Hello, Raisa! I'm your HomeoAssist AI. I'm here to help you describe your symptoms before your appointment with Dr. Sharma. What's been troubling you?", time: '08:42' },
+  { role: 'ai',      text: "Hello, Raisa! I'm your HomeoAssist AI. I'm here to help you describe your symptoms before your appointment with Dr. Rahman. What's been troubling you?", time: '08:42' },
   { role: 'patient', text: "I've had a blocked nose for about 3 weeks. Started after a cold but it's not going away.", time: '08:43' },
   { role: 'ai',      text: "I understand — persistent post-viral congestion can be quite uncomfortable. Is the discharge watery or thick? Does one side feel more blocked than the other?", time: '08:43' },
   { role: 'patient', text: "Mostly watery and clear. Sometimes yellowish in the morning. Left side is worse.", time: '08:45' },
@@ -131,7 +210,11 @@ const NAV: { id: PView; label: string; icon: string[] }[] = [
   { id: 'emergency',    label: 'Emergency SOS',        icon: IC.zap      },
 ]
 
-function Sidebar({ active, onChange }: { active: PView; onChange: (v: PView) => void }) {
+function Sidebar({ active, onChange, profile, onLogout }: { active: PView; onChange: (v: PView) => void; profile: any; onLogout: () => void }) {
+  const getInitials = (name: string) => {
+    return name.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase()
+  }
+
   return (
     <aside style={{ width: 240, background: '#131f16', flexShrink: 0 }} className="flex flex-col h-full">
       {/* Logo */}
@@ -175,16 +258,26 @@ function Sidebar({ active, onChange }: { active: PView; onChange: (v: PView) => 
         })}
       </nav>
 
-      {/* Patient profile */}
+      {/* Patient profile & Logout Section */}
       <div className="px-4 py-4" style={{ borderTop: '1px solid rgba(255,255,255,0.07)' }}>
-        <div className="flex items-center gap-3">
+        <button 
+          onClick={() => onChange('profile')}
+          className="flex items-center gap-3 w-full text-left p-2 rounded-xl transition-colors hover:bg-white/5 cursor-pointer mb-2">
           <div className="w-8 h-8 rounded-full flex items-center justify-center text-[11px] font-bold flex-shrink-0"
-            style={{ background: 'var(--color-accent)', color: 'white' }}>AM</div>
-          <div className="min-w-0">
-            <p className="text-[13px] font-medium truncate" style={{ color: '#e0ebe2' }}>Raisa Hossain</p>
-            <p className="text-[10px] truncate" style={{ color: 'rgba(224,235,226,0.38)' }}>Patient #P-00124</p>
+            style={{ background: 'var(--color-accent)', color: 'white' }}>{getInitials(profile.name)}</div>
+          <div className="min-w-0 flex-1">
+            <p className="text-[13px] font-medium truncate" style={{ color: '#e0ebe2' }}>{profile.name}</p>
+            <p className="text-[10px] truncate" style={{ color: 'rgba(224,235,226,0.38)' }}>{profile.patientId}</p>
           </div>
-        </div>
+        </button>
+
+        <button
+          onClick={onLogout}
+          className="flex items-center gap-2 px-3 py-2 rounded-lg text-[12px] w-full text-left transition-colors hover:bg-red-500/10 hover:text-red-400"
+          style={{ color: 'rgba(224,235,226,0.6)' }}>
+          <Ico d={IC.logout} size={14} />
+          Sign Out
+        </button>
       </div>
     </aside>
   )
@@ -192,7 +285,12 @@ function Sidebar({ active, onChange }: { active: PView; onChange: (v: PView) => 
 
 // ── Top Bar ───────────────────────────────────────────────────────────────────
 
-function TopBar({ title, sub }: { title: string; sub?: string }) {
+function TopBar({ title, sub, onProfileClick, profile }: { title: string; sub?: string; onProfileClick?: () => void; profile?: any }) {
+  const getInitials = (name?: string) => {
+    if (!name) return 'RH'
+    return name.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase()
+  }
+
   return (
     <div className="flex items-center justify-between px-8 py-4 sticky top-0 z-10"
       style={{ background: 'rgba(245,242,237,0.88)', backdropFilter: 'blur(8px)', borderBottom: '1px solid #d6d0c8' }}>
@@ -204,8 +302,131 @@ function TopBar({ title, sub }: { title: string; sub?: string }) {
         <button className="w-8 h-8 flex items-center justify-center rounded-lg transition-colors hover:bg-[#ede9e3]" style={{ color: '#7a7468' }}>
           <Ico d={IC.bell} size={16} />
         </button>
-        <div className="w-8 h-8 rounded-full flex items-center justify-center text-[11px] font-bold"
-          style={{ background: 'var(--color-accent)', color: 'white' }}>AM</div>
+        <button 
+          onClick={onProfileClick}
+          title="View & Edit Profile"
+          className="w-8 h-8 rounded-full flex items-center justify-center text-[11px] font-bold transition-transform active:scale-95 cursor-pointer"
+          style={{ background: 'var(--color-accent)', color: 'white' }}>
+          {getInitials(profile?.name)}
+        </button>
+      </div>
+    </div>
+  )
+}
+
+// ── Patient Profile View ──────────────────────────────────────────────────────
+
+function PatientProfileView({ profile, onSave, onProfileClick }: { profile: any; onSave: (p: any) => void; onProfileClick?: () => void }) {
+  const [form, setForm] = useState(profile)
+  const [saved, setSaved] = useState(false)
+
+  const handleSave = (e: React.FormEvent) => {
+    e.preventDefault()
+    onSave(form)
+    setSaved(true)
+    setTimeout(() => setSaved(false), 3000)
+  }
+
+  return (
+    <div>
+      <TopBar title="My Profile & Settings" sub="Manage your personal details and account settings" onProfileClick={onProfileClick} profile={profile} />
+      <div className="p-8 max-w-4xl mx-auto flex flex-col gap-6">
+        <Card className="p-6">
+          <form onSubmit={handleSave} className="flex flex-col gap-6">
+            <div className="flex items-center gap-4 pb-6 border-b border-[#ede9e3]">
+              <div className="w-16 h-16 rounded-full flex items-center justify-center text-xl font-bold"
+                style={{ background: 'var(--color-accent)', color: 'white' }}>
+                {form.name.split(' ').map((n: string) => n[0]).join('').substring(0, 2).toUpperCase()}
+              </div>
+              <div>
+                <h2 className="text-lg font-semibold" style={{ color: '#1b2d20', fontFamily: 'var(--font-display)' }}>{form.name}</h2>
+                <p className="text-xs" style={{ color: '#7a7468' }}>{form.patientId} · Pro Plan Member</p>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <label className="block text-xs font-semibold uppercase tracking-wider mb-1" style={{ color: '#7a7468' }}>Full Name</label>
+                <input
+                  type="text"
+                  value={form.name}
+                  onChange={e => setForm({ ...form, name: e.target.value })}
+                  className="w-full px-3 py-2 rounded-lg text-xs outline-none bg-[#f5f2ed] border border-[#d6d0c8]"
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs font-semibold uppercase tracking-wider mb-1" style={{ color: '#7a7468' }}>Email Address</label>
+                <input
+                  type="email"
+                  value={form.email}
+                  onChange={e => setForm({ ...form, email: e.target.value })}
+                  className="w-full px-3 py-2 rounded-lg text-xs outline-none bg-[#f5f2ed] border border-[#d6d0c8]"
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs font-semibold uppercase tracking-wider mb-1" style={{ color: '#7a7468' }}>Phone Number</label>
+                <input
+                  type="text"
+                  value={form.phone}
+                  onChange={e => setForm({ ...form, phone: e.target.value })}
+                  className="w-full px-3 py-2 rounded-lg text-xs outline-none bg-[#f5f2ed] border border-[#d6d0c8]"
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs font-semibold uppercase tracking-wider mb-1" style={{ color: '#7a7468' }}>Date of Birth</label>
+                <input
+                  type="text"
+                  value={form.dob}
+                  onChange={e => setForm({ ...form, dob: e.target.value })}
+                  className="w-full px-3 py-2 rounded-lg text-xs outline-none bg-[#f5f2ed] border border-[#d6d0c8]"
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs font-semibold uppercase tracking-wider mb-1" style={{ color: '#7a7468' }}>Blood Group</label>
+                <input
+                  type="text"
+                  value={form.bloodGroup}
+                  onChange={e => setForm({ ...form, bloodGroup: e.target.value })}
+                  className="w-full px-3 py-2 rounded-lg text-xs outline-none bg-[#f5f2ed] border border-[#d6d0c8]"
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs font-semibold uppercase tracking-wider mb-1" style={{ color: '#7a7468' }}>Address</label>
+                <input
+                  type="text"
+                  value={form.address}
+                  onChange={e => setForm({ ...form, address: e.target.value })}
+                  className="w-full px-3 py-2 rounded-lg text-xs outline-none bg-[#f5f2ed] border border-[#d6d0c8]"
+                />
+              </div>
+            </div>
+
+            <div>
+              <label className="block text-xs font-semibold uppercase tracking-wider mb-1" style={{ color: '#7a7468' }}>Known Allergies & Conditions</label>
+              <textarea
+                rows={3}
+                value={form.allergies}
+                onChange={e => setForm({ ...form, allergies: e.target.value })}
+                className="w-full px-3 py-2 rounded-lg text-sm border border-[#d6d0c8] outline-none bg-[#f5f2ed] border resize-none"
+              />
+            </div>
+
+            <div className="flex items-center gap-4">
+              <button
+                type="submit"
+                className="px-6 py-2.5 rounded-xl text-xs font-semibold text-white transition-opacity hover:opacity-90"
+                style={{ background: 'var(--color-primary)' }}>
+                Save Profile
+              </button>
+              {saved && <span className="text-xs text-green-700 font-medium">✓ Profile updated successfully!</span>}
+            </div>
+          </form>
+        </Card>
       </div>
     </div>
   )
@@ -213,10 +434,10 @@ function TopBar({ title, sub }: { title: string; sub?: string }) {
 
 // ── Dashboard ─────────────────────────────────────────────────────────────────
 
-function Dashboard({ goTo }: { goTo: (v: PView) => void }) {
+function Dashboard({ goTo, onProfileClick, profile }: { goTo: (v: PView) => void; onProfileClick?: () => void; profile?: any }) {
   return (
     <div>
-      <TopBar title="Welcome back, Raisa" sub="Thursday, 11 July 2025" />
+      <TopBar title={`Welcome back, ${profile?.name?.split(' ')[0] || 'Raisa'}`} sub="Thursday, 11 July 2025" onProfileClick={onProfileClick} profile={profile} />
       <div className="p-8 flex flex-col gap-6">
 
         {/* Greeting Banner */}
@@ -255,7 +476,7 @@ function Dashboard({ goTo }: { goTo: (v: PView) => void }) {
             <p className="text-[10px] font-bold uppercase tracking-widest mb-3" style={{ color: '#7a7468' }}>Next Appointment</p>
             <div className="flex items-start gap-3 mb-4">
               <div className="w-10 h-10 rounded-full flex items-center justify-center text-[11px] font-bold flex-shrink-0"
-                style={{ background: '#d8f3dc', color: 'var(--color-primary)' }}>PS</div>
+                style={{ background: '#d8f3dc', color: 'var(--color-primary)' }}>AR</div>
               <div>
                 <p className="text-[14px] font-semibold" style={{ color: '#1b2d20', fontFamily: 'var(--font-display)', fontStyle: 'italic' }}>Dr. Anika Rahman</p>
                 <p className="text-[11px]" style={{ color: '#7a7468' }}>Allergies & Respiratory · Online</p>
@@ -356,7 +577,7 @@ function Dashboard({ goTo }: { goTo: (v: PView) => void }) {
 
 // ── AI Chat ───────────────────────────────────────────────────────────────────
 
-function AIChat({ goTo }: { goTo: (v: PView) => void }) {
+function AIChat({ goTo, onProfileClick, profile }: { goTo: (v: PView) => void; onProfileClick?: () => void; profile?: any }) {
   const [messages, setMessages] = useState(CHAT_HISTORY)
   const [input, setInput] = useState('')
   const [symptoms] = useState(EXTRACTED)
@@ -376,7 +597,7 @@ function AIChat({ goTo }: { goTo: (v: PView) => void }) {
     <div className="flex" style={{ height: '100%' }}>
       {/* Chat panel */}
       <div className="flex flex-col flex-1 min-w-0" style={{ borderRight: '1px solid #d6d0c8' }}>
-        <TopBar title="AI Symptom Chat" sub="Describe your symptoms in your own words" />
+        <TopBar title="AI Symptom Chat" sub="Describe your symptoms in your own words" onProfileClick={onProfileClick} profile={profile} />
 
         <div className="flex-1 overflow-y-auto p-6 flex flex-col gap-4">
           {messages.map((msg, i) => (
@@ -466,7 +687,7 @@ function AIChat({ goTo }: { goTo: (v: PView) => void }) {
 
 // ── Find Doctors ──────────────────────────────────────────────────────────────
 
-function FindDoctors() {
+function FindDoctors({ onProfileClick, profile }: { onProfileClick?: () => void; profile?: any }) {
   const [filter, setFilter] = useState('All')
   const [booking, setBooking] = useState<typeof DOCTORS[0] | null>(null)
   const [selectedSlot, setSelectedSlot] = useState<string | null>(null)
@@ -477,13 +698,13 @@ function FindDoctors() {
 
   return (
     <div>
-      <TopBar title="Find Doctors" sub="Browse certified homeopathic practitioners" />
+      <TopBar title="Find Doctors" sub="Browse certified homeopathic practitioners" onProfileClick={onProfileClick} profile={profile} />
       <div className="p-8 flex flex-col gap-5">
         {/* Filters */}
         <div className="flex gap-2 flex-wrap">
           {specialties.map(s => (
             <button key={s} onClick={() => setFilter(s)}
-              className="px-3 py-1.5 rounded-lg text-[12px] font-medium transition-all"
+              className="px-3 py-1.5 rounded-lg text-[12px] font-medium transition-all cursor-pointer"
               style={filter === s
                 ? { background: '#d8f3dc', border: '1px solid var(--color-primary)', color: 'var(--color-primary)' }
                 : { border: '1px solid #d6d0c8', color: '#7a7468', background: 'white' }}>
@@ -492,41 +713,49 @@ function FindDoctors() {
           ))}
         </div>
 
-        {/* Doctor cards */}
+        {/* Doctor cards with full Doctor Dashboard details */}
         <div className="grid grid-cols-2 gap-4">
           {shown.map((doc, i) => (
-            <Card key={i} className="p-5">
-              <div className="flex items-start gap-3 mb-4">
-                <div className="w-11 h-11 rounded-full flex items-center justify-center text-[12px] font-bold flex-shrink-0"
-                  style={{ background: '#d8f3dc', color: 'var(--color-primary)' }}>{doc.img}</div>
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-center justify-between gap-2">
-                    <p className="text-[14px] font-semibold" style={{ fontFamily: 'var(--font-display)', fontStyle: 'italic', color: '#1b2d20' }}>{doc.name}</p>
-                    {doc.available
-                      ? <Badge label="Available" variant="success" />
-                      : <Badge label="Unavailable" variant="default" />}
+            <Card key={i} className="p-5 flex flex-col justify-between">
+              <div>
+                <div className="flex items-start gap-3 mb-3">
+                  <div className="w-11 h-11 rounded-full flex items-center justify-center text-[12px] font-bold flex-shrink-0"
+                    style={{ background: '#d8f3dc', color: 'var(--color-primary)' }}>{doc.img}</div>
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center justify-between gap-2">
+                      <p className="text-[15px] font-semibold" style={{ fontFamily: 'var(--font-display)', fontStyle: 'italic', color: '#1b2d20' }}>{doc.name}</p>
+                      {doc.available
+                        ? <Badge label="Available" variant="success" />
+                        : <Badge label="Unavailable" variant="default" />}
+                    </div>
+                    <p className="text-[11px] font-medium mt-0.5" style={{ color: 'var(--color-primary)' }}>{doc.qualifications} · {doc.regNo}</p>
+                    <p className="text-[11px]" style={{ color: '#7a7468' }}>{doc.specialty} · {doc.exp} yrs exp</p>
                   </div>
-                  <p className="text-[11px] mt-0.5" style={{ color: '#7a7468' }}>{doc.specialty} · {doc.exp} yrs exp</p>
                 </div>
-              </div>
 
-              <div className="flex items-center justify-between mb-4">
-                <div className="flex items-center gap-1">
-                  <span style={{ color: 'var(--color-accent)' }}><Ico d={IC.star} size={13} /></span>
-                  <span className="text-[12px] font-semibold" style={{ color: '#1b2d20' }}>{doc.rating}</span>
-                  <span className="text-[11px]" style={{ color: '#7a7468' }}>({doc.reviews} reviews)</span>
-                </div>
-                <span className="text-[14px] font-bold" style={{ color: 'var(--color-primary)', fontFamily: 'var(--font-display)' }}>₹{doc.fee}</span>
-              </div>
+                {/* Doctor Bio / Description */}
+                <p className="text-[11px] leading-relaxed mb-4 p-2.5 rounded-lg" style={{ background: '#f5f2ed', color: '#1b2d20' }}>
+                  {doc.bio}
+                </p>
 
-              {doc.available && doc.slots.length > 0 && (
-                <div className="flex gap-2 flex-wrap mb-4">
-                  {doc.slots.map(slot => (
-                    <span key={slot} className="text-[11px] px-2.5 py-1 rounded-lg font-medium"
-                      style={{ background: '#f5f2ed', border: '1px solid #d6d0c8', color: '#1b2d20', fontFamily: 'var(--font-mono)' }}>{slot}</span>
-                  ))}
+                <div className="flex items-center justify-between mb-4">
+                  <div className="flex items-center gap-1">
+                    <span style={{ color: 'var(--color-accent)' }}><Ico d={IC.star} size={13} /></span>
+                    <span className="text-[12px] font-semibold" style={{ color: '#1b2d20' }}>{doc.rating}</span>
+                    <span className="text-[11px]" style={{ color: '#7a7468' }}>({doc.reviews} reviews)</span>
+                  </div>
+                  <span className="text-[14px] font-bold" style={{ color: 'var(--color-primary)', fontFamily: 'var(--font-display)' }}>₹{doc.fee}</span>
                 </div>
-              )}
+
+                {doc.available && doc.slots.length > 0 && (
+                  <div className="flex gap-2 flex-wrap mb-4">
+                    {doc.slots.map(slot => (
+                      <span key={slot} className="text-[11px] px-2.5 py-1 rounded-lg font-medium"
+                        style={{ background: '#f5f2ed', border: '1px solid #d6d0c8', color: '#1b2d20', fontFamily: 'var(--font-mono)' }}>{slot}</span>
+                    ))}
+                  </div>
+                )}
+              </div>
 
               <button
                 onClick={() => doc.available ? setBooking(doc) : undefined}
@@ -556,7 +785,7 @@ function FindDoctors() {
                 <p className="text-[11px] mt-0.5" style={{ color: '#7a7468' }}>{booking.name} · {booking.specialty}</p>
               </div>
               <button onClick={() => { setBooking(null); setSelectedSlot(null) }}
-                className="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-[#f5f2ed] transition-colors" style={{ color: '#7a7468' }}>
+                className="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-[#f5f2ed] transition-colors cursor-pointer" style={{ color: '#7a7468' }}>
                 <Ico d={IC.x} size={16} />
               </button>
             </div>
@@ -567,7 +796,7 @@ function FindDoctors() {
                 <div className="grid grid-cols-3 gap-2">
                   {['Tue 15 Jul', 'Wed 16 Jul', 'Thu 17 Jul'].map((d, i) => (
                     <button key={d}
-                      className="py-2 rounded-lg text-[12px] font-medium transition-all"
+                      className="py-2 rounded-lg text-[12px] font-medium transition-all cursor-pointer"
                       style={i === 1
                         ? { background: '#d8f3dc', border: '1px solid var(--color-primary)', color: 'var(--color-primary)' }
                         : { border: '1px solid #d6d0c8', color: '#1b2d20', background: 'white' }}>
@@ -582,7 +811,7 @@ function FindDoctors() {
                 <div className="flex gap-2 flex-wrap">
                   {booking.slots.map(slot => (
                     <button key={slot} onClick={() => setSelectedSlot(slot)}
-                      className="px-3 py-2 rounded-lg text-[12px] font-medium transition-all"
+                      className="px-3 py-2 rounded-lg text-[12px] font-medium transition-all cursor-pointer"
                       style={selectedSlot === slot
                         ? { background: 'var(--color-primary)', color: '#f0ede8', border: '1px solid var(--color-primary)' }
                         : { border: '1px solid #d6d0c8', color: '#1b2d20', background: 'white', fontFamily: 'var(--font-mono)' }}>
@@ -598,7 +827,7 @@ function FindDoctors() {
                   <p className="text-[10px]" style={{ color: '#7a7468' }}>Prepares your doctor before the consult</p>
                 </div>
                 <button onClick={() => setAttachSummary(!attachSummary)}
-                  className="w-10 h-6 rounded-full transition-colors flex-shrink-0 relative"
+                  className="w-10 h-6 rounded-full transition-colors flex-shrink-0 relative cursor-pointer"
                   style={{ background: attachSummary ? 'var(--color-primary)' : '#d6d0c8' }}>
                   <span className="absolute top-0.5 w-5 h-5 bg-white rounded-full shadow transition-all"
                     style={{ left: attachSummary ? 'calc(100% - 22px)' : '2px' }} />
@@ -630,7 +859,7 @@ function FindDoctors() {
 
 // ── Appointments ──────────────────────────────────────────────────────────────
 
-function Appointments() {
+function Appointments({ onProfileClick, profile }: { onProfileClick?: () => void; profile?: any }) {
   const [tab, setTab] = useState<'upcoming' | 'past' | 'invoices'>('upcoming')
 
   const upcoming = APPOINTMENTS.filter(a => a.status === 'upcoming')
@@ -638,12 +867,12 @@ function Appointments() {
 
   return (
     <div>
-      <TopBar title="Appointments & Billing" sub="Manage your schedule and payment history" />
+      <TopBar title="Appointments & Billing" sub="Manage your schedule and payment history" onProfileClick={onProfileClick} profile={profile} />
       <div className="p-8 flex flex-col gap-5">
         <div className="flex gap-2">
           {(['upcoming', 'past', 'invoices'] as const).map(t => (
             <button key={t} onClick={() => setTab(t)}
-              className="px-4 py-1.5 rounded-lg text-[12px] font-medium transition-all capitalize"
+              className="px-4 py-1.5 rounded-lg text-[12px] font-medium transition-all capitalize cursor-pointer"
               style={tab === t
                 ? { background: '#d8f3dc', border: '1px solid var(--color-primary)', color: 'var(--color-primary)' }
                 : { border: '1px solid #d6d0c8', color: '#7a7468', background: 'white' }}>
@@ -751,10 +980,10 @@ function Appointments() {
 
 // ── Records ───────────────────────────────────────────────────────────────────
 
-function Records() {
+function Records({ onProfileClick, profile }: { onProfileClick?: () => void; profile?: any }) {
   return (
     <div>
-      <TopBar title="Prescriptions & Records" sub="Your complete medical history" />
+      <TopBar title="Prescriptions & Records" sub="Your complete medical history" onProfileClick={onProfileClick} profile={profile} />
       <div className="p-8 flex flex-col gap-5">
         <div className="grid grid-cols-3 gap-4 mb-1">
           {[
@@ -812,12 +1041,12 @@ function Records() {
 
 // ── Emergency SOS ─────────────────────────────────────────────────────────────
 
-function Emergency() {
+function Emergency({ onProfileClick, profile }: { onProfileClick?: () => void; profile?: any }) {
   const [called, setCalled] = useState(false)
 
   return (
     <div>
-      <TopBar title="Emergency SOS" sub="Immediate access to on-call certified doctors" />
+      <TopBar title="Emergency SOS" sub="Immediate access to on-call certified doctors" onProfileClick={onProfileClick} profile={profile} />
       <div className="p-8 flex flex-col gap-6">
 
         {/* SOS Button */}
@@ -835,7 +1064,7 @@ function Emergency() {
                 Tap below to connect instantly with the AI triage assistant. You'll be routed to the first available on-call doctor.
               </p>
               <button onClick={() => setCalled(true)}
-                className="px-10 py-3.5 rounded-2xl text-[14px] font-bold transition-all hover:scale-105 active:scale-95"
+                className="px-10 py-3.5 rounded-2xl text-[14px] font-bold transition-all hover:scale-105 active:scale-95 cursor-pointer"
                 style={{ background: '#c0392b', color: 'white', boxShadow: '0 0 24px rgba(192,57,43,0.5)' }}>
                 Initiate Emergency Call
               </button>
@@ -849,7 +1078,7 @@ function Emergency() {
               <h2 className="text-[20px] font-bold mb-2" style={{ fontFamily: 'var(--font-display)', color: '#b91c1c' }}>Connecting you now…</h2>
               <p className="text-[13px] mb-4" style={{ color: '#7a7468' }}>AI triage assistant is collecting your details. Estimated wait: &lt; 2 minutes.</p>
               <button onClick={() => setCalled(false)}
-                className="text-[12px] font-medium transition-colors hover:opacity-70"
+                className="text-[12px] font-medium transition-colors hover:opacity-70 cursor-pointer"
                 style={{ color: '#7a7468' }}>Cancel Call</button>
             </>
           )}
@@ -914,21 +1143,43 @@ function Emergency() {
 
 // ── Patient App ───────────────────────────────────────────────────────────────
 
-export default function Patient_Dashboard() {
+export default function Patient_Dashboard({ onLogout }: { onLogout?: () => void }) {
   const [view, setView] = useState<PView>('dashboard')
 
+  const [patientProfile, setPatientProfile] = useState({
+    name: 'Raisa Hossain',
+    patientId: 'Patient #P-00124',
+    email: 'raisa.hossain@example.com',
+    phone: '+880 1812-987654',
+    dob: '14 Nov 1996',
+    bloodGroup: 'B+',
+    address: 'Dhaka, Bangladesh',
+    allergies: 'Dust allergy, seasonal rhinitis'
+  })
+
+  const openProfile = () => setView('profile')
+
+  const handleLogout = () => {
+    if (onLogout) {
+      onLogout()
+    } else {
+      window.location.href = '/'
+    }
+  }
+
   const views: Record<PView, React.ReactNode> = {
-    dashboard:    <Dashboard goTo={setView} />,
-    chat:         <AIChat goTo={setView} />,
-    doctors:      <FindDoctors />,
-    appointments: <Appointments />,
-    records:      <Records />,
-    emergency:    <Emergency />,
+    dashboard:    <Dashboard goTo={setView} onProfileClick={openProfile} profile={patientProfile} />,
+    chat:         <AIChat goTo={setView} onProfileClick={openProfile} profile={patientProfile} />,
+    doctors:      <FindDoctors onProfileClick={openProfile} profile={patientProfile} />,
+    appointments: <Appointments onProfileClick={openProfile} profile={patientProfile} />,
+    records:      <Records onProfileClick={openProfile} profile={patientProfile} />,
+    emergency:    <Emergency onProfileClick={openProfile} profile={patientProfile} />,
+    profile:      <PatientProfileView profile={patientProfile} onSave={setPatientProfile} onProfileClick={openProfile} />,
   }
 
   return (
     <div style={{ display: 'flex', height: '100vh', overflow: 'hidden', background: '#f5f2ed' }}>
-      <Sidebar active={view} onChange={setView} />
+      <Sidebar active={view} onChange={setView} profile={patientProfile} onLogout={handleLogout} />
       <main style={{ flex: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
         <div style={{ flex: 1, overflowY: 'auto' }}>
           {views[view]}
