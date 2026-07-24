@@ -400,7 +400,7 @@ export default function Home({ onLogin }: HomeProps) {
                     </label>
                     <input 
                       type="text" 
-                      defaultValue="dr.priya@homeoassist.com" 
+                      defaultValue="dr.anika@homeoassist.com" 
                       required 
                       className="w-full px-3.5 py-2.5 text-xs rounded-xl border border-slate-300 focus:outline-none focus:border-[#235B43] bg-white text-slate-800"
                     />
@@ -509,7 +509,7 @@ export default function Home({ onLogin }: HomeProps) {
                         </label>
                         <input 
                           type="text" 
-                          defaultValue="Dr. Priya Sharma" 
+                          defaultValue="Dr. Anika Rahman" 
                           required 
                           className="w-full px-3.5 py-2.5 text-xs rounded-xl border border-slate-300 focus:outline-none focus:border-[#235B43] bg-white text-slate-800"
                         />
