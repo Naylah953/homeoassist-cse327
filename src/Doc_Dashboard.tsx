@@ -39,25 +39,25 @@ const IC = {
 // ── Mock Data ─────────────────────────────────────────────────────────────────
 
 const PATIENTS = [
-  { id: 1, name: 'Anjali Mehta',    age: 34, gender: 'F', condition: 'Chronic Sinusitis',        lastVisit: '2 Jul 2025',  nextVisit: '16 Jul 2025', status: 'active',   visits: 8  },
-  { id: 2, name: 'Rajesh Kumar',    age: 52, gender: 'M', condition: 'Hypertension & Anxiety',   lastVisit: '5 Jul 2025',  nextVisit: '19 Jul 2025', status: 'active',   visits: 14 },
-  { id: 3, name: 'Preethi Sharma',  age: 28, gender: 'F', condition: 'Hormonal Imbalance',       lastVisit: '7 Jul 2025',  nextVisit: '21 Jul 2025', status: 'active',   visits: 5  },
-  { id: 4, name: 'Suresh Nair',     age: 45, gender: 'M', condition: 'Irritable Bowel Syndrome', lastVisit: '1 Jul 2025',  nextVisit: '15 Jul 2025', status: 'follow-up',visits: 11 },
-  { id: 5, name: 'Kavitha Reddy',   age: 39, gender: 'F', condition: 'Eczema & Skin Allergy',    lastVisit: '8 Jul 2025',  nextVisit: '22 Jul 2025', status: 'active',   visits: 7  },
-  { id: 6, name: 'Arjun Patel',     age: 61, gender: 'M', condition: 'Rheumatoid Arthritis',     lastVisit: '3 Jul 2025',  nextVisit: '17 Jul 2025', status: 'active',   visits: 22 },
-  { id: 7, name: 'Meera Singh',     age: 22, gender: 'F', condition: 'Acne & Hormonal Imbalance',lastVisit: '9 Jul 2025',  nextVisit: '23 Jul 2025', status: 'new',      visits: 2  },
-  { id: 8, name: 'Vikram Desai',    age: 48, gender: 'M', condition: 'Migraine',                 lastVisit: '6 Jul 2025',  nextVisit: '20 Jul 2025', status: 'active',   visits: 9  },
+  { id: 1, name: 'Raisa Hossain',    age: 34, gender: 'F', condition: 'Chronic Sinusitis',        lastVisit: '2 Jul 2025',  nextVisit: '16 Jul 2025', status: 'active',   visits: 8  },
+  { id: 2, name: 'Shourob Ahmed',    age: 52, gender: 'M', condition: 'Hypertension & Anxiety',   lastVisit: '5 Jul 2025',  nextVisit: '19 Jul 2025', status: 'active',   visits: 14 },
+  { id: 3, name: 'Fahmida Akter',  age: 28, gender: 'F', condition: 'Hormonal Imbalance',       lastVisit: '7 Jul 2025',  nextVisit: '21 Jul 2025', status: 'active',   visits: 5  },
+  { id: 4, name: 'Ratul Haque',     age: 45, gender: 'M', condition: 'Irritable Bowel Syndrome', lastVisit: '1 Jul 2025',  nextVisit: '15 Jul 2025', status: 'follow-up',visits: 11 },
+  { id: 5, name: 'Farzana Ferdous',   age: 39, gender: 'F', condition: 'Eczema & Skin Allergy',    lastVisit: '8 Jul 2025',  nextVisit: '22 Jul 2025', status: 'active',   visits: 7  },
+  { id: 6, name: 'Jihanur Hasan',     age: 61, gender: 'M', condition: 'Rheumatoid Arthritis',     lastVisit: '3 Jul 2025',  nextVisit: '17 Jul 2025', status: 'active',   visits: 22 },
+  { id: 7, name: 'Jannatul Islam',     age: 22, gender: 'F', condition: 'Acne & Hormonal Imbalance',lastVisit: '9 Jul 2025',  nextVisit: '23 Jul 2025', status: 'new',      visits: 2  },
+  { id: 8, name: 'Iktedar Alam',    age: 48, gender: 'M', condition: 'Migraine',                 lastVisit: '6 Jul 2025',  nextVisit: '20 Jul 2025', status: 'active',   visits: 9  },
 ]
 
 const SCHEDULE = [
-  { time: '09:00', patient: 'Anjali Mehta',   condition: 'Follow-up: Sinusitis',         status: 'completed',  type: 'consultation' },
-  { time: '09:45', patient: 'Rajesh Kumar',   condition: 'Hypertension review',          status: 'completed',  type: 'consultation' },
-  { time: '10:30', patient: 'Preethi Sharma', condition: 'Hormonal profile discussion',  status: 'in-progress',type: 'new'          },
-  { time: '11:15', patient: 'Meera Singh',    condition: 'Initial consultation',         status: 'upcoming',   type: 'new'          },
-  { time: '12:00', patient: 'Suresh Nair',    condition: 'IBS follow-up',                status: 'upcoming',   type: 'consultation' },
-  { time: '14:30', patient: 'Kavitha Reddy',  condition: 'Eczema — progress review',     status: 'upcoming',   type: 'consultation' },
-  { time: '15:15', patient: 'Arjun Patel',    condition: 'Joint pain management',        status: 'upcoming',   type: 'consultation' },
-  { time: '16:00', patient: 'Vikram Desai',   condition: 'Migraine — new triggers',      status: 'upcoming',   type: 'consultation' },
+  { time: '09:00', patient: 'Raisa Hossain',   condition: 'Follow-up: Sinusitis',         status: 'completed',  type: 'consultation' },
+  { time: '09:45', patient: 'Shourob Ahmed',   condition: 'Hypertension review',          status: 'completed',  type: 'consultation' },
+  { time: '10:30', patient: 'Fahmida Akter', condition: 'Hormonal profile discussion',  status: 'in-progress',type: 'new'          },
+  { time: '11:15', patient: 'Jannatul Islam',    condition: 'Initial consultation',         status: 'upcoming',   type: 'new'          },
+  { time: '12:00', patient: 'Ratul Haque',    condition: 'IBS follow-up',                status: 'upcoming',   type: 'consultation' },
+  { time: '14:30', patient: 'Farzana Ferdous',  condition: 'Eczema — progress review',     status: 'upcoming',   type: 'consultation' },
+  { time: '15:15', patient: 'Jihanur Hasan',    condition: 'Joint pain management',        status: 'upcoming',   type: 'consultation' },
+  { time: '16:00', patient: 'Iktedar Alam',   condition: 'Migraine — new triggers',      status: 'upcoming',   type: 'consultation' },
 ]
 
 const MEDICINES = [
@@ -94,16 +94,16 @@ const MEDICINES = [
 ]
 
 const PRESCRIPTIONS = [
-  { id: 'RX-2025-0089', patient: 'Anjali Mehta',   date: '2 Jul 2025', medicines: 'Arsenicum Album 30C, Allium Cepa 6C',      status: 'dispensed', verified: true  },
-  { id: 'RX-2025-0088', patient: 'Rajesh Kumar',   date: '5 Jul 2025', medicines: 'Nux Vomica 200C, Crataegus Q',             status: 'dispensed', verified: true  },
-  { id: 'RX-2025-0087', patient: 'Preethi Sharma', date: '7 Jul 2025', medicines: 'Pulsatilla 30C, Sepia 200C',               status: 'active',    verified: true  },
-  { id: 'RX-2025-0086', patient: 'Suresh Nair',    date: '1 Jul 2025', medicines: 'Lycopodium 30C, Carbo Veg 30C',            status: 'active',    verified: false },
-  { id: 'RX-2025-0085', patient: 'Kavitha Reddy',  date: '8 Jul 2025', medicines: 'Sulphur 30C, Graphites 6C',                status: 'active',    verified: true  },
-  { id: 'RX-2025-0084', patient: 'Arjun Patel',    date: '3 Jul 2025', medicines: 'Rhus Toxicodendron 200C, Bryonia 30C',     status: 'dispensed', verified: true  },
+  { id: 'RX-2025-0089', patient: 'Raisa Hossain',   date: '2 Jul 2025', medicines: 'Arsenicum Album 30C, Allium Cepa 6C',      status: 'dispensed', verified: true  },
+  { id: 'RX-2025-0088', patient: 'Shourob Ahmed',   date: '5 Jul 2025', medicines: 'Nux Vomica 200C, Crataegus Q',             status: 'dispensed', verified: true  },
+  { id: 'RX-2025-0087', patient: 'Fahmida Akter', date: '7 Jul 2025', medicines: 'Pulsatilla 30C, Sepia 200C',               status: 'active',    verified: true  },
+  { id: 'RX-2025-0086', patient: 'Ratul Haque',    date: '1 Jul 2025', medicines: 'Lycopodium 30C, Carbo Veg 30C',            status: 'active',    verified: false },
+  { id: 'RX-2025-0085', patient: 'Farzana Ferdous',  date: '8 Jul 2025', medicines: 'Sulphur 30C, Graphites 6C',                status: 'active',    verified: true  },
+  { id: 'RX-2025-0084', patient: 'Jihanur Hasan',    date: '3 Jul 2025', medicines: 'Rhus Toxicodendron 200C, Bryonia 30C',     status: 'dispensed', verified: true  },
 ]
 
 const CHAT_MESSAGES = [
-  { role: 'ai',      text: "Good morning! I'm the HomeoAssist AI. I'll help collect your symptoms before your consultation with Dr. Priya Sharma. Can you start by describing what's been bothering you?", time: '08:42' },
+  { role: 'ai',      text: "Good morning! I'm the HomeoAssist AI. I'll help collect your symptoms before your consultation with Dr. Anika Rahman. Can you start by describing what's been bothering you?", time: '08:42' },
   { role: 'patient', text: "I've been having a blocked nose for about 3 weeks. It started as a cold but the congestion just won't go away.", time: '08:43' },
   { role: 'ai',      text: 'Thank you. Is the discharge watery, thick, or coloured? And does it affect one side of the nose more than the other?', time: '08:43' },
   { role: 'patient', text: 'Mostly watery and clear, sometimes a bit yellowish in the morning. Both sides are blocked but left is worse.', time: '08:45' },
@@ -127,9 +127,9 @@ const EXTRACTED_SYMPTOMS = [
 ]
 
 const EMERGENCY_CALLS = [
-  { id: 'EC-004', patient: 'Ramesh Tiwari', time: '10:12', priority: 'high',   symptom: 'Severe chest tightness', status: 'routing',   doctor: 'Dr. Priya Sharma' },
-  { id: 'EC-003', patient: 'Sunita Bose',   time: '09:55', priority: 'medium', symptom: 'Acute anxiety attack',   status: 'connected', doctor: 'Dr. Amit Joshi'  },
-  { id: 'EC-002', patient: 'Kiran Rao',     time: '09:30', priority: 'low',    symptom: 'Worsening skin rash',    status: 'resolved',  doctor: 'Dr. Priya Sharma' },
+  { id: 'EC-004', patient: 'Iram Ahmed', time: '10:12', priority: 'high',   symptom: 'Severe chest tightness', status: 'routing',   doctor: 'Dr. Anika Rahman' },
+  { id: 'EC-003', patient: 'Nazifa Neera',   time: '09:55', priority: 'medium', symptom: 'Acute anxiety attack',   status: 'connected', doctor: 'Dr. Rahim Uddin'  },
+  { id: 'EC-002', patient: 'Nishat Taslima',     time: '09:30', priority: 'low',    symptom: 'Worsening skin rash',    status: 'resolved',  doctor: 'Dr. Anika Rahman' },
 ]
 
 // ── Utilities ─────────────────────────────────────────────────────────────────
@@ -226,7 +226,7 @@ function Sidebar({ active, onChange }: { active: View; onChange: (v: View) => vo
           <div className="w-8 h-8 rounded-full flex items-center justify-center text-[11px] font-bold flex-shrink-0"
             style={{ background: 'var(--color-primary)', color: '#f0ede8' }}>PS</div>
           <div className="min-w-0">
-            <p className="text-[13px] font-medium truncate" style={{ color: '#e0ebe2' }}>Dr. Priya Sharma</p>
+            <p className="text-[13px] font-medium truncate" style={{ color: '#e0ebe2' }}>Dr. Anika Rahman</p>
             <p className="text-[10px] truncate" style={{ color: 'rgba(224,235,226,0.38)' }}>MD Homeopathy · #HOM-4821</p>
           </div>
         </div>
@@ -261,7 +261,7 @@ function TopBar({ title, sub }: { title: string; sub?: string }) {
 function Dashboard() {
   return (
     <div>
-      <TopBar title="Good morning, Dr. Sharma" sub="Thursday, 11 July 2025 · 10:30 AM" />
+      <TopBar title="Good morning, Dr. Rahman" sub="Thursday, 11 July 2025 · 10:30 AM" />
       <div className="p-8 flex flex-col gap-6">
         <div className="grid grid-cols-4 gap-4">
           <StatCard label="Today's Appointments" value={8}   sub="3 completed · 5 remaining" />
@@ -304,9 +304,9 @@ function Dashboard() {
               </div>
               <div className="p-4 flex flex-col gap-3">
                 {[
-                  { event: 'Symptom summary ready', patient: 'Preethi Sharma', time: '10:28', color: '#2d6a4f' },
-                  { event: 'Chat in progress',      patient: 'Anjali Mehta',   time: '10:15', color: '#c9913d' },
-                  { event: 'Prescription validated', patient: 'Rajesh Kumar',   time: '09:52', color: '#2d6a4f' },
+                  { event: 'Symptom summary ready', patient: 'Fahmida Akter', time: '10:28', color: '#2d6a4f' },
+                  { event: 'Chat in progress',      patient: 'Raisa Hossain',   time: '10:15', color: '#c9913d' },
+                  { event: 'Prescription validated', patient: 'Shourob Ahmed',   time: '09:52', color: '#2d6a4f' },
                   { event: 'Emergency triaged',      patient: 'Ramesh Tiwari',  time: '09:43', color: '#c0392b' },
                 ].map((item, i) => (
                   <div key={i} className="flex items-start gap-3">
@@ -367,14 +367,14 @@ function AIChat() {
     <div className="flex" style={{ height: '100%' }}>
       {/* Chat */}
       <div className="flex flex-col flex-1 min-w-0" style={{ borderRight: '1px solid #d6d0c8' }}>
-        <TopBar title="AI Symptom Chat" sub="Anjali Mehta · Consultation at 11:15 AM" />
+        <TopBar title="AI Symptom Chat" sub="Anika Rahman · Consultation at 11:15 AM" />
 
         {/* Patient bar */}
         <div className="px-6 py-3 flex items-center gap-3" style={{ borderBottom: '1px solid #d6d0c8', background: '#d8f3dc55' }}>
           <div className="w-8 h-8 rounded-full flex items-center justify-center text-[11px] font-bold flex-shrink-0"
             style={{ background: 'var(--color-primary)', color: '#f0ede8' }}>AM</div>
           <div>
-            <p className="text-[13px] font-medium" style={{ color: '#1b2d20' }}>Anjali Mehta, 34F</p>
+            <p className="text-[13px] font-medium" style={{ color: '#1b2d20' }}>Anika Rahman, 34F</p>
             <p className="text-[11px]" style={{ color: '#7a7468' }}>Chronic Sinusitis · 8 previous visits</p>
           </div>
           <div className="ml-auto flex items-center gap-1.5 text-[11px] font-medium px-2.5 py-1 rounded-full"
@@ -718,16 +718,16 @@ function Emergency() {
         <div className="flex items-center gap-3 px-5 py-3.5 rounded-xl"
           style={{ background: '#fff1f2', border: '1px solid #fca5a5' }}>
           <span className="w-2.5 h-2.5 rounded-full flex-shrink-0" style={{ background: '#ef4444', boxShadow: '0 0 0 3px rgba(239,68,68,0.25)', animation: 'pulse 2s infinite' }} />
-          <p className="text-[13px] font-medium" style={{ color: '#b91c1c' }}>1 active emergency in routing — EC-004 (Ramesh Tiwari, severe chest tightness)</p>
+          <p className="text-[13px] font-medium" style={{ color: '#b91c1c' }}>1 active emergency in routing — EC-004 (Iram Ahmed, severe chest tightness)</p>
           <button className="ml-auto text-[12px] font-semibold transition-colors hover:opacity-80" style={{ color: '#b91c1c' }}>Take Call →</button>
         </div>
 
         {/* Doctor availability */}
         <div className="grid grid-cols-3 gap-4">
           {[
-            { name: 'Dr. Priya Sharma', reg: '#HOM-4821', status: 'busy',      calls: 2 },
-            { name: 'Dr. Amit Joshi',   reg: '#HOM-3614', status: 'connected', calls: 1 },
-            { name: 'Dr. Leela Nair',   reg: '#HOM-5027', status: 'available', calls: 0 },
+            { name: 'Dr. Anika Rahman', reg: '#HOM-4821', status: 'busy',      calls: 2 },
+            { name: 'Dr. Rahim Uddin',   reg: '#HOM-3614', status: 'connected', calls: 1 },
+            { name: 'Dr. Reema Chowdhury',   reg: '#HOM-5027', status: 'available', calls: 0 },
           ].map((doc, i) => (
             <Card key={i} className="p-4">
               <div className="flex items-center gap-3 mb-3">

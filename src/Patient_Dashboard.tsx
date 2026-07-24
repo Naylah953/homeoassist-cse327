@@ -72,29 +72,29 @@ function Card({ children, className = '', style }: { children: React.ReactNode; 
 // ── Mock Data ─────────────────────────────────────────────────────────────────
 
 const DOCTORS = [
-  { name: 'Dr. Priya Sharma',   specialty: 'Allergies & Respiratory', exp: 12, rating: 4.9, reviews: 214, fee: 800,  available: true,  slots: ['09:00', '11:30', '14:00'], img: 'PS' },
-  { name: 'Dr. Amit Joshi',     specialty: 'Digestive & IBS',         exp: 9,  rating: 4.7, reviews: 156, fee: 700,  available: true,  slots: ['10:00', '13:30', '16:00'], img: 'AJ' },
-  { name: 'Dr. Leela Nair',     specialty: 'Women\'s Health',          exp: 15, rating: 4.8, reviews: 302, fee: 900,  available: false, slots: [],                          img: 'LN' },
-  { name: 'Dr. Rohan Mehta',    specialty: 'Skin & Dermatology',       exp: 7,  rating: 4.6, reviews: 98,  fee: 650,  available: true,  slots: ['09:30', '12:00'],          img: 'RM' },
-  { name: 'Dr. Shalini Verma',  specialty: 'Paediatrics',              exp: 11, rating: 4.8, reviews: 187, fee: 750,  available: true,  slots: ['10:30', '15:00', '17:00'], img: 'SV' },
-  { name: 'Dr. Karan Bose',     specialty: 'Joint & Arthritis',        exp: 18, rating: 4.9, reviews: 341, fee: 1000, available: false, slots: [],                          img: 'KB' },
+  { name: 'Dr. Anika Rahman',   specialty: 'Allergies & Respiratory', exp: 12, rating: 4.9, reviews: 214, fee: 800,  available: true,  slots: ['09:00', '11:30', '14:00'], img: 'PS' },
+  { name: 'Dr. Rahim Uddin',     specialty: 'Digestive & IBS',         exp: 9,  rating: 4.7, reviews: 156, fee: 700,  available: true,  slots: ['10:00', '13:30', '16:00'], img: 'RU' },
+  { name: 'Dr. Reema Chowdhury',     specialty: 'Women\'s Health',          exp: 15, rating: 4.8, reviews: 302, fee: 900,  available: false, slots: [],                          img: 'LN' },
+  { name: 'Dr. Imran Shah',    specialty: 'Skin & Dermatology',       exp: 7,  rating: 4.6, reviews: 98,  fee: 650,  available: true,  slots: ['09:30', '12:00'],          img: 'RM' },
+  { name: 'Dr. Shahida Shereen',  specialty: 'Paediatrics',              exp: 11, rating: 4.8, reviews: 187, fee: 750,  available: true,  slots: ['10:30', '15:00', '17:00'], img: 'SV' },
+  { name: 'Dr. Karim Khan',     specialty: 'Joint & Arthritis',        exp: 18, rating: 4.9, reviews: 341, fee: 1000, available: false, slots: [],                          img: 'KB' },
 ]
 
 const APPOINTMENTS = [
-  { id: 'APT-0031', doctor: 'Dr. Priya Sharma', specialty: 'Allergies & Respiratory', date: '16 Jul 2025', time: '09:00 AM', type: 'online',  status: 'upcoming', fee: 800,  paid: true  },
-  { id: 'APT-0030', doctor: 'Dr. Amit Joshi',   specialty: 'Digestive & IBS',         date: '7 Jul 2025',  time: '10:00 AM', type: 'in-person',status: 'completed',fee: 700,  paid: true  },
-  { id: 'APT-0029', doctor: 'Dr. Priya Sharma', specialty: 'Allergies & Respiratory', date: '2 Jul 2025',  time: '09:00 AM', type: 'online',  status: 'completed',fee: 800,  paid: true  },
-  { id: 'APT-0028', doctor: 'Dr. Leela Nair',   specialty: 'Women\'s Health',          date: '19 Jun 2025', time: '11:00 AM', type: 'in-person',status: 'completed',fee: 900,  paid: true  },
+  { id: 'APT-0031', doctor: 'Dr. Anika Rahman', specialty: 'Allergies & Respiratory', date: '16 Jul 2025', time: '09:00 AM', type: 'online',  status: 'upcoming', fee: 800,  paid: true  },
+  { id: 'APT-0030', doctor: 'Dr. Rahim Uddin',   specialty: 'Digestive & IBS',         date: '7 Jul 2025',  time: '10:00 AM', type: 'in-person',status: 'completed',fee: 700,  paid: true  },
+  { id: 'APT-0029', doctor: 'Dr. Anika Rahman', specialty: 'Allergies & Respiratory', date: '2 Jul 2025',  time: '09:00 AM', type: 'online',  status: 'completed',fee: 800,  paid: true  },
+  { id: 'APT-0028', doctor: 'Dr. Reema Chowdhury',   specialty: 'Women\'s Health',          date: '19 Jun 2025', time: '11:00 AM', type: 'in-person',status: 'completed',fee: 900,  paid: true  },
 ]
 
 const PRESCRIPTIONS = [
-  { id: 'RX-2025-0089', doctor: 'Dr. Priya Sharma', date: '2 Jul 2025',  diagnosis: 'Chronic Sinusitis',   medicines: 'Arsenicum Album 30C, Allium Cepa 6C',  status: 'active',    verified: true  },
-  { id: 'RX-2025-0087', doctor: 'Dr. Priya Sharma', date: '15 Jun 2025', diagnosis: 'Allergic Rhinitis',   medicines: 'Natrum Muriaticum 30C, Sabadilla 6C',   status: 'completed', verified: true  },
-  { id: 'RX-2025-0081', doctor: 'Dr. Amit Joshi',   date: '3 Jun 2025',  diagnosis: 'IBS — Acute Episode', medicines: 'Lycopodium 30C, Nux Vomica 200C',        status: 'completed', verified: true  },
+  { id: 'RX-2025-0089', doctor: 'Dr. Anika Rahman', date: '2 Jul 2025',  diagnosis: 'Chronic Sinusitis',   medicines: 'Arsenicum Album 30C, Allium Cepa 6C',  status: 'active',    verified: true  },
+  { id: 'RX-2025-0087', doctor: 'Dr. Anika Rahman', date: '15 Jun 2025', diagnosis: 'Allergic Rhinitis',   medicines: 'Natrum Muriaticum 30C, Sabadilla 6C',   status: 'completed', verified: true  },
+  { id: 'RX-2025-0081', doctor: 'Dr. Rahim Uddin',   date: '3 Jun 2025',  diagnosis: 'IBS — Acute Episode', medicines: 'Lycopodium 30C, Nux Vomica 200C',        status: 'completed', verified: true  },
 ]
 
 const CHAT_HISTORY = [
-  { role: 'ai',      text: "Hello, Anjali! I'm your HomeoAssist AI. I'm here to help you describe your symptoms before your appointment with Dr. Sharma. What's been troubling you?", time: '08:42' },
+  { role: 'ai',      text: "Hello, Raisa! I'm your HomeoAssist AI. I'm here to help you describe your symptoms before your appointment with Dr. Sharma. What's been troubling you?", time: '08:42' },
   { role: 'patient', text: "I've had a blocked nose for about 3 weeks. Started after a cold but it's not going away.", time: '08:43' },
   { role: 'ai',      text: "I understand — persistent post-viral congestion can be quite uncomfortable. Is the discharge watery or thick? Does one side feel more blocked than the other?", time: '08:43' },
   { role: 'patient', text: "Mostly watery and clear. Sometimes yellowish in the morning. Left side is worse.", time: '08:45' },
@@ -115,9 +115,9 @@ const EXTRACTED = [
 ]
 
 const ON_CALL_DOCTORS = [
-  { name: 'Dr. Leela Nair',  specialty: 'General', status: 'available', wait: '< 2 min' },
-  { name: 'Dr. Rohan Mehta', specialty: 'General', status: 'available', wait: '< 5 min' },
-  { name: 'Dr. Karan Bose',  specialty: 'General', status: 'busy',      wait: '~12 min' },
+  { name: 'Dr. Reema Chowdhury',  specialty: 'General', status: 'available', wait: '< 2 min' },
+  { name: 'Dr. Imran Shah', specialty: 'General', status: 'available', wait: '< 5 min' },
+  { name: 'Dr. Karim Khan',  specialty: 'General', status: 'busy',      wait: '~12 min' },
 ]
 
 // ── Sidebar ───────────────────────────────────────────────────────────────────
@@ -181,8 +181,8 @@ function Sidebar({ active, onChange }: { active: PView; onChange: (v: PView) => 
           <div className="w-8 h-8 rounded-full flex items-center justify-center text-[11px] font-bold flex-shrink-0"
             style={{ background: 'var(--color-accent)', color: 'white' }}>AM</div>
           <div className="min-w-0">
-            <p className="text-[13px] font-medium truncate" style={{ color: '#e0ebe2' }}>Anjali Mehta</p>
-            <p className="text-[10px] truncate" style={{ color: 'rgba(224,235,226,0.38)' }}>Pro Plan · Patient #P-00124</p>
+            <p className="text-[13px] font-medium truncate" style={{ color: '#e0ebe2' }}>Raisa Hossain</p>
+            <p className="text-[10px] truncate" style={{ color: 'rgba(224,235,226,0.38)' }}>Patient #P-00124</p>
           </div>
         </div>
       </div>
@@ -216,7 +216,7 @@ function TopBar({ title, sub }: { title: string; sub?: string }) {
 function Dashboard({ goTo }: { goTo: (v: PView) => void }) {
   return (
     <div>
-      <TopBar title="Welcome back, Anjali" sub="Thursday, 11 July 2025" />
+      <TopBar title="Welcome back, Raisa" sub="Thursday, 11 July 2025" />
       <div className="p-8 flex flex-col gap-6">
 
         {/* Greeting Banner */}
@@ -257,7 +257,7 @@ function Dashboard({ goTo }: { goTo: (v: PView) => void }) {
               <div className="w-10 h-10 rounded-full flex items-center justify-center text-[11px] font-bold flex-shrink-0"
                 style={{ background: '#d8f3dc', color: 'var(--color-primary)' }}>PS</div>
               <div>
-                <p className="text-[14px] font-semibold" style={{ color: '#1b2d20', fontFamily: 'var(--font-display)', fontStyle: 'italic' }}>Dr. Priya Sharma</p>
+                <p className="text-[14px] font-semibold" style={{ color: '#1b2d20', fontFamily: 'var(--font-display)', fontStyle: 'italic' }}>Dr. Anika Rahman</p>
                 <p className="text-[11px]" style={{ color: '#7a7468' }}>Allergies & Respiratory · Online</p>
               </div>
             </div>
@@ -276,7 +276,7 @@ function Dashboard({ goTo }: { goTo: (v: PView) => void }) {
             <p className="text-[10px] font-bold uppercase tracking-widest mb-3" style={{ color: '#7a7468' }}>Active Prescription</p>
             <div className="mb-3">
               <p className="text-[13px] font-semibold mb-1" style={{ color: '#1b2d20', fontFamily: 'var(--font-display)', fontStyle: 'italic' }}>RX-2025-0089</p>
-              <p className="text-[11px] mb-1" style={{ color: '#7a7468' }}>Issued by Dr. Priya Sharma · 2 Jul 2025</p>
+              <p className="text-[11px] mb-1" style={{ color: '#7a7468' }}>Issued by Dr. Anika Rahman · 2 Jul 2025</p>
               <p className="text-[11px]" style={{ color: '#1b2d20' }}>Arsenicum Album 30C · Allium Cepa 6C</p>
             </div>
             <div className="flex items-center gap-2 mb-4">
@@ -329,9 +329,9 @@ function Dashboard({ goTo }: { goTo: (v: PView) => void }) {
           </div>
           <div>
             {[
-              { icon: IC.chat,     label: 'AI symptom chat completed',          sub: 'Summary sent to Dr. Priya Sharma',   time: 'Today, 08:51 AM',    color: '#2d6a4f' },
-              { icon: IC.calendar, label: 'Appointment confirmed',               sub: 'Dr. Priya Sharma · 16 Jul · Online', time: 'Today, 09:00 AM',    color: '#c9913d' },
-              { icon: IC.file,     label: 'Prescription RX-2025-0089 issued',   sub: 'Dr. Priya Sharma · 2 Jul 2025',      time: '2 Jul, 09:45 AM',    color: '#2d6a4f' },
+              { icon: IC.chat,     label: 'AI symptom chat completed',          sub: 'Summary sent to Dr. Anika Rahman',   time: 'Today, 08:51 AM',    color: '#2d6a4f' },
+              { icon: IC.calendar, label: 'Appointment confirmed',               sub: 'Dr. Anika Rahman · 16 Jul · Online', time: 'Today, 09:00 AM',    color: '#c9913d' },
+              { icon: IC.file,     label: 'Prescription RX-2025-0089 issued',   sub: 'Dr. Anika Rahman · 2 Jul 2025',      time: '2 Jul, 09:45 AM',    color: '#2d6a4f' },
               { icon: IC.receipt,  label: 'Payment ₹800 confirmed',             sub: 'APT-0031 · UPI · PhonePe',           time: '10 Jul, 11:20 AM',   color: '#7a7468' },
             ].map((item, i) => (
               <div key={i} className="px-5 py-3.5 flex items-center gap-4 transition-colors hover:bg-[#f5f2ed]"
@@ -892,7 +892,7 @@ function Emergency() {
                 <Ico d={IC.phone} size={18} />
                 1800-123-4567
               </a>
-              <p className="text-[10px] mt-2" style={{ color: '#7a7468' }}>Toll-free · Available 24×7 · All India</p>
+              <p className="text-[10px] mt-2" style={{ color: '#7a7468' }}>Toll-free · Available 24×7 · All Bangladesh</p>
             </div>
 
             <div style={{ borderTop: '1px solid #ede9e3', paddingTop: 16 }}>

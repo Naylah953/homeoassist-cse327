@@ -28,7 +28,7 @@ function Main() {
         <div>
           {/* Top Banner with Logout */}
           <div className="bg-[#13241C] text-white px-4 py-2 flex justify-between items-center text-xs">
-            <span>Logged in as: <strong>Dr. Priya (NSU Chamber)</strong></span>
+            <span>Logged in as: <strong>Dr. Anika Rahman (NSU Chamber)</strong></span>
             <button onClick={handleLogout} className="underline hover:text-red-300 transition-colors">
               Logout to Homepage
             </button>
@@ -41,7 +41,7 @@ function Main() {
         <div>
           {/* Top Banner with Logout */}
           <div className="bg-[#13241C] text-white px-4 py-2 flex justify-between items-center text-xs">
-            <span>Logged in as: <strong>Anjali Mehta</strong></span>
+            <span>Logged in as: <strong>Raisa Hossain</strong></span>
             <button onClick={handleLogout} className="underline hover:text-red-300 transition-colors">
               Logout to Homepage
             </button>
