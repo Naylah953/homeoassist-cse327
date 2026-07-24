@@ -178,6 +178,10 @@ const NAV: { id: View; label: string; icon: string[] }[] = [
 ]
 
 function Sidebar({ active, onChange, profile, onLogout }: { active: View; onChange: (v: View) => void; profile: any; onLogout?: () => void }) {
+  const getInitials = (name: string) => {
+    return name.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase()
+  }
+
   return (
     <aside style={{ width: 240, background: '#131f16', flexShrink: 0 }} className="flex flex-col h-full">
       {/* Logo */}
@@ -225,12 +229,11 @@ function Sidebar({ active, onChange, profile, onLogout }: { active: View; onChan
         {/* Clickable Profile Card */}
         <button
           onClick={() => onChange('profile')}
-          className="flex items-center gap-3 w-full p-2 rounded-lg text-left transition-colors hover:bg-white/5"
-          style={{ background: active === 'profile' ? 'var(--color-primary)' : 'transparent' }}>
+          className="flex items-center gap-3 w-full p-2 rounded-lg text-left transition-colors hover:bg-white/5">
           <div className="w-8 h-8 rounded-full flex items-center justify-center text-[11px] font-bold flex-shrink-0"
             style={{ 
               background: 'var(--color-primary)', 
-              color: '#f0ede8' }}>PS</div>
+              color: '#f0ede8' }}>{getInitials(profile.name)}</div>
           <div className="min-w-0 flex-1">
             <p className="text-[13px] font-medium truncate" style={{ color: '#e0ebe2' }}>{profile.name}</p>
             <p className="text-[10px] truncate" style={{ color: 'rgba(224,235,226,0.38)' }}>{profile.qualifications.split('(')[0]} · {profile.registrationNo}</p>
@@ -255,8 +258,12 @@ function Sidebar({ active, onChange, profile, onLogout }: { active: View; onChan
 
 // ── Top Bar ───────────────────────────────────────────────────────────────────
 
-function TopBar({ title, sub, onProfileClick }: { title: string; sub?: string; onProfileClick?: () => void }) {
-  
+function TopBar({ title, sub, onProfileClick, profile }: { title: string; sub?: string; onProfileClick?: () => void; profile?: any }) {
+const getInitials = (name?: string) => {
+  if (!name) return 'AR'
+  return name.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase()
+}
+
   return (
     <div className="flex items-center justify-between px-8 py-4 sticky top-0 z-10"
       style={{ background: 'rgba(245,242,237,0.85)', backdropFilter: 'blur(8px)', borderBottom: '1px solid #d6d0c8' }}>
@@ -274,7 +281,7 @@ function TopBar({ title, sub, onProfileClick }: { title: string; sub?: string; o
           title="Edit Profile"
           className="w-8 h-8 rounded-full flex items-center justify-center text-[11px] font-bold cursor-pointer transition-transform hover:scale-105"
           style={{ background: 'var(--color-primary)', color: '#f0ede8' }}>
-          PS
+          {getInitials(profile?.name)}
         </button>
       </div>
     </div>
@@ -806,6 +813,10 @@ function Emergency({ onProfileClick }: { onProfileClick?: () => void }) {
 // ── Profile ─────────────────────────────────────────────────────────────────
 
 function ProfileView({ profile, onSave, onProfileClick }: { profile: any; onSave: (updated: any) => void; onProfileClick?: () => void }) {
+  const getInitials = (name?: string) => {
+    if (!name) return 'AR'
+    return name.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase()
+  }
   const [formData, setFormData] = useState(profile)
   const [savedSuccess, setSavedSuccess] = useState(false)
 
@@ -826,7 +837,7 @@ function ProfileView({ profile, onSave, onProfileClick }: { profile: any; onSave
           <div className="flex items-center gap-4">
             <div className="w-14 h-14 rounded-full flex items-center justify-center text-lg font-bold"
               style={{ background: 'var(--color-primary)', color: '#f0ede8' }}>
-              PS
+              {getInitials(formData.name)}
             </div>
             <div>
               <h2 className="text-lg font-bold" style={{ fontFamily: 'var(--font-display)', color: '#1b2d20' }}>{formData.name}</h2>
@@ -1006,11 +1017,11 @@ export default function Doc_Dashboard({ onLogout }: { onLogout?: () => void }) {
 
   const views: Record<View, React.ReactNode> = {
     dashboard:     <Dashboard onProfileClick={openProfile} />,
-    chat:          <AIChat />,
-    medicines:     <MedicineFinder />,
-    patients:      <Patients />,
-    prescriptions: <Prescriptions />,
-    emergency:     <Emergency />,
+    chat:          <AIChat onProfileClick={openProfile}/>,
+    medicines:     <MedicineFinder onProfileClick={openProfile}/>,
+    patients:      <Patients onProfileClick={openProfile}/>,
+    prescriptions: <Prescriptions onProfileClick={openProfile}/>,
+    emergency:     <Emergency onProfileClick={openProfile}/>,
     profile:       <ProfileView profile={doctorProfile} onSave={setDoctorProfile} />,
   }
 
