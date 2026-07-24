@@ -2,7 +2,7 @@ import { useState, useRef, useEffect } from 'react'
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 
-type View = 'dashboard' | 'chat' | 'medicines' | 'patients' | 'prescriptions' | 'emergency'
+type View = 'dashboard' | 'chat' | 'medicines' | 'patients' | 'prescriptions' | 'emergency' | 'profile'
 
 // ── Icons ─────────────────────────────────────────────────────────────────────
 
@@ -177,7 +177,7 @@ const NAV: { id: View; label: string; icon: string[] }[] = [
   { id: 'emergency',     label: 'Emergency',        icon: IC.phone   },
 ]
 
-function Sidebar({ active, onChange }: { active: View; onChange: (v: View) => void }) {
+function Sidebar({ active, onChange, profile, onLogout }: { active: View; onChange: (v: View) => void; profile: any; onLogout?: () => void }) {
   return (
     <aside style={{ width: 240, background: '#131f16', flexShrink: 0 }} className="flex flex-col h-full">
       {/* Logo */}
@@ -221,15 +221,33 @@ function Sidebar({ active, onChange }: { active: View; onChange: (v: View) => vo
       </nav>
 
       {/* Profile */}
-      <div className="px-4 py-4" style={{ borderTop: '1px solid rgba(255,255,255,0.07)' }}>
-        <div className="flex items-center gap-3">
+      <div className="p-3 flex flex-col gap-2" style={{ borderTop: '1px solid rgba(255,255,255,0.07)' }}>
+        {/* Clickable Profile Card */}
+        <button
+          onClick={() => onChange('profile')}
+          className="flex items-center gap-3 w-full p-2 rounded-lg text-left transition-colors hover:bg-white/5"
+          style={{ background: active === 'profile' ? 'var(--color-primary)' : 'transparent' }}>
           <div className="w-8 h-8 rounded-full flex items-center justify-center text-[11px] font-bold flex-shrink-0"
-            style={{ background: 'var(--color-primary)', color: '#f0ede8' }}>PS</div>
-          <div className="min-w-0">
-            <p className="text-[13px] font-medium truncate" style={{ color: '#e0ebe2' }}>Dr. Anika Rahman</p>
-            <p className="text-[10px] truncate" style={{ color: 'rgba(224,235,226,0.38)' }}>MD Homeopathy · #HOM-4821</p>
+            style={{ 
+              background: 'var(--color-primary)', 
+              color: '#f0ede8' }}>PS</div>
+          <div className="min-w-0 flex-1">
+            <p className="text-[13px] font-medium truncate" style={{ color: '#e0ebe2' }}>{profile.name}</p>
+            <p className="text-[10px] truncate" style={{ color: 'rgba(224,235,226,0.38)' }}>{profile.qualifications.split('(')[0]} · {profile.registrationNo}</p>
           </div>
-        </div>
+        </button>
+
+      {/* Logout */}
+        <button
+          onClick={onLogout}
+          className="w-full py-1.5 px-3 rounded-lg flex items-center justify-center gap-2 text-[12px] font-medium text-red-300 hover:text-red-200 hover:bg-red-500/10 transition border border-red-500/20">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+            <polyline points="16 17 21 12 16 7" />
+            <line x1="21" y1="12" x2="9" y2="12" />
+          </svg>
+          Sign Out
+        </button>
       </div>
     </aside>
   )
@@ -237,7 +255,8 @@ function Sidebar({ active, onChange }: { active: View; onChange: (v: View) => vo
 
 // ── Top Bar ───────────────────────────────────────────────────────────────────
 
-function TopBar({ title, sub }: { title: string; sub?: string }) {
+function TopBar({ title, sub, onProfileClick }: { title: string; sub?: string; onProfileClick?: () => void }) {
+  
   return (
     <div className="flex items-center justify-between px-8 py-4 sticky top-0 z-10"
       style={{ background: 'rgba(245,242,237,0.85)', backdropFilter: 'blur(8px)', borderBottom: '1px solid #d6d0c8' }}>
@@ -249,8 +268,14 @@ function TopBar({ title, sub }: { title: string; sub?: string }) {
         <button className="w-8 h-8 flex items-center justify-center rounded-lg transition-colors hover:bg-[#ede9e3]" style={{ color: '#7a7468' }}>
           <Ico d={IC.bell} size={16} />
         </button>
-        <div className="w-8 h-8 rounded-full flex items-center justify-center text-[11px] font-bold"
-          style={{ background: 'var(--color-primary)', color: '#f0ede8' }}>PS</div>
+        {/* Clickable Top-Right Profile Icon */}
+        <button
+          onClick={onProfileClick}
+          title="Edit Profile"
+          className="w-8 h-8 rounded-full flex items-center justify-center text-[11px] font-bold cursor-pointer transition-transform hover:scale-105"
+          style={{ background: 'var(--color-primary)', color: '#f0ede8' }}>
+          PS
+        </button>
       </div>
     </div>
   )
@@ -258,10 +283,10 @@ function TopBar({ title, sub }: { title: string; sub?: string }) {
 
 // ── Dashboard ─────────────────────────────────────────────────────────────────
 
-function Dashboard() {
+function Dashboard({ onProfileClick }: { onProfileClick?: () => void }) {
   return (
     <div>
-      <TopBar title="Good morning, Dr. Rahman" sub="Thursday, 11 July 2025 · 10:30 AM" />
+      <TopBar title="Good morning, Dr. Rahman" sub="Thursday, 11 July 2025 · 10:30 AM" onProfileClick={onProfileClick} />
       <div className="p-8 flex flex-col gap-6">
         <div className="grid grid-cols-4 gap-4">
           <StatCard label="Today's Appointments" value={8}   sub="3 completed · 5 remaining" />
@@ -349,7 +374,7 @@ function Dashboard() {
 
 // ── AI Chat ───────────────────────────────────────────────────────────────────
 
-function AIChat() {
+function AIChat({ onProfileClick }: { onProfileClick?: () => void }) {
   const [messages, setMessages] = useState(CHAT_MESSAGES)
   const [input, setInput] = useState('')
   const bottomRef = useRef<HTMLDivElement>(null)
@@ -367,7 +392,7 @@ function AIChat() {
     <div className="flex" style={{ height: '100%' }}>
       {/* Chat */}
       <div className="flex flex-col flex-1 min-w-0" style={{ borderRight: '1px solid #d6d0c8' }}>
-        <TopBar title="AI Symptom Chat" sub="Anika Rahman · Consultation at 11:15 AM" />
+        <TopBar title="AI Symptom Chat" sub="Anika Rahman · Consultation at 11:15 AM" onProfileClick={onProfileClick} />
 
         {/* Patient bar */}
         <div className="px-6 py-3 flex items-center gap-3" style={{ borderBottom: '1px solid #d6d0c8', background: '#d8f3dc55' }}>
@@ -468,7 +493,7 @@ function AIChat() {
 
 // ── Medicine Finder ───────────────────────────────────────────────────────────
 
-function MedicineFinder() {
+function MedicineFinder({ onProfileClick }: { onProfileClick?: () => void }) {
   const [tags, setTags] = useState(['Watery nasal discharge', 'Worse in cold air', 'Restlessness', 'Burning sensation', 'Anxiety & chilliness'])
   const [input, setInput] = useState('')
   const [selected, setSelected] = useState<string | null>(null)
@@ -480,7 +505,7 @@ function MedicineFinder() {
 
   return (
     <div>
-      <TopBar title="Medicine Finder" sub="AI-assisted homeopathic medicine selection" />
+      <TopBar title="Medicine Finder" sub="AI-assisted homeopathic medicine selection" onProfileClick={onProfileClick} />
       <div className="p-8 flex flex-col gap-6">
         {/* Symptom input */}
         <Card className="p-5">
@@ -577,7 +602,7 @@ function MedicineFinder() {
 
 // ── Patients ──────────────────────────────────────────────────────────────────
 
-function Patients() {
+function Patients({ onProfileClick }: { onProfileClick?: () => void }) {
   const [query, setQuery] = useState('')
   const filtered = PATIENTS.filter(p =>
     p.name.toLowerCase().includes(query.toLowerCase()) ||
@@ -586,7 +611,7 @@ function Patients() {
 
   return (
     <div>
-      <TopBar title="Patients" sub={`${PATIENTS.length} registered patients`} />
+      <TopBar title="Patients" sub={`${PATIENTS.length} registered patients`} onProfileClick={onProfileClick} />
       <div className="p-8 flex flex-col gap-5">
         <div className="flex items-center gap-3">
           <div className="relative max-w-xs w-full">
@@ -651,14 +676,14 @@ function Patients() {
 
 // ── Prescriptions ─────────────────────────────────────────────────────────────
 
-function Prescriptions() {
+function Prescriptions({ onProfileClick }: { onProfileClick?: () => void }) {
   const [filter, setFilter] = useState('All')
   const filters = ['All', 'Active', 'Dispensed']
   const shown = filter === 'All' ? PRESCRIPTIONS : PRESCRIPTIONS.filter(rx => rx.status === filter.toLowerCase())
 
   return (
     <div>
-      <TopBar title="Prescriptions" sub="Digital prescriptions with QR verification" />
+      <TopBar title="Prescriptions" sub="Digital prescriptions with QR verification" onProfileClick={onProfileClick} />
       <div className="p-8 flex flex-col gap-5">
         <div className="flex items-center justify-between">
           <div className="flex gap-2">
@@ -710,10 +735,10 @@ function Prescriptions() {
 
 // ── Emergency ─────────────────────────────────────────────────────────────────
 
-function Emergency() {
+function Emergency({ onProfileClick }: { onProfileClick?: () => void }) {
   return (
     <div>
-      <TopBar title="Emergency Call Routing" sub="AI-powered triage and automatic doctor routing" />
+      <TopBar title="Emergency Call Routing" sub="AI-powered triage and automatic doctor routing" onProfileClick={onProfileClick} />
       <div className="p-8 flex flex-col gap-6">
         <div className="flex items-center gap-3 px-5 py-3.5 rounded-xl"
           style={{ background: '#fff1f2', border: '1px solid #fca5a5' }}>
@@ -778,23 +803,225 @@ function Emergency() {
   )
 }
 
-// ── Doc_Dashboard ───────────────────────────────────────────────────────────────────────
+// ── Profile ─────────────────────────────────────────────────────────────────
 
-export default function Doc_Dashboard() {
+function ProfileView({ profile, onSave, onProfileClick }: { profile: any; onSave: (updated: any) => void; onProfileClick?: () => void }) {
+  const [formData, setFormData] = useState(profile)
+  const [savedSuccess, setSavedSuccess] = useState(false)
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault()
+    onSave(formData)
+    setSavedSuccess(true)
+    setTimeout(() => setSavedSuccess(false), 3000)
+  }
+
+  return (
+    <div>
+      <TopBar title="Doctor Profile & Settings" sub="Manage details visible to patients in Find Doctor directory" onProfileClick={onProfileClick} />
+      <div className="p-8 max-w-4xl mx-auto flex flex-col gap-6">
+        
+        {/* Top Header Card */}
+        <Card className="p-6 flex items-center justify-between">
+          <div className="flex items-center gap-4">
+            <div className="w-14 h-14 rounded-full flex items-center justify-center text-lg font-bold"
+              style={{ background: 'var(--color-primary)', color: '#f0ede8' }}>
+              PS
+            </div>
+            <div>
+              <h2 className="text-lg font-bold" style={{ fontFamily: 'var(--font-display)', color: '#1b2d20' }}>{formData.name}</h2>
+              <p className="text-xs" style={{ color: '#7a7468' }}>{formData.specialty} · {formData.registrationNo}</p>
+            </div>
+          </div>
+          {savedSuccess && (
+            <span className="px-3 py-1.5 rounded-full bg-emerald-50 text-emerald-700 text-xs font-semibold border border-emerald-200">
+              ✓ Profile Saved & Live for Patients
+            </span>
+          )}
+        </Card>
+
+        {/* Profile Settings Form */}
+        <Card className="p-6">
+          <form onSubmit={handleSubmit} className="flex flex-col gap-5">
+            <h3 className="text-sm font-semibold border-b pb-3" style={{ borderBottomColor: '#ede9e3', fontFamily: 'var(--font-display)' }}>
+              Public Directory Details
+            </h3>
+
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <label className="block text-[11px] font-bold text-[#7a7468] uppercase tracking-wider mb-1">Full Name & Title</label>
+                <input
+                  type="text"
+                  value={formData.name}
+                  onChange={e => setFormData({ ...formData, name: e.target.value })}
+                  className="w-full px-3 py-2 rounded-lg text-xs outline-none bg-[#f5f2ed] border border-[#d6d0c8] focus:border-[#2d6a4f]"
+                />
+              </div>
+
+              <div>
+                <label className="block text-[11px] font-bold text-[#7a7468] uppercase tracking-wider mb-1">Specialty</label>
+                <select
+                  value={formData.specialty}
+                  onChange={e => setFormData({ ...formData, specialty: e.target.value })}
+                  className="w-full px-3 py-2 rounded-lg text-xs outline-none bg-[#f5f2ed] border border-[#d6d0c8] focus:border-[#2d6a4f]"
+                >
+                  <option value="Allergies & Respiratory">Allergies & Respiratory</option>
+                  <option value="Digestive & IBS">Digestive & IBS</option>
+                  <option value="Women's Health">Women's Health</option>
+                  <option value="Skin & Dermatology">Skin & Dermatology</option>
+                  <option value="Paediatrics">Paediatrics</option>
+                  <option value="Joint & Arthritis">Joint & Arthritis</option>
+                </select>
+              </div>
+
+              <div>
+                <label className="block text-[11px] font-bold text-[#7a7468] uppercase tracking-wider mb-1">Qualifications / Merits</label>
+                <input
+                  type="text"
+                  value={formData.qualifications}
+                  onChange={e => setFormData({ ...formData, qualifications: e.target.value })}
+                  className="w-full px-3 py-2 rounded-lg text-xs outline-none bg-[#f5f2ed] border border-[#d6d0c8] focus:border-[#2d6a4f]"
+                />
+              </div>
+
+              <div>
+                <label className="block text-[11px] font-bold text-[#7a7468] uppercase tracking-wider mb-1">Registration No.</label>
+                <input
+                  type="text"
+                  value={formData.registrationNo}
+                  onChange={e => setFormData({ ...formData, registrationNo: e.target.value })}
+                  className="w-full px-3 py-2 rounded-lg text-xs outline-none bg-[#f5f2ed] border border-[#d6d0c8] focus:border-[#2d6a4f]"
+                />
+              </div>
+
+              <div>
+                <label className="block text-[11px] font-bold text-[#7a7468] uppercase tracking-wider mb-1">Years of Experience</label>
+                <input
+                  type="number"
+                  value={formData.experienceYears}
+                  onChange={e => setFormData({ ...formData, experienceYears: Number(e.target.value) })}
+                  className="w-full px-3 py-2 rounded-lg text-xs outline-none bg-[#f5f2ed] border border-[#d6d0c8] focus:border-[#2d6a4f]"
+                />
+              </div>
+
+              <div>
+                <label className="block text-[11px] font-bold text-[#7a7468] uppercase tracking-wider mb-1">Consultation Fee (₹)</label>
+                <input
+                  type="number"
+                  value={formData.consultationFee}
+                  onChange={e => setFormData({ ...formData, consultationFee: Number(e.target.value) })}
+                  className="w-full px-3 py-2 rounded-lg text-xs outline-none bg-[#f5f2ed] border border-[#d6d0c8] focus:border-[#2d6a4f]"
+                />
+              </div>
+
+              <div>
+                <label className="block text-[11px] font-bold text-[#7a7468] uppercase tracking-wider mb-1">Email</label>
+                <input
+                  type="email"
+                  value={formData.email}
+                  onChange={e => setFormData({ ...formData, email: e.target.value })}
+                  className="w-full px-3 py-2 rounded-lg text-xs outline-none bg-[#f5f2ed] border border-[#d6d0c8] focus:border-[#2d6a4f]"
+                />
+              </div>
+
+              <div>
+                <label className="block text-[11px] font-bold text-[#7a7468] uppercase tracking-wider mb-1">Phone</label>
+                <input
+                  type="text"
+                  value={formData.phone}
+                  onChange={e => setFormData({ ...formData, phone: e.target.value })}
+                  className="w-full px-3 py-2 rounded-lg text-xs outline-none bg-[#f5f2ed] border border-[#d6d0c8] focus:border-[#2d6a4f]"
+                />
+              </div>
+            </div>
+
+            <div>
+              <label className="block text-[11px] font-bold text-[#7a7468] uppercase tracking-wider mb-1">Doctor Biography & Merits</label>
+              <textarea
+                rows={3}
+                value={formData.bio}
+                onChange={e => setFormData({ ...formData, bio: e.target.value })}
+                className="w-full px-3 py-2 rounded-lg text-xs outline-none bg-[#f5f2ed] border border-[#d6d0c8] focus:border-[#2d6a4f]"
+              />
+            </div>
+
+            <div className="flex items-center justify-between pt-4 border-t" style={{ borderTopColor: '#ede9e3' }}>
+              <label className="flex items-center gap-2 cursor-pointer text-xs text-[#1b2d20]">
+                <input
+                  type="checkbox"
+                  checked={formData.availableForBooking}
+                  onChange={e => setFormData({ ...formData, availableForBooking: e.target.checked })}
+                  className="rounded accent-[#2d6a4f]"
+                />
+                Show profile in "Find Doctor" panel for patient appointments
+              </label>
+
+              <button
+                type="submit"
+                className="px-5 py-2 rounded-xl text-xs font-semibold text-white shadow-sm transition-opacity hover:opacity-90"
+                style={{ background: 'var(--color-primary)' }}
+              >
+                Save Changes
+              </button>
+            </div>
+          </form>
+        </Card>
+
+      </div>
+    </div>
+  )
+}
+
+// ── Doc_Dashboard Main Component ──────────────────────────────────────────────
+
+export default function Doc_Dashboard({ onLogout }: { onLogout?: () => void }) {
   const [view, setView] = useState<View>('dashboard')
 
+  // Editable doctor profile state
+  const [doctorProfile, setDoctorProfile] = useState({
+    name: 'Dr. Anika Rahman',
+    specialty: 'Allergies & Respiratory',
+    qualifications: 'MD Homeopathy (BHMS, Gold Medalist)',
+    registrationNo: '#HOM-4821',
+    experienceYears: 12,
+    consultationFee: 800,
+    email: 'dr.anika@homeoassist.com',
+    phone: '+880 1712-345678',
+    bio: 'Specialist in chronic respiratory conditions, severe allergic sinusitis, and constitutional homeopathic care with over 12 years of clinical practice.',
+    availableForBooking: true,
+  })
+
+  // Handler to safely navigate to profile from top bar
+  const openProfile = () => setView('profile')
+
+  // Handler to handle sign out with fallback routing
+  const handleLogout = () => {
+    if (onLogout) {
+      onLogout()
+    } else {
+      // Fallback redirect if no custom handler is passed
+      window.location.href = '/'
+    }
+  }
+
   const views: Record<View, React.ReactNode> = {
-    dashboard:     <Dashboard />,
+    dashboard:     <Dashboard onProfileClick={openProfile} />,
     chat:          <AIChat />,
     medicines:     <MedicineFinder />,
     patients:      <Patients />,
     prescriptions: <Prescriptions />,
     emergency:     <Emergency />,
+    profile:       <ProfileView profile={doctorProfile} onSave={setDoctorProfile} />,
   }
 
   return (
     <div style={{ display: 'flex', height: '100vh', overflow: 'hidden', background: '#f5f2ed' }}>
-      <Sidebar active={view} onChange={setView} />
+      <Sidebar 
+        active={view} 
+        onChange={setView} 
+        profile={doctorProfile} 
+        onLogout={handleLogout} 
+      />
       <main style={{ flex: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
         <div style={{ flex: 1, overflowY: 'auto' }}>
           {views[view]}
