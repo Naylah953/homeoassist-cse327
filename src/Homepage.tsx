@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { HomeBot } from './Chatbots/HomeBot';
 
 interface HomeProps {
   onLogin?: (role: 'doctor' | 'patient' | 'admin') => void;
@@ -630,6 +631,9 @@ export default function Home({ onLogin }: HomeProps) {
           )}
         </div>
       )}
+
+      {/* FLOATING BOT COMPONENT */}
+      <HomeBot />
     </div>
   );
 }
