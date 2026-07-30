@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from 'react'
+import { SupportBot } from './Chatbots/SupportBot'
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 
@@ -1185,6 +1186,8 @@ export default function Patient_Dashboard({ onLogout }: { onLogout?: () => void 
           {views[view]}
         </div>
       </main>
+      {/* Floating Support Bot */}
+      <SupportBot role="patient" userName={patientProfile.name} />
     </div>
   )
 }
