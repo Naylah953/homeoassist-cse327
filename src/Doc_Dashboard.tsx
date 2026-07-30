@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from 'react'
+import { SupportBot } from './Chatbots/SupportBot'
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 
@@ -1027,17 +1028,23 @@ export default function Doc_Dashboard({ onLogout }: { onLogout?: () => void }) {
 
   return (
     <div style={{ display: 'flex', height: '100vh', overflow: 'hidden', background: '#f5f2ed' }}>
+      {/* 1. Sidebar */}
       <Sidebar 
         active={view} 
         onChange={setView} 
         profile={doctorProfile} 
         onLogout={handleLogout} 
       />
+      {/* 2. Main View Content */}
       <main style={{ flex: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
         <div style={{ flex: 1, overflowY: 'auto' }}>
           {views[view]}
         </div>
       </main>
+      {/* 3. Floating Support Bot */}
+      <SupportBot role="doctor" userName={doctorProfile.name} />
     </div>
   )
 }
+
+
