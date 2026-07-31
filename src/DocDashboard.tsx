@@ -3,7 +3,7 @@ import { SupportBot } from './Chatbots/SupportBot'
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 
-type View = 'dashboard' | 'chat' | 'medicines' | 'patients' | 'prescriptions' | 'emergency' | 'profile'
+type DView = 'dashboard' | 'chat' | 'medicines' | 'patients' | 'prescriptions' | 'emergency' | 'profile'
 
 // ── Icons ─────────────────────────────────────────────────────────────────────
 
@@ -169,7 +169,7 @@ function StatCard({ label, value, sub, gold }: { label: string; value: string | 
 
 // ── Sidebar ───────────────────────────────────────────────────────────────────
 
-const NAV: { id: View; label: string; icon: string[] }[] = [
+const NAV: { id: DView; label: string; icon: string[] }[] = [
   { id: 'dashboard',     label: 'Dashboard',        icon: IC.grid    },
   { id: 'chat',          label: 'AI Symptom Chat',  icon: IC.chat    },
   { id: 'medicines',     label: 'Medicine Finder',  icon: IC.pill    },
@@ -178,7 +178,7 @@ const NAV: { id: View; label: string; icon: string[] }[] = [
   { id: 'emergency',     label: 'Emergency',        icon: IC.phone   },
 ]
 
-function Sidebar({ active, onChange, profile, onLogout }: { active: View; onChange: (v: View) => void; profile: any; onLogout?: () => void }) {
+function Sidebar({ active, onChange, profile, onLogout }: { active: DView; onChange: (v: DView) => void; profile: any; onLogout?: () => void }) {
   const getInitials = (name: string) => {
     return name.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase()
   }
@@ -987,7 +987,7 @@ function ProfileView({ profile, onSave, onProfileClick }: { profile: any; onSave
 // ── Doctor App ──────────────────────────────────────────────
 
 export default function Doc_Dashboard({ onLogout }: { onLogout?: () => void }) {
-  const [view, setView] = useState<View>('dashboard')
+  const [view, setView] = useState<DView>('dashboard')
 
   // Editable doctor profile state
   const [doctorProfile, setDoctorProfile] = useState({
@@ -1016,7 +1016,7 @@ export default function Doc_Dashboard({ onLogout }: { onLogout?: () => void }) {
     }
   }
 
-  const views: Record<View, React.ReactNode> = {
+  const views: Record<DView, React.ReactNode> = {
     dashboard:     <Dashboard onProfileClick={openProfile} />,
     chat:          <AIChat onProfileClick={openProfile}/>,
     medicines:     <MedicineFinder onProfileClick={openProfile}/>,
