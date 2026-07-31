@@ -2,9 +2,9 @@
 import React, { useState } from 'react';
 import ReactDOM from 'react-dom/client';
 import Home from './Homepage';
-import DocDashboard from './Doc_Dashboard';
-import PatientDashboard from './Patient_Dashboard';
-//import AdminApp from './AdminApp';
+import DocDashboard from './DocDashboard';
+import PatientDashboard from './PatientDashboard';
+import AdminDashboard from './AdminDashboard';
 import './index.css';
 
 type UserRole = 'home' | 'doctor' | 'patient' | 'admin';
@@ -49,13 +49,19 @@ function Main() {
           <PatientDashboard />
         </div>
       )}
-{/* 
+
       {currentRole === 'admin' && (
         <div>
-          <button onClick={handleLogout} className="p-2 bg-red-600 text-white text-xs">Logout</button>
-          <AdminApp />
+          {/* Top Banner with Logout */}
+          <div className="bg-[#13241C] text-white px-4 py-2 flex justify-between items-center text-xs">
+            <span>Logged in as: <strong>Admin</strong></span>
+            <button onClick={handleLogout} className="underline hover:text-red-300 transition-colors">
+              Logout to Homepage
+            </button>
+          </div>
+          <AdminDashboard />
         </div>
-      )} */}
+      )}
     </React.StrictMode>
   );
 }
