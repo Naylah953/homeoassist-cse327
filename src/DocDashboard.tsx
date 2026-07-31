@@ -3,41 +3,15 @@ import { SupportBot } from './Chatbots/SupportBot'
 
 // In your main file
 import { DView } from './types';
+import { Ico, IC } from './components/ui/Ico';
+import { Badge } from './components/ui/Badge';  
+import { Card } from './components/ui/Card';
+import { StatCard } from './components/ui/StatCard';
 import { PATIENTS, SCHEDULE, MEDICINES, PRESCRIBED_PRESCRIPTIONS, CHAT_MESSAGES, PATIENT_EXTRACTED_SYMPTOMS, EMERGENCY_CALLS } from './data/doctorMockData';
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 
 // ── Icons ─────────────────────────────────────────────────────────────────────
-
-function Ico({ d, size = 18 }: { d: string | string[]; size?: number }) {
-  const paths = Array.isArray(d) ? d : [d]
-  return (
-    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor"
-      strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
-      {paths.map((p, i) => <path key={i} d={p} />)}
-    </svg>
-  )
-}
-
-const IC = {
-  grid:    ["M3 3h7v7H3z", "M14 3h7v7h-7z", "M3 14h7v7H3z", "M14 14h7v7h-7z"],
-  chat:    ["M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"],
-  pill:    ["M10.5 20H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v7", "m13 12 7 7", "m15 10 4 4"],
-  users:   ["M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2", "M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8z", "M23 21v-2a4 4 0 0 0-3-3.87", "M16 3.13a4 4 0 0 1 0 7.75"],
-  file:    ["M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z", "M14 2v6h6", "M16 13H8", "M16 17H8", "M10 9H8"],
-  phone:   ["M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13.6 19.79 19.79 0 0 1 1.61 5a2 2 0 0 1 1.97-2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 10.09a16 16 0 0 0 6 6l.92-.92a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 17.4z"],
-  bell:    ["M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9", "M13.73 21a2 2 0 0 1-3.46 0"],
-  search:  ["M21 21l-6-6", "M17 11A6 6 0 1 1 5 11a6 6 0 0 1 12 0z"],
-  plus:    ["M12 5v14M5 12h14"],
-  send:    ["M22 2L11 13", "M22 2l-7 20-4-9-9-4 20-7z"],
-  check:   ["M20 6L9 17l-5-5"],
-  activity:["M22 12h-4l-3 9L9 3l-3 9H2"],
-  x:       ["M18 6L6 18M6 6l12 12"],
-  download:["M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4", "M7 10l5 5 5-5", "M12 15V3"],
-  eye:     ["M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z", "M12 12a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"],
-  qr:      ["M3 3h6v6H3z", "M15 3h6v6h-6z", "M3 15h6v6H3z", "M15 15h2v2h-2z", "M19 15v2", "M15 19h2", "M17 19v2", "M19 19h2"],
-  logo:    ["M12 2L2 7l10 5 10-5-10-5z", "M2 17l10 5 10-5", "M2 12l10 5 10-5"],
-}
 
 // ── Mock Data ─────────────────────────────────────────────────────────────────
 
@@ -45,36 +19,6 @@ const IC = {
 // ── Utilities ─────────────────────────────────────────────────────────────────
 
 const cx = (...c: (string | false | undefined)[]) => c.filter(Boolean).join(' ')
-
-function Badge({ label, variant = 'default' }: { label: string; variant?: 'default' | 'success' | 'warning' | 'danger' | 'accent' | 'new' }) {
-  const s = {
-    default: 'bg-[#ede9e3] text-[#7a7468]',
-    success: 'bg-green-50 text-green-700 border border-green-200',
-    warning: 'bg-amber-50 text-amber-700 border border-amber-200',
-    danger:  'bg-red-50 text-red-600 border border-red-200',
-    accent:  'bg-amber-50 text-amber-700 border border-amber-200',
-    new:     'bg-blue-50 text-blue-600 border border-blue-200',
-  }
-  return <span className={cx('inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-medium whitespace-nowrap', s[variant])}>{label}</span>
-}
-
-function Card({ children, className = '', onClick, style }: { children: React.ReactNode; className?: string; onClick?: () => void; style?: React.CSSProperties }) {
-  return (
-    <div onClick={onClick} style={style} className={cx('bg-white rounded-[10px] border border-[#d6d0c8]', className)}>
-      {children}
-    </div>
-  )
-}
-
-function StatCard({ label, value, sub, gold }: { label: string; value: string | number; sub: string; gold?: boolean }) {
-  return (
-    <Card className="p-5 flex flex-col gap-2.5">
-      <p className="text-[10px] font-semibold text-[#7a7468] uppercase tracking-widest">{label}</p>
-      <p className="text-[32px] font-bold leading-none" style={{ fontFamily: 'var(--font-display)', color: gold ? 'var(--color-accent)' : 'var(--color-foreground)' }}>{value}</p>
-      <p className="text-xs text-[#7a7468]">{sub}</p>
-    </Card>
-  )
-}
 
 // ── Sidebar ───────────────────────────────────────────────────────────────────
 

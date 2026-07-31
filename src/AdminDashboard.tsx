@@ -2,78 +2,17 @@ import { useState } from 'react'
 
 // In your main file
 import { AView } from './types';
+import { Ico, IC } from './components/ui/Ico';
+import { Badge } from './components/ui/Badge';
+import { Card } from './components/ui/Card';
+import { StatCard } from './components/ui/StatCard';
 import { PENDING_DOCTORS, VERIFIED_DOCTORS, ALL_PATIENTS, COMPLAINTS, MEDICINES_DB, PLANS, RECENT_PAYMENTS } from './data/adminMockData';
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 
 // ── Icons ─────────────────────────────────────────────────────────────────────
 
-function Ico({ d, size = 18 }: { d: string | string[]; size?: number }) {
-  const paths = Array.isArray(d) ? d : [d]
-  return (
-    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor"
-      strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
-      {paths.map((p, i) => <path key={i} d={p} />)}
-    </svg>
-  )
-}
-
-const IC = {
-  grid:     ["M3 3h7v7H3z", "M14 3h7v7h-7z", "M3 14h7v7H3z", "M14 14h7v7h-7z"],
-  users:    ["M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2", "M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8z", "M23 21v-2a4 4 0 0 0-3-3.87", "M16 3.13a4 4 0 0 1 0 7.75"],
-  user:     ["M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2", "M12 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8z"],
-  flag:     ["M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z", "M4 22v-7"],
-  pill:     ["M10.5 20H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v7", "m13 12 7 7", "m15 10 4 4"],
-  coin:     ["M12 22a10 10 0 1 0 0-20 10 10 0 0 0 0 20z", "M12 6v6l4 2"],
-  settings: ["M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6z", "M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"],
-  check:    ["M20 6L9 17l-5-5"],
-  x:        ["M18 6L6 18M6 6l12 12"],
-  bell:     ["M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9", "M13.73 21a2 2 0 0 1-3.46 0"],
-  search:   ["M21 21l-6-6", "M17 11A6 6 0 1 1 5 11a6 6 0 0 1 12 0z"],
-  plus:     ["M12 5v14M5 12h14"],
-  edit:     ["M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7", "M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"],
-  trash:    ["M3 6h18", "M19 6l-1 14H6L5 6", "M8 6V4h8v2", "M10 11v6", "M14 11v6"],
-  eye:      ["M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z", "M12 12a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"],
-  shield:   ["M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"],
-  logo:     ["M12 2L2 7l10 5 10-5-10-5z", "M2 17l10 5 10-5", "M2 12l10 5 10-5"],
-  trending: ["M23 6l-9.5 9.5-5-5L1 18", "M17 6h6v6"],
-  download: ["M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4", "M7 10l5 5 5-5", "M12 15V3"],
-  alert:    ["M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z", "M12 9v4", "M12 17h.01"],
-  star:     ["M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"],
-  toggle:   ["M9 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2h-4", "M9 3a2 2 0 1 1 4 0 2 2 0 0 1-4 0", "M12 12v9"],
-  doc:      ["M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z", "M14 2v6h6"],
-}
-
 // ── Utilities ─────────────────────────────────────────────────────────────────
-
-const cx = (...c: (string | false | undefined)[]) => c.filter(Boolean).join(' ')
-
-function Badge({ label, variant = 'default' }: { label: string; variant?: 'default' | 'success' | 'warning' | 'danger' | 'accent' | 'new' | 'gold' }) {
-  const s: Record<string, string> = {
-    default: 'bg-[#ede9e3] text-[#7a7468]',
-    success: 'bg-green-50 text-green-700 border border-green-200',
-    warning: 'bg-amber-50 text-amber-700 border border-amber-200',
-    danger:  'bg-red-50 text-red-600 border border-red-200',
-    accent:  'bg-amber-50 text-amber-700 border border-amber-200',
-    new:     'bg-blue-50 text-blue-600 border border-blue-200',
-    gold:    'bg-amber-50 text-amber-700 border border-amber-300',
-  }
-  return <span className={cx('inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-medium whitespace-nowrap', s[variant])}>{label}</span>
-}
-
-function Card({ children, className = '', style }: { children: React.ReactNode; className?: string; style?: React.CSSProperties }) {
-  return <div style={style} className={cx('bg-white rounded-[10px] border border-[#d6d0c8]', className)}>{children}</div>
-}
-
-function StatCard({ label, value, sub, gold, warn }: { label: string; value: string | number; sub: string; gold?: boolean; warn?: boolean }) {
-  return (
-    <Card className="p-5 flex flex-col gap-2.5">
-      <p className="text-[10px] font-bold uppercase tracking-widest" style={{ color: '#7a7468' }}>{label}</p>
-      <p className="text-[32px] font-bold leading-none" style={{ fontFamily: 'var(--font-display)', color: warn ? '#c0392b' : gold ? 'var(--color-accent)' : '#1b2d20' }}>{value}</p>
-      <p className="text-[11px]" style={{ color: '#7a7468' }}>{sub}</p>
-    </Card>
-  )
-}
 
 // ── Mock Data ─────────────────────────────────────────────────────────────────
 
