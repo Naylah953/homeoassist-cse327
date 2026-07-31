@@ -7,6 +7,7 @@ import { Badge } from './components/ui/Badge';
 import { Card } from './components/ui/Card';
 import { StatCard } from './components/ui/StatCard';
 import { TopBar } from './components/layout/Topbar';
+import { Sidebar, NavItem } from './components/layout/Sidebar';
 
 import { PENDING_DOCTORS, VERIFIED_DOCTORS, ALL_PATIENTS, COMPLAINTS, PLANS, RECENT_PAYMENTS } from './data/adminMockData';
 
@@ -18,88 +19,30 @@ import { PENDING_DOCTORS, VERIFIED_DOCTORS, ALL_PATIENTS, COMPLAINTS, PLANS, REC
 
 // ── Mock Data ─────────────────────────────────────────────────────────────────
 
-
 // ── Sidebar ───────────────────────────────────────────────────────────────────
 
-const NAV: { id: AView; label: string; icon: string[] }[] = [
-  { id: 'dashboard',  label: 'Dashboard',           icon: IC.grid     },
-  { id: 'doctors',    label: 'Doctor Management',   icon: IC.shield   },
-  { id: 'patients',   label: 'Patient Management',  icon: IC.users    },
-  { id: 'complaints', label: 'Complaints & Feedback', icon: IC.flag   },
-  { id: 'revenue',    label: 'Revenue & Plans',     icon: IC.coin     },
-  { id: 'settings',   label: 'System Settings',     icon: IC.settings },
-]
-
-function Sidebar({ active, onChange, onLogout }: { active: AView; onChange: (v: AView) => void; onLogout: () => void }) {
+function AdminSidebar({ active, onChange, onLogout }: { active: AView; onChange: (v: AView) => void; onLogout: () => void }) {
   const openCount = COMPLAINTS.filter(c => c.status === 'open').length
   const pendingCount = PENDING_DOCTORS.length
 
+  const navItems: NavItem<AView>[] = [
+    { id: 'dashboard',  label: 'Dashboard',            icon: IC.grid },
+    { id: 'doctors',    label: 'Doctor Management',    icon: IC.shield, badge: pendingCount, badgeColor: '#c0392b' },
+    { id: 'patients',   label: 'Patient Management',   icon: IC.users },
+    { id: 'complaints', label: 'Complaints & Feedback', icon: IC.flag,  badge: openCount,    badgeColor: '#c9913d' },
+    { id: 'revenue',    label: 'Revenue & Plans',      icon: IC.coin },
+    { id: 'settings',   label: 'System Settings',      icon: IC.settings },
+  ]
+
   return (
-    <aside style={{ width: 240, background: '#131f16', flexShrink: 0 }} className="flex flex-col h-full">
-      <div className="px-5 py-5" style={{ borderBottom: '1px solid rgba(255,255,255,0.07)' }}>
-        <div className="flex items-center gap-2.5">
-          <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ background: 'var(--color-primary)' }}>
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-              {IC.logo.map((p, i) => <path key={i} d={p} />)}
-            </svg>
-          </div>
-          <div>
-            <p className="text-sm font-semibold" style={{ color: '#e0ebe2', fontFamily: 'var(--font-display)' }}>HomeoAssist</p>
-            <p className="text-[10px]" style={{ color: 'rgba(224,235,226,0.4)' }}>Admin Console</p>
-          </div>
-        </div>
-      </div>
-
-      {/* Nav */}
-      <nav className="flex-1 py-3 px-3 flex flex-col gap-0.5 overflow-y-auto">
-        {NAV.map(item => {
-          const isActive = active === item.id
-          const badge = item.id === 'doctors' ? pendingCount : item.id === 'complaints' ? openCount : 0
-          return (
-            <button key={item.id} onClick={() => onChange(item.id)}
-              className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-[13px] w-full text-left transition-all duration-150"
-              style={{
-                background: isActive ? 'var(--color-primary)' : 'transparent',
-                color: isActive ? '#f0ede8' : 'rgba(224,235,226,0.65)',
-                fontWeight: isActive ? 500 : 400,
-              }}>
-              <span style={{ opacity: isActive ? 1 : 0.65 }}><Ico d={item.icon} size={15} /></span>
-              {item.label}
-              {badge > 0 && (
-                <span className="ml-auto text-[10px] font-bold px-1.5 py-0.5 rounded-full"
-                  style={{ background: item.id === 'complaints' ? '#c9913d' : '#c0392b', color: 'white', lineHeight: 1.4 }}>{badge}</span>
-              )}
-            </button>
-          )
-        })}
-      </nav>
-
-      {/* Profile */}
-      <div className="p-3 flex flex-col gap-2" style={{ borderTop: '1px solid rgba(255,255,255,0.07)' }}>
-        <div className="flex items-center gap-3 w-full p-2 rounded-lg text-left transition-colors hover:bg-white/5">
-          <div className="w-8 h-8 rounded-full flex items-center justify-center text-[11px] font-bold flex-shrink-0"
-            style={{
-              background: 'var(--color-primary)', 
-              color: '#f0ede8' }}>SA</div>
-          <div className="min-w-0 flex-1">
-            <p className="text-[13px] font-medium truncate" style={{ color: '#e0ebe2' }}>Super Admin</p>
-            <p className="text-[10px] truncate" style={{ color: 'rgba(224,235,226,0.38)' }}>admin@homeoassist.in</p>
-          </div>
-        </div>
-
-      {/* Logout */}
-        <button
-          onClick={onLogout}
-          className="w-full py-1.5 px-3 rounded-lg flex items-center justify-center gap-2 text-[12px] font-medium text-red-300 hover:text-red-200 hover:bg-red-500/10 transition border border-red-500/20">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
-            <polyline points="16 17 21 12 16 7" />
-            <line x1="21" y1="12" x2="9" y2="12" />
-          </svg>
-          Sign Out
-        </button>
-      </div>
-    </aside>
+    <Sidebar
+      portalLabel="Admin Console"
+      navItems={navItems}
+      active={active}
+      onChange={onChange}
+      onLogout={onLogout}
+      profile={{ name: 'Super Admin', subtext: 'admin@homeoassist.in', initials: 'SA' }}
+    />
   )
 }
 
@@ -754,7 +697,7 @@ export default function Admin_Dashboard({ onLogout }: { onLogout?: () => void })
   return (
     <div style={{ display: 'flex', height: '100vh', overflow: 'hidden', background: '#f5f2ed' }}>
       {/* 1. Sidebar */}
-      <Sidebar 
+      <AdminSidebar 
       active={view} 
       onChange={setView}
       onLogout={handleLogout}  
