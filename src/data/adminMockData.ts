@@ -98,21 +98,6 @@ export const COMPLAINTS = [
   },
 ]
 
-export const MEDICINES_DB = [
-  { name: 'Arsenicum Album',       category: 'Anti-miasmatic',  potencies: '6C, 12C, 30C, 200C, 1M', count: 89,  status: 'active'   },
-  { name: 'Nux Vomica',            category: 'Polychrest',       potencies: '30C, 200C, 1M',           count: 72,  status: 'active'   },
-  { name: 'Lycopodium Clavatum',   category: 'Polychrest',       potencies: '30C, 200C',               count: 61,  status: 'active'   },
-  { name: 'Pulsatilla Nigricans',  category: 'Polychrest',       potencies: '6C, 30C, 200C',           count: 58,  status: 'active'   },
-  { name: 'Sulphur',               category: 'Polychrest',       potencies: '30C, 200C, 1M',           count: 54,  status: 'active'   },
-  { name: 'Belladonna',            category: 'Acute Remedy',     potencies: '6C, 30C, 200C',           count: 47,  status: 'active'   },
-  { name: 'Rhus Toxicodendron',    category: 'Anti-rheumatic',   potencies: '30C, 200C',               count: 41,  status: 'active'   },
-  { name: 'Bryonia Alba',          category: 'Acute Remedy',     potencies: '30C, 200C',               count: 38,  status: 'active'   },
-  { name: 'Apis Mellifica',        category: 'Anti-allergic',    potencies: '6C, 30C, 200C',           count: 29,  status: 'active'   },
-  { name: 'Natrum Muriaticum',     category: 'Constitutional',   potencies: '30C, 200C, 1M',           count: 67,  status: 'active'   },
-  { name: 'Gelsemium Sempervirens',category: 'Neurological',     potencies: '30C, 200C',               count: 22,  status: 'active'   },
-  { name: 'Calcarea Carbonica',    category: 'Constitutional',   potencies: '30C, 200C, 1M',           count: 34,  status: 'archived' },
-]
-
 export const PLANS = [
   { name: 'Basic',  price: 499,  subscribers: 312, revenue: 155688,  features: ['2 AI chats/month', 'Standard booking', 'Prescription access'] },
   { name: 'Pro',    price: 999,  subscribers: 487, revenue: 486513,  features: ['Unlimited AI chats', 'Priority booking', 'Emergency SOS', '20% off fees'] },

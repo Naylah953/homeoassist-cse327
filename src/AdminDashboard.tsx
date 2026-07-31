@@ -6,7 +6,9 @@ import { Ico, IC } from './components/ui/Ico';
 import { Badge } from './components/ui/Badge';
 import { Card } from './components/ui/Card';
 import { StatCard } from './components/ui/StatCard';
-import { PENDING_DOCTORS, VERIFIED_DOCTORS, ALL_PATIENTS, COMPLAINTS, MEDICINES_DB, PLANS, RECENT_PAYMENTS } from './data/adminMockData';
+import { TopBar } from './components/layout/Topbar';
+
+import { PENDING_DOCTORS, VERIFIED_DOCTORS, ALL_PATIENTS, COMPLAINTS, PLANS, RECENT_PAYMENTS } from './data/adminMockData';
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 
@@ -24,7 +26,6 @@ const NAV: { id: AView; label: string; icon: string[] }[] = [
   { id: 'doctors',    label: 'Doctor Management',   icon: IC.shield   },
   { id: 'patients',   label: 'Patient Management',  icon: IC.users    },
   { id: 'complaints', label: 'Complaints & Feedback', icon: IC.flag   },
-  { id: 'medicines',  label: 'Medicine Database',   icon: IC.pill     },
   { id: 'revenue',    label: 'Revenue & Plans',     icon: IC.coin     },
   { id: 'settings',   label: 'System Settings',     icon: IC.settings },
 ]
@@ -74,11 +75,13 @@ function Sidebar({ active, onChange, onLogout }: { active: AView; onChange: (v: 
       </nav>
 
       {/* Profile */}
-      <div className="px-4 py-4" style={{ borderTop: '1px solid rgba(255,255,255,0.07)' }}>
-        <div className="flex items-center gap-3">
+      <div className="p-3 flex flex-col gap-2" style={{ borderTop: '1px solid rgba(255,255,255,0.07)' }}>
+        <div className="flex items-center gap-3 w-full p-2 rounded-lg text-left transition-colors hover:bg-white/5">
           <div className="w-8 h-8 rounded-full flex items-center justify-center text-[11px] font-bold flex-shrink-0"
-            style={{ background: '#c9913d', color: 'white' }}>SA</div>
-          <div className="min-w-0">
+            style={{
+              background: 'var(--color-primary)', 
+              color: '#f0ede8' }}>SA</div>
+          <div className="min-w-0 flex-1">
             <p className="text-[13px] font-medium truncate" style={{ color: '#e0ebe2' }}>Super Admin</p>
             <p className="text-[10px] truncate" style={{ color: 'rgba(224,235,226,0.38)' }}>admin@homeoassist.in</p>
           </div>
@@ -102,25 +105,6 @@ function Sidebar({ active, onChange, onLogout }: { active: AView; onChange: (v: 
 
 // ── Top Bar ───────────────────────────────────────────────────────────────────
 
-function TopBar({ title, sub }: { title: string; sub?: string }) {
-  return (
-    <div className="flex items-center justify-between px-8 py-4 sticky top-0 z-10"
-      style={{ background: 'rgba(245,242,237,0.88)', backdropFilter: 'blur(8px)', borderBottom: '1px solid #d6d0c8' }}>
-      <div>
-        <h1 className="text-[19px] font-semibold" style={{ fontFamily: 'var(--font-display)', color: '#1b2d20' }}>{title}</h1>
-        {sub && <p className="text-[11px] mt-0.5" style={{ color: '#7a7468' }}>{sub}</p>}
-      </div>
-      <div className="flex items-center gap-2">
-        <button className="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-[#ede9e3] transition-colors" style={{ color: '#7a7468' }}>
-          <Ico d={IC.bell} size={16} />
-        </button>
-        <div className="w-8 h-8 rounded-full flex items-center justify-center text-[11px] font-bold"
-          style={{ background: '#c9913d', color: 'white' }}>SA</div>
-      </div>
-    </div>
-  )
-}
-
 // ── Dashboard ─────────────────────────────────────────────────────────────────
 
 function Dashboard({ goTo }: { goTo: (v: AView) => void }) {
@@ -129,7 +113,7 @@ function Dashboard({ goTo }: { goTo: (v: AView) => void }) {
 
   return (
     <div>
-      <TopBar title="Admin Dashboard" sub="Thursday, 11 July 2025 · Platform Overview" />
+      <TopBar title="Admin Dashboard" sub="Thursday, 11 July 2025 · Platform Overview" defaultInitials="SA" avatarBg="#b4654a" />
       <div className="p-8 flex flex-col gap-6">
         {/* Stats */}
         <div className="grid grid-cols-5 gap-4">
@@ -229,7 +213,7 @@ function DoctorManagement() {
 
   return (
     <div>
-      <TopBar title="Doctor Management" sub={`${PENDING_DOCTORS.length} pending · ${VERIFIED_DOCTORS.length} verified`} />
+      <TopBar title="Doctor Management" sub={`${PENDING_DOCTORS.length} pending · ${VERIFIED_DOCTORS.length} verified`} defaultInitials="SA" avatarBg="#b4654a" />
       <div className="p-8 flex flex-col gap-5">
         <div className="flex gap-2">
           {(['pending', 'verified', 'declined'] as const).map(t => (
@@ -388,7 +372,7 @@ function PatientManagement() {
 
   return (
     <div>
-      <TopBar title="Patient Management" sub={`${ALL_PATIENTS.length} total patients registered`} />
+      <TopBar title="Patient Management" sub={`${ALL_PATIENTS.length} total patients registered`} defaultInitials="SA" avatarBg="#b4654a" />
       <div className="p-8 flex flex-col gap-5">
         <div className="flex items-center gap-3">
           <div className="relative flex-1 max-w-xs">
@@ -466,7 +450,7 @@ function Complaints() {
 
   return (
     <div>
-      <TopBar title="Complaints & Feedback" sub="Submitted via in-app feedback widget" />
+      <TopBar title="Complaints & Feedback" sub="Submitted via in-app feedback widget" defaultInitials="SA" avatarBg="#b4654a" />
       <div className="p-8 flex flex-col gap-5">
         {/* Filters */}
         <div className="flex flex-wrap gap-3">
@@ -579,54 +563,6 @@ function Complaints() {
   )
 }
 
-// ── Medicines ─────────────────────────────────────────────────────────────────
-
-function MedicineDatabase() {
-  const [query, setQuery] = useState('')
-  const shown = MEDICINES_DB.filter(m => m.name.toLowerCase().includes(query.toLowerCase()))
-
-  return (
-    <div>
-      <TopBar title="Medicine Database" sub={`${MEDICINES_DB.filter(m => m.status === 'active').length} active medicines`} />
-      <div className="p-8 flex flex-col gap-5">
-        <div className="flex items-center gap-3">
-          <div className="relative flex-1 max-w-xs">
-            <span className="absolute left-3 top-1/2 -translate-y-1/2" style={{ color: '#7a7468' }}><Ico d={IC.search} size={14} /></span>
-            <input value={query} onChange={e => setQuery(e.target.value)} placeholder="Search medicines…"
-              className="w-full pl-9 pr-3 py-2 rounded-lg text-[13px] outline-none"
-              style={{ border: '1px solid #d6d0c8', background: 'white', color: '#1b2d20' }} />
-          </div>
-          <button className="flex items-center gap-2 px-4 py-2 rounded-lg text-[12px] font-semibold ml-auto transition-opacity hover:opacity-90"
-            style={{ background: 'var(--color-primary)', color: '#f0ede8' }}>
-            <Ico d={IC.plus} size={13} /> Add Medicine
-          </button>
-        </div>
-
-        <Card>
-          <div className="px-5 py-3 grid text-[10px] font-bold uppercase tracking-widest"
-            style={{ gridTemplateColumns: '220px 160px 1fr 80px 80px 80px', borderBottom: '1px solid #d6d0c8', color: '#7a7468' }}>
-            <span>Medicine Name</span><span>Category</span><span>Available Potencies</span><span>Rx Count</span><span>Status</span><span>Actions</span>
-          </div>
-          {shown.map((med, i) => (
-            <div key={i} className="px-5 py-3.5 grid items-center gap-3 transition-colors hover:bg-[#f5f2ed]"
-              style={{ gridTemplateColumns: '220px 160px 1fr 80px 80px 80px', borderBottom: i < shown.length - 1 ? '1px solid #ede9e3' : 'none' }}>
-              <p className="text-[12px] font-semibold" style={{ color: '#1b2d20', fontStyle: 'italic', fontFamily: 'var(--font-display)' }}>{med.name}</p>
-              <span className="text-[11px]" style={{ color: '#7a7468' }}>{med.category}</span>
-              <span className="text-[10px]" style={{ fontFamily: 'var(--font-mono)', color: '#7a7468' }}>{med.potencies}</span>
-              <span className="text-[12px] font-semibold" style={{ color: '#1b2d20' }}>{med.count}</span>
-              <Badge label={med.status === 'active' ? 'Active' : 'Archived'} variant={med.status === 'active' ? 'success' : 'default'} />
-              <div className="flex items-center gap-1">
-                <button className="p-1.5 rounded-lg hover:bg-[#ede9e3] transition-colors" style={{ color: '#7a7468' }}><Ico d={IC.edit} size={13} /></button>
-                <button className="p-1.5 rounded-lg hover:bg-red-50 transition-colors" style={{ color: '#7a7468' }}><Ico d={IC.trash} size={13} /></button>
-              </div>
-            </div>
-          ))}
-        </Card>
-      </div>
-    </div>
-  )
-}
-
 // ── Revenue ───────────────────────────────────────────────────────────────────
 
 function Revenue() {
@@ -635,7 +571,7 @@ function Revenue() {
 
   return (
     <div>
-      <TopBar title="Revenue & Plans" sub="Subscription analytics and payment history" />
+      <TopBar title="Revenue & Plans" sub="Subscription analytics and payment history" defaultInitials="SA" avatarBg="#b4654a" />
       <div className="p-8 flex flex-col gap-6">
         {/* Summary */}
         <div className="grid grid-cols-3 gap-4">
@@ -735,7 +671,7 @@ function Settings() {
 
   return (
     <div>
-      <TopBar title="System Settings" sub="Platform-wide configuration — admin only" />
+      <TopBar title="System Settings" sub="Platform-wide configuration — admin only" defaultInitials="SA" avatarBg="#b4654a" />
       <div className="p-8 grid gap-5" style={{ gridTemplateColumns: '1fr 1fr' }}>
         {/* AI Features */}
         <Card className="p-5">
@@ -811,7 +747,6 @@ export default function Admin_Dashboard({ onLogout }: { onLogout?: () => void })
     doctors:    <DoctorManagement />,
     patients:   <PatientManagement />,
     complaints: <Complaints />,
-    medicines:  <MedicineDatabase />,
     revenue:    <Revenue />,
     settings:   <Settings />,
   }

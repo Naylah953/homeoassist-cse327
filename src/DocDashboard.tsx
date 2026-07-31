@@ -7,6 +7,8 @@ import { Ico, IC } from './components/ui/Ico';
 import { Badge } from './components/ui/Badge';  
 import { Card } from './components/ui/Card';
 import { StatCard } from './components/ui/StatCard';
+import { TopBar } from './components/layout/Topbar';
+
 import { PATIENTS, SCHEDULE, MEDICINES, PRESCRIBED_PRESCRIPTIONS, CHAT_MESSAGES, PATIENT_EXTRACTED_SYMPTOMS, EMERGENCY_CALLS } from './data/doctorMockData';
 
 // ── Types ─────────────────────────────────────────────────────────────────────
@@ -112,42 +114,12 @@ function Sidebar({ active, onChange, profile, onLogout }: { active: DView; onCha
 
 // ── Top Bar ───────────────────────────────────────────────────────────────────
 
-function TopBar({ title, sub, onProfileClick, profile }: { title: string; sub?: string; onProfileClick?: () => void; profile?: any }) {
-const getInitials = (name?: string) => {
-  if (!name) return 'AR'
-  return name.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase()
-}
-
-  return (
-    <div className="flex items-center justify-between px-8 py-4 sticky top-0 z-10"
-      style={{ background: 'rgba(245,242,237,0.85)', backdropFilter: 'blur(8px)', borderBottom: '1px solid #d6d0c8' }}>
-      <div>
-        <h1 className="text-[19px] font-semibold" style={{ fontFamily: 'var(--font-display)', color: 'var(--color-foreground)' }}>{title}</h1>
-        {sub && <p className="text-[11px] mt-0.5" style={{ color: '#7a7468' }}>{sub}</p>}
-      </div>
-      <div className="flex items-center gap-2">
-        <button className="w-8 h-8 flex items-center justify-center rounded-lg transition-colors hover:bg-[#ede9e3]" style={{ color: '#7a7468' }}>
-          <Ico d={IC.bell} size={16} />
-        </button>
-        {/* Clickable Top-Right Profile Icon */}
-        <button
-          onClick={onProfileClick}
-          title="Edit Profile"
-          className="w-8 h-8 rounded-full flex items-center justify-center text-[11px] font-bold cursor-pointer transition-transform hover:scale-105"
-          style={{ background: 'var(--color-primary)', color: '#f0ede8' }}>
-          {getInitials(profile?.name)}
-        </button>
-      </div>
-    </div>
-  )
-}
-
 // ── Dashboard ─────────────────────────────────────────────────────────────────
 
 function Dashboard({ onProfileClick }: { onProfileClick?: () => void }) {
   return (
     <div>
-      <TopBar title="Good morning, Dr. Rahman" sub="Thursday, 11 July 2025 · 10:30 AM" onProfileClick={onProfileClick} />
+      <TopBar title="Good morning, Dr. Rahman" sub="Thursday, 11 July 2025 · 10:30 AM" onProfileClick={onProfileClick} avatarBg="var(--color-primary)" defaultInitials="AR" />
       <div className="p-8 flex flex-col gap-6">
         <div className="grid grid-cols-4 gap-4">
           <StatCard label="Today's Appointments" value={8}   sub="3 completed · 5 remaining" />
@@ -253,8 +225,7 @@ function AIChat({ onProfileClick }: { onProfileClick?: () => void }) {
     <div className="flex" style={{ height: '100%' }}>
       {/* Chat */}
       <div className="flex flex-col flex-1 min-w-0" style={{ borderRight: '1px solid #d6d0c8' }}>
-        <TopBar title="AI Symptom Chat" sub="Anika Rahman · Consultation at 11:15 AM" onProfileClick={onProfileClick} />
-
+        <TopBar title="AI Symptom Chat" sub="Anika Rahman · Consultation at 11:15 AM" onProfileClick={onProfileClick} avatarBg="var(--color-primary)" defaultInitials="AR" />
         {/* Patient bar */}
         <div className="px-6 py-3 flex items-center gap-3" style={{ borderBottom: '1px solid #d6d0c8', background: '#d8f3dc55' }}>
           <div className="w-8 h-8 rounded-full flex items-center justify-center text-[11px] font-bold flex-shrink-0"
@@ -366,7 +337,7 @@ function MedicineFinder({ onProfileClick }: { onProfileClick?: () => void }) {
 
   return (
     <div>
-      <TopBar title="Medicine Finder" sub="AI-assisted homeopathic medicine selection" onProfileClick={onProfileClick} />
+      <TopBar title="Medicine Finder" sub="AI-assisted homeopathic medicine selection" onProfileClick={onProfileClick} avatarBg="var(--color-primary)" defaultInitials="AR" />
       <div className="p-8 flex flex-col gap-6">
         {/* Symptom input */}
         <Card className="p-5">
@@ -472,7 +443,7 @@ function Patients({ onProfileClick }: { onProfileClick?: () => void }) {
 
   return (
     <div>
-      <TopBar title="Patients" sub={`${PATIENTS.length} registered patients`} onProfileClick={onProfileClick} />
+      <TopBar title="Patients" sub={`${PATIENTS.length} registered patients`} onProfileClick={onProfileClick} avatarBg="var(--color-primary)" defaultInitials="AR" />
       <div className="p-8 flex flex-col gap-5">
         <div className="flex items-center gap-3">
           <div className="relative max-w-xs w-full">
@@ -544,7 +515,7 @@ function Prescriptions({ onProfileClick }: { onProfileClick?: () => void }) {
 
   return (
     <div>
-      <TopBar title="Prescriptions" sub="Digital prescriptions with QR verification" onProfileClick={onProfileClick} />
+      <TopBar title="Prescriptions" sub="Digital prescriptions with QR verification" onProfileClick={onProfileClick} avatarBg="var(--color-primary)" defaultInitials="AR"/>
       <div className="p-8 flex flex-col gap-5">
         <div className="flex items-center justify-between">
           <div className="flex gap-2">
@@ -599,7 +570,7 @@ function Prescriptions({ onProfileClick }: { onProfileClick?: () => void }) {
 function Emergency({ onProfileClick }: { onProfileClick?: () => void }) {
   return (
     <div>
-      <TopBar title="Emergency Call Routing" sub="AI-powered triage and automatic doctor routing" onProfileClick={onProfileClick} />
+      <TopBar title="Emergency Call Routing" sub="AI-powered triage and automatic doctor routing" onProfileClick={onProfileClick} avatarBg="var(--color-primary)" defaultInitials="AR" />
       <div className="p-8 flex flex-col gap-6">
         <div className="flex items-center gap-3 px-5 py-3.5 rounded-xl"
           style={{ background: '#fff1f2', border: '1px solid #fca5a5' }}>
@@ -683,7 +654,7 @@ function ProfileView({ profile, onSave, onProfileClick }: { profile: any; onSave
 
   return (
     <div>
-      <TopBar title="Doctor Profile & Settings" sub="Manage details visible to patients in Find Doctor directory" onProfileClick={onProfileClick} />
+      <TopBar title="Doctor Profile & Settings" sub="Manage details visible to patients in Find Doctor directory" onProfileClick={onProfileClick} avatarBg="var(--color-primary)" defaultInitials="AR" />
       <div className="p-8 max-w-4xl mx-auto flex flex-col gap-6">
         
         {/* Top Header Card */}
