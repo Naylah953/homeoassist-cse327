@@ -1,300 +1,63 @@
 import { useState, useRef, useEffect } from 'react'
 import { SupportBot } from './Chatbots/SupportBot'
 
-// ── Types ─────────────────────────────────────────────────────────────────────
+// In your main file
+import { DView } from './types';
+import { Ico, IC } from './components/ui/Ico';
+import { Badge } from './components/ui/Badge';  
+import { Card } from './components/ui/Card';
+import { StatCard } from './components/ui/StatCard';
+import { TopBar } from './components/layout/Topbar';
+import { Sidebar, NavItem } from './components/layout/Sidebar';
 
-type DView = 'dashboard' | 'chat' | 'medicines' | 'patients' | 'prescriptions' | 'emergency' | 'profile'
+import { PATIENTS, SCHEDULE, MEDICINES, PRESCRIBED_PRESCRIPTIONS, CHAT_MESSAGES, PATIENT_EXTRACTED_SYMPTOMS, EMERGENCY_CALLS } from './data/doctorMockData';
+
+// ── Types ─────────────────────────────────────────────────────────────────────
 
 // ── Icons ─────────────────────────────────────────────────────────────────────
 
-function Ico({ d, size = 18 }: { d: string | string[]; size?: number }) {
-  const paths = Array.isArray(d) ? d : [d]
-  return (
-    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor"
-      strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
-      {paths.map((p, i) => <path key={i} d={p} />)}
-    </svg>
-  )
-}
-
-const IC = {
-  grid:    ["M3 3h7v7H3z", "M14 3h7v7h-7z", "M3 14h7v7H3z", "M14 14h7v7h-7z"],
-  chat:    ["M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"],
-  pill:    ["M10.5 20H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v7", "m13 12 7 7", "m15 10 4 4"],
-  users:   ["M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2", "M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8z", "M23 21v-2a4 4 0 0 0-3-3.87", "M16 3.13a4 4 0 0 1 0 7.75"],
-  file:    ["M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z", "M14 2v6h6", "M16 13H8", "M16 17H8", "M10 9H8"],
-  phone:   ["M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13.6 19.79 19.79 0 0 1 1.61 5a2 2 0 0 1 1.97-2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 10.09a16 16 0 0 0 6 6l.92-.92a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 17.4z"],
-  bell:    ["M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9", "M13.73 21a2 2 0 0 1-3.46 0"],
-  search:  ["M21 21l-6-6", "M17 11A6 6 0 1 1 5 11a6 6 0 0 1 12 0z"],
-  plus:    ["M12 5v14M5 12h14"],
-  send:    ["M22 2L11 13", "M22 2l-7 20-4-9-9-4 20-7z"],
-  check:   ["M20 6L9 17l-5-5"],
-  activity:["M22 12h-4l-3 9L9 3l-3 9H2"],
-  x:       ["M18 6L6 18M6 6l12 12"],
-  download:["M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4", "M7 10l5 5 5-5", "M12 15V3"],
-  eye:     ["M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z", "M12 12a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"],
-  qr:      ["M3 3h6v6H3z", "M15 3h6v6h-6z", "M3 15h6v6H3z", "M15 15h2v2h-2z", "M19 15v2", "M15 19h2", "M17 19v2", "M19 19h2"],
-  logo:    ["M12 2L2 7l10 5 10-5-10-5z", "M2 17l10 5 10-5", "M2 12l10 5 10-5"],
-}
-
 // ── Mock Data ─────────────────────────────────────────────────────────────────
-
-const PATIENTS = [
-  { id: 1, name: 'Raisa Hossain',    age: 34, gender: 'F', condition: 'Chronic Sinusitis',        lastVisit: '2 Jul 2025',  nextVisit: '16 Jul 2025', status: 'active',   visits: 8  },
-  { id: 2, name: 'Shourob Ahmed',    age: 52, gender: 'M', condition: 'Hypertension & Anxiety',   lastVisit: '5 Jul 2025',  nextVisit: '19 Jul 2025', status: 'active',   visits: 14 },
-  { id: 3, name: 'Fahmida Akter',  age: 28, gender: 'F', condition: 'Hormonal Imbalance',       lastVisit: '7 Jul 2025',  nextVisit: '21 Jul 2025', status: 'active',   visits: 5  },
-  { id: 4, name: 'Ratul Haque',     age: 45, gender: 'M', condition: 'Irritable Bowel Syndrome', lastVisit: '1 Jul 2025',  nextVisit: '15 Jul 2025', status: 'follow-up',visits: 11 },
-  { id: 5, name: 'Farzana Ferdous',   age: 39, gender: 'F', condition: 'Eczema & Skin Allergy',    lastVisit: '8 Jul 2025',  nextVisit: '22 Jul 2025', status: 'active',   visits: 7  },
-  { id: 6, name: 'Jihanur Hasan',     age: 61, gender: 'M', condition: 'Rheumatoid Arthritis',     lastVisit: '3 Jul 2025',  nextVisit: '17 Jul 2025', status: 'active',   visits: 22 },
-  { id: 7, name: 'Jannatul Islam',     age: 22, gender: 'F', condition: 'Acne & Hormonal Imbalance',lastVisit: '9 Jul 2025',  nextVisit: '23 Jul 2025', status: 'new',      visits: 2  },
-  { id: 8, name: 'Iktedar Alam',    age: 48, gender: 'M', condition: 'Migraine',                 lastVisit: '6 Jul 2025',  nextVisit: '20 Jul 2025', status: 'active',   visits: 9  },
-]
-
-const SCHEDULE = [
-  { time: '09:00', patient: 'Raisa Hossain',   condition: 'Follow-up: Sinusitis',         status: 'completed',  type: 'consultation' },
-  { time: '09:45', patient: 'Shourob Ahmed',   condition: 'Hypertension review',          status: 'completed',  type: 'consultation' },
-  { time: '10:30', patient: 'Fahmida Akter', condition: 'Hormonal profile discussion',  status: 'in-progress',type: 'new'          },
-  { time: '11:15', patient: 'Jannatul Islam',    condition: 'Initial consultation',         status: 'upcoming',   type: 'new'          },
-  { time: '12:00', patient: 'Ratul Haque',    condition: 'IBS follow-up',                status: 'upcoming',   type: 'consultation' },
-  { time: '14:30', patient: 'Farzana Ferdous',  condition: 'Eczema — progress review',     status: 'upcoming',   type: 'consultation' },
-  { time: '15:15', patient: 'Jihanur Hasan',    condition: 'Joint pain management',        status: 'upcoming',   type: 'consultation' },
-  { time: '16:00', patient: 'Iktedar Alam',   condition: 'Migraine — new triggers',      status: 'upcoming',   type: 'consultation' },
-]
-
-const MEDICINES = [
-  {
-    name: 'Arsenicum Album', potency: '30C', score: 92,
-    indications: ['Burning pain relieved by warmth', 'Restlessness & anxiety', 'Watery nasal discharge', 'Worsens after midnight'],
-    dosage: '4 pills, 3×/day · 14 days',
-    note: 'Best for anxious, chilly patients with burning sensations'
-  },
-  {
-    name: 'Nux Vomica', potency: '200C', score: 84,
-    indications: ['Irritability & stress-related symptoms', 'Digestive disturbances', 'Oversensitivity', 'Worse in morning'],
-    dosage: '4 pills, 2×/day · 7 days',
-    note: 'Suited to type-A personalities, urban stress pattern'
-  },
-  {
-    name: 'Lycopodium Clavatum', potency: '30C', score: 77,
-    indications: ['Flatulence and bloating', 'Right-sided symptoms', 'Worse 4–8 PM', 'Low self-confidence'],
-    dosage: '4 pills, 2×/day · 10 days',
-    note: 'Deep-acting constitutional remedy for digestive axis'
-  },
-  {
-    name: 'Pulsatilla Nigricans', potency: '30C', score: 71,
-    indications: ['Symptoms change frequently', 'Thirstless despite dryness', 'Emotional, weeping', 'Better in open air'],
-    dosage: '4 pills, 2×/day · 10 days',
-    note: 'Particularly suited to women with hormonal complaints'
-  },
-  {
-    name: 'Sulphur', potency: '30C', score: 65,
-    indications: ['Burning heat in skin', 'Morning diarrhoea', 'Unhealthy-looking skin', 'Worse from bathing'],
-    dosage: '4 pills, once/day · 14 days',
-    note: 'Excellent for skin conditions and constitutional clearing'
-  },
-]
-
-const PRESCRIPTIONS = [
-  { id: 'RX-2025-0089', patient: 'Raisa Hossain',   date: '2 Jul 2025', medicines: 'Arsenicum Album 30C, Allium Cepa 6C',      status: 'dispensed', verified: true  },
-  { id: 'RX-2025-0088', patient: 'Shourob Ahmed',   date: '5 Jul 2025', medicines: 'Nux Vomica 200C, Crataegus Q',             status: 'dispensed', verified: true  },
-  { id: 'RX-2025-0087', patient: 'Fahmida Akter', date: '7 Jul 2025', medicines: 'Pulsatilla 30C, Sepia 200C',               status: 'active',    verified: true  },
-  { id: 'RX-2025-0086', patient: 'Ratul Haque',    date: '1 Jul 2025', medicines: 'Lycopodium 30C, Carbo Veg 30C',            status: 'active',    verified: false },
-  { id: 'RX-2025-0085', patient: 'Farzana Ferdous',  date: '8 Jul 2025', medicines: 'Sulphur 30C, Graphites 6C',                status: 'active',    verified: true  },
-  { id: 'RX-2025-0084', patient: 'Jihanur Hasan',    date: '3 Jul 2025', medicines: 'Rhus Toxicodendron 200C, Bryonia 30C',     status: 'dispensed', verified: true  },
-]
-
-const CHAT_MESSAGES = [
-  { role: 'ai',      text: "Good morning! I'm the HomeoAssist AI. I'll help collect your symptoms before your consultation with Dr. Anika Rahman. Can you start by describing what's been bothering you?", time: '08:42' },
-  { role: 'patient', text: "I've been having a blocked nose for about 3 weeks. It started as a cold but the congestion just won't go away.", time: '08:43' },
-  { role: 'ai',      text: 'Thank you. Is the discharge watery, thick, or coloured? And does it affect one side of the nose more than the other?', time: '08:43' },
-  { role: 'patient', text: 'Mostly watery and clear, sometimes a bit yellowish in the morning. Both sides are blocked but left is worse.', time: '08:45' },
-  { role: 'ai',      text: 'Understood. Do you notice any change — better or worse — at a particular time of day, or in cold vs warm environments?', time: '08:45' },
-  { role: 'patient', text: 'Definitely worse in cold air and in the morning. Warm rooms seem to help a bit.', time: '08:47' },
-  { role: 'ai',      text: 'Are you experiencing any associated symptoms — sneezing, facial pressure, headache, or burning sensations?', time: '08:47' },
-  { role: 'patient', text: "Yes, quite a bit of sneezing, especially in the morning. Some pressure around my nose and forehead. No headache though.", time: '08:49' },
-  { role: 'ai',      text: 'How is your energy level and sleep? And have you noticed any change in your sense of smell or taste?', time: '08:49' },
-  { role: 'patient', text: "Sleep is okay but I feel a bit tired in the afternoons. My smell is reduced — I can barely smell my food.", time: '08:51' },
-]
-
-const EXTRACTED_SYMPTOMS = [
-  'Nasal congestion — bilateral (left dominant)',
-  'Watery clear discharge; yellowish in morning',
-  'Worse: cold air, mornings on waking',
-  'Better: warm environments',
-  'Sneezing — particularly on waking',
-  'Facial pressure — nasal and frontal sinuses',
-  'Reduced sense of smell',
-  'Afternoon fatigue',
-]
-
-const EMERGENCY_CALLS = [
-  { id: 'EC-004', patient: 'Iram Ahmed', time: '10:12', priority: 'high',   symptom: 'Severe chest tightness', status: 'routing',   doctor: 'Dr. Anika Rahman' },
-  { id: 'EC-003', patient: 'Nazifa Neera',   time: '09:55', priority: 'medium', symptom: 'Acute anxiety attack',   status: 'connected', doctor: 'Dr. Rahim Uddin'  },
-  { id: 'EC-002', patient: 'Nishat Taslima',     time: '09:30', priority: 'low',    symptom: 'Worsening skin rash',    status: 'resolved',  doctor: 'Dr. Anika Rahman' },
-]
 
 // ── Utilities ─────────────────────────────────────────────────────────────────
 
 const cx = (...c: (string | false | undefined)[]) => c.filter(Boolean).join(' ')
 
-function Badge({ label, variant = 'default' }: { label: string; variant?: 'default' | 'success' | 'warning' | 'danger' | 'accent' | 'new' }) {
-  const s = {
-    default: 'bg-[#ede9e3] text-[#7a7468]',
-    success: 'bg-green-50 text-green-700 border border-green-200',
-    warning: 'bg-amber-50 text-amber-700 border border-amber-200',
-    danger:  'bg-red-50 text-red-600 border border-red-200',
-    accent:  'bg-amber-50 text-amber-700 border border-amber-200',
-    new:     'bg-blue-50 text-blue-600 border border-blue-200',
-  }
-  return <span className={cx('inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-medium whitespace-nowrap', s[variant])}>{label}</span>
-}
-
-function Card({ children, className = '', onClick, style }: { children: React.ReactNode; className?: string; onClick?: () => void; style?: React.CSSProperties }) {
-  return (
-    <div onClick={onClick} style={style} className={cx('bg-white rounded-[10px] border border-[#d6d0c8]', className)}>
-      {children}
-    </div>
-  )
-}
-
-function StatCard({ label, value, sub, gold }: { label: string; value: string | number; sub: string; gold?: boolean }) {
-  return (
-    <Card className="p-5 flex flex-col gap-2.5">
-      <p className="text-[10px] font-semibold text-[#7a7468] uppercase tracking-widest">{label}</p>
-      <p className="text-[32px] font-bold leading-none" style={{ fontFamily: 'var(--font-display)', color: gold ? 'var(--color-accent)' : 'var(--color-foreground)' }}>{value}</p>
-      <p className="text-xs text-[#7a7468]">{sub}</p>
-    </Card>
-  )
-}
-
 // ── Sidebar ───────────────────────────────────────────────────────────────────
 
-const NAV: { id: DView; label: string; icon: string[] }[] = [
-  { id: 'dashboard',     label: 'Dashboard',        icon: IC.grid    },
-  { id: 'chat',          label: 'AI Symptom Chat',  icon: IC.chat    },
-  { id: 'medicines',     label: 'Medicine Finder',  icon: IC.pill    },
-  { id: 'patients',      label: 'Patients',         icon: IC.users   },
-  { id: 'prescriptions', label: 'Prescriptions',    icon: IC.file    },
-  { id: 'emergency',     label: 'Emergency',        icon: IC.phone   },
-]
-
-function Sidebar({ active, onChange, profile, onLogout }: { active: DView; onChange: (v: DView) => void; profile: any; onLogout?: () => void }) {
-  const getInitials = (name: string) => {
-    return name.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase()
-  }
+function DoctorSidebar({ active, onChange, profile, onLogout }: { active: DView; onChange: (v: DView) => void; profile: any; onLogout?: () => void }) {
+  const navItems: NavItem<DView>[] = [
+    { id: 'dashboard',     label: 'Dashboard',        icon: IC.grid },
+    { id: 'chat',          label: 'AI Symptom Chat',  icon: IC.chat },
+    { id: 'medicines',     label: 'Medicine Finder',  icon: IC.pill },
+    { id: 'patients',      label: 'Patients',         icon: IC.users },
+    { id: 'prescriptions', label: 'Prescriptions',    icon: IC.file },
+    { id: 'emergency',     label: 'Emergency',        icon: IC.phone, badge: 1, badgeColor: '#c0392b' },
+  ]
 
   return (
-    <aside style={{ width: 240, background: '#131f16', flexShrink: 0 }} className="flex flex-col h-full">
-      {/* Logo */}
-      <div className="px-5 py-5" style={{ borderBottom: '1px solid rgba(255,255,255,0.07)' }}>
-        <div className="flex items-center gap-2.5">
-          <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ background: 'var(--color-primary)' }}>
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-              {IC.logo.map((p, i) => <path key={i} d={p} />)}
-            </svg>
-          </div>
-          <div>
-            <p className="text-sm font-semibold" style={{ color: '#e0ebe2', letterSpacing: '0.01em', fontFamily: 'var(--font-display)' }}>HomeoAssist</p>
-            <p className="text-[10px]" style={{ color: 'rgba(224,235,226,0.4)' }}>Clinical Platform</p>
-          </div>
-        </div>
-      </div>
-
-      {/* Nav */}
-      <nav className="flex-1 py-3 px-3 flex flex-col gap-0.5 overflow-y-auto">
-        {NAV.map(item => {
-          const active_ = active === item.id
-          return (
-            <button key={item.id} onClick={() => onChange(item.id)}
-              className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-[13px] w-full text-left transition-all duration-150 relative"
-              style={{
-                background: active_ ? 'var(--color-primary)' : 'transparent',
-                color: active_ ? '#f0ede8' : 'rgba(224,235,226,0.65)',
-                fontWeight: active_ ? 500 : 400,
-              }}>
-              <span style={{ opacity: active_ ? 1 : 0.65 }}>
-                <Ico d={item.icon} size={15} />
-              </span>
-              {item.label}
-              {item.id === 'emergency' && (
-                <span className="ml-auto text-[10px] font-bold px-1.5 py-0.5 rounded-full"
-                  style={{ background: '#c0392b', color: 'white', lineHeight: 1.4 }}>1</span>
-              )}
-            </button>
-          )
-        })}
-      </nav>
-
-      {/* Profile */}
-      <div className="p-3 flex flex-col gap-2" style={{ borderTop: '1px solid rgba(255,255,255,0.07)' }}>
-        {/* Clickable Profile Card */}
-        <button
-          onClick={() => onChange('profile')}
-          className="flex items-center gap-3 w-full p-2 rounded-lg text-left transition-colors hover:bg-white/5">
-          <div className="w-8 h-8 rounded-full flex items-center justify-center text-[11px] font-bold flex-shrink-0"
-            style={{ 
-              background: 'var(--color-primary)', 
-              color: '#f0ede8' }}>{getInitials(profile.name)}</div>
-          <div className="min-w-0 flex-1">
-            <p className="text-[13px] font-medium truncate" style={{ color: '#e0ebe2' }}>{profile.name}</p>
-            <p className="text-[10px] truncate" style={{ color: 'rgba(224,235,226,0.38)' }}>{profile.qualifications.split('(')[0]} · {profile.registrationNo}</p>
-          </div>
-        </button>
-
-      {/* Logout */}
-        <button
-          onClick={onLogout}
-          className="w-full py-1.5 px-3 rounded-lg flex items-center justify-center gap-2 text-[12px] font-medium text-red-300 hover:text-red-200 hover:bg-red-500/10 transition border border-red-500/20">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
-            <polyline points="16 17 21 12 16 7" />
-            <line x1="21" y1="12" x2="9" y2="12" />
-          </svg>
-          Sign Out
-        </button>
-      </div>
-    </aside>
+    <Sidebar
+      portalLabel="Clinical Platform"
+      navItems={navItems}
+      active={active}
+      onChange={onChange}
+      onLogout={onLogout}
+      onProfileClick={() => onChange('profile')}
+      profile={{
+        name: profile.name,
+        subtext: `${profile.qualifications.split('(')[0]} · ${profile.registrationNo}`
+      }}
+    />
   )
 }
 
 // ── Top Bar ───────────────────────────────────────────────────────────────────
-
-function TopBar({ title, sub, onProfileClick, profile }: { title: string; sub?: string; onProfileClick?: () => void; profile?: any }) {
-const getInitials = (name?: string) => {
-  if (!name) return 'AR'
-  return name.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase()
-}
-
-  return (
-    <div className="flex items-center justify-between px-8 py-4 sticky top-0 z-10"
-      style={{ background: 'rgba(245,242,237,0.85)', backdropFilter: 'blur(8px)', borderBottom: '1px solid #d6d0c8' }}>
-      <div>
-        <h1 className="text-[19px] font-semibold" style={{ fontFamily: 'var(--font-display)', color: 'var(--color-foreground)' }}>{title}</h1>
-        {sub && <p className="text-[11px] mt-0.5" style={{ color: '#7a7468' }}>{sub}</p>}
-      </div>
-      <div className="flex items-center gap-2">
-        <button className="w-8 h-8 flex items-center justify-center rounded-lg transition-colors hover:bg-[#ede9e3]" style={{ color: '#7a7468' }}>
-          <Ico d={IC.bell} size={16} />
-        </button>
-        {/* Clickable Top-Right Profile Icon */}
-        <button
-          onClick={onProfileClick}
-          title="Edit Profile"
-          className="w-8 h-8 rounded-full flex items-center justify-center text-[11px] font-bold cursor-pointer transition-transform hover:scale-105"
-          style={{ background: 'var(--color-primary)', color: '#f0ede8' }}>
-          {getInitials(profile?.name)}
-        </button>
-      </div>
-    </div>
-  )
-}
 
 // ── Dashboard ─────────────────────────────────────────────────────────────────
 
 function Dashboard({ onProfileClick }: { onProfileClick?: () => void }) {
   return (
     <div>
-      <TopBar title="Good morning, Dr. Rahman" sub="Thursday, 11 July 2025 · 10:30 AM" onProfileClick={onProfileClick} />
+      <TopBar title="Good morning, Dr. Rahman" sub="Thursday, 11 July 2025 · 10:30 AM" onProfileClick={onProfileClick} avatarBg="var(--color-primary)" defaultInitials="AR" />
       <div className="p-8 flex flex-col gap-6">
         <div className="grid grid-cols-4 gap-4">
           <StatCard label="Today's Appointments" value={8}   sub="3 completed · 5 remaining" />
@@ -400,8 +163,7 @@ function AIChat({ onProfileClick }: { onProfileClick?: () => void }) {
     <div className="flex" style={{ height: '100%' }}>
       {/* Chat */}
       <div className="flex flex-col flex-1 min-w-0" style={{ borderRight: '1px solid #d6d0c8' }}>
-        <TopBar title="AI Symptom Chat" sub="Anika Rahman · Consultation at 11:15 AM" onProfileClick={onProfileClick} />
-
+        <TopBar title="AI Symptom Chat" sub="Anika Rahman · Consultation at 11:15 AM" onProfileClick={onProfileClick} avatarBg="var(--color-primary)" defaultInitials="AR" />
         {/* Patient bar */}
         <div className="px-6 py-3 flex items-center gap-3" style={{ borderBottom: '1px solid #d6d0c8', background: '#d8f3dc55' }}>
           <div className="w-8 h-8 rounded-full flex items-center justify-center text-[11px] font-bold flex-shrink-0"
@@ -472,7 +234,7 @@ function AIChat({ onProfileClick }: { onProfileClick?: () => void }) {
           <div>
             <p className="text-[10px] font-bold uppercase tracking-widest mb-2" style={{ color: '#7a7468' }}>Extracted Symptoms</p>
             <div className="flex flex-col gap-2">
-              {EXTRACTED_SYMPTOMS.map((s, i) => (
+              {PATIENT_EXTRACTED_SYMPTOMS.map((s, i) => (
                 <div key={i} className="flex items-start gap-2">
                   <span className="w-1.5 h-1.5 rounded-full mt-1.5 flex-shrink-0" style={{ background: 'var(--color-primary)' }} />
                   <p className="text-[11px] leading-relaxed" style={{ color: '#1b2d20' }}>{s}</p>
@@ -513,7 +275,7 @@ function MedicineFinder({ onProfileClick }: { onProfileClick?: () => void }) {
 
   return (
     <div>
-      <TopBar title="Medicine Finder" sub="AI-assisted homeopathic medicine selection" onProfileClick={onProfileClick} />
+      <TopBar title="Medicine Finder" sub="AI-assisted homeopathic medicine selection" onProfileClick={onProfileClick} avatarBg="var(--color-primary)" defaultInitials="AR" />
       <div className="p-8 flex flex-col gap-6">
         {/* Symptom input */}
         <Card className="p-5">
@@ -619,7 +381,7 @@ function Patients({ onProfileClick }: { onProfileClick?: () => void }) {
 
   return (
     <div>
-      <TopBar title="Patients" sub={`${PATIENTS.length} registered patients`} onProfileClick={onProfileClick} />
+      <TopBar title="Patients" sub={`${PATIENTS.length} registered patients`} onProfileClick={onProfileClick} avatarBg="var(--color-primary)" defaultInitials="AR" />
       <div className="p-8 flex flex-col gap-5">
         <div className="flex items-center gap-3">
           <div className="relative max-w-xs w-full">
@@ -687,11 +449,11 @@ function Patients({ onProfileClick }: { onProfileClick?: () => void }) {
 function Prescriptions({ onProfileClick }: { onProfileClick?: () => void }) {
   const [filter, setFilter] = useState('All')
   const filters = ['All', 'Active', 'Dispensed']
-  const shown = filter === 'All' ? PRESCRIPTIONS : PRESCRIPTIONS.filter(rx => rx.status === filter.toLowerCase())
+  const shown = filter === 'All' ? PRESCRIBED_PRESCRIPTIONS : PRESCRIBED_PRESCRIPTIONS.filter(rx => rx.status === filter.toLowerCase())
 
   return (
     <div>
-      <TopBar title="Prescriptions" sub="Digital prescriptions with QR verification" onProfileClick={onProfileClick} />
+      <TopBar title="Prescriptions" sub="Digital prescriptions with QR verification" onProfileClick={onProfileClick} avatarBg="var(--color-primary)" defaultInitials="AR"/>
       <div className="p-8 flex flex-col gap-5">
         <div className="flex items-center justify-between">
           <div className="flex gap-2">
@@ -746,7 +508,7 @@ function Prescriptions({ onProfileClick }: { onProfileClick?: () => void }) {
 function Emergency({ onProfileClick }: { onProfileClick?: () => void }) {
   return (
     <div>
-      <TopBar title="Emergency Call Routing" sub="AI-powered triage and automatic doctor routing" onProfileClick={onProfileClick} />
+      <TopBar title="Emergency Call Routing" sub="AI-powered triage and automatic doctor routing" onProfileClick={onProfileClick} avatarBg="var(--color-primary)" defaultInitials="AR" />
       <div className="p-8 flex flex-col gap-6">
         <div className="flex items-center gap-3 px-5 py-3.5 rounded-xl"
           style={{ background: '#fff1f2', border: '1px solid #fca5a5' }}>
@@ -830,7 +592,7 @@ function ProfileView({ profile, onSave, onProfileClick }: { profile: any; onSave
 
   return (
     <div>
-      <TopBar title="Doctor Profile & Settings" sub="Manage details visible to patients in Find Doctor directory" onProfileClick={onProfileClick} />
+      <TopBar title="Doctor Profile & Settings" sub="Manage details visible to patients in Find Doctor directory" onProfileClick={onProfileClick} avatarBg="var(--color-primary)" defaultInitials="AR" />
       <div className="p-8 max-w-4xl mx-auto flex flex-col gap-6">
         
         {/* Top Header Card */}
@@ -1029,7 +791,7 @@ export default function Doc_Dashboard({ onLogout }: { onLogout?: () => void }) {
   return (
     <div style={{ display: 'flex', height: '100vh', overflow: 'hidden', background: '#f5f2ed' }}>
       {/* 1. Sidebar */}
-      <Sidebar 
+      <DoctorSidebar 
         active={view} 
         onChange={setView} 
         profile={doctorProfile} 
