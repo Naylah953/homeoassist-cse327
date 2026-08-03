@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { HeartPulse, Stethoscope, ShieldCheck } from 'lucide-react';
 import { HomeBot } from './Chatbots/HomeBot';
 
 interface HomeProps {
@@ -207,6 +208,7 @@ export default function Home({ onLogin }: HomeProps) {
       </section>
 
       {/* THREE ROLES SECTION */}
+
       <section className="py-20 px-4">
         <div className="max-w-6xl mx-auto">
           <span className="text-[#235B43] font-bold text-[11px] uppercase tracking-[1.2px] block mb-2">WHO IS IT FOR?</span>
@@ -216,7 +218,10 @@ export default function Home({ onLogin }: HomeProps) {
             {/* Patient Card */}
             <div className="bg-[#112219] text-white p-9 rounded-2xl flex flex-col justify-between min-h-[320px]">
               <div>
-                <div className="text-3xl mb-5">👤</div>
+                {/* Updated Icon Badge */}
+                <div className="w-12 h-12 rounded-xl bg-white/10 border border-white/10 flex items-center justify-center mb-5">
+                  <HeartPulse className="w-6 h-6 text-emerald-400" />
+                </div>
                 <h3 className="text-xl font-bold mb-3">Patient Portal</h3>
                 <p className="text-white/75 text-xs leading-relaxed">
                   Log symptoms easily, process platform payments seamlessly, and store treatment reports directly.
@@ -241,7 +246,10 @@ export default function Home({ onLogin }: HomeProps) {
             {/* Doctor Card */}
             <div className="bg-[#235B43] text-white p-9 rounded-2xl flex flex-col justify-between min-h-[320px]">
               <div>
-                <div className="text-3xl mb-5">🩺</div>
+                {/* Updated Icon Badge */}
+                <div className="w-12 h-12 rounded-xl bg-white/15 border border-white/10 flex items-center justify-center mb-5">
+                  <Stethoscope className="w-6 h-6 text-emerald-200" />
+                </div>
                 <h3 className="text-xl font-bold mb-3">Certified Doctor</h3>
                 <p className="text-white/75 text-xs leading-relaxed">
                   Evaluate automated remedy match recommendations while holding master prescription controls.
@@ -266,7 +274,10 @@ export default function Home({ onLogin }: HomeProps) {
             {/* Admin Card */}
             <div className="bg-[#F8F7F3] text-[#112219] p-9 rounded-2xl border border-slate-900/5 flex flex-col justify-between min-h-[320px]">
               <div>
-                <div className="text-3xl mb-5">🛡️</div>
+                {/* Updated Icon Badge */}
+                <div className="w-12 h-12 rounded-xl bg-[#235B43]/10 border border-[#235B43]/15 flex items-center justify-center mb-5">
+                  <ShieldCheck className="w-6 h-6 text-[#235B43]" />
+                </div>
                 <h3 className="text-xl font-bold mb-3 text-slate-900">System Admin</h3>
                 <p className="text-slate-500 text-xs leading-relaxed">
                   Monitor live platform analytical charts, approve practitioners, and manage medical indices.
