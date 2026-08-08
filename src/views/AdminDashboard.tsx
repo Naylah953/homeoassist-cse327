@@ -1,17 +1,17 @@
 import { useState } from 'react'
-import { AView } from './types'
-import { IC } from './components/ui/Ico'
-import { Sidebar, NavItem } from './components/layout/Sidebar'
+import { AView } from '../types'
+import { IC } from '../components/ui/Ico'
+import { Sidebar, NavItem } from '../components/layout/Sidebar'
 
 // Views
-import { AdminDashboardView } from './views/admin/AdminDashboardView'
-import { DoctorManagementView } from './views/admin/DoctorManagementView'
-import { PatientManagementView } from './views/admin/PatientManagementView'
-import { ComplaintsView } from './views/admin/ComplaintsView'
-import { RevenueView } from './views/admin/RevenueView'
-import { SettingsView } from './views/admin/SettingsView'
+import { AdminDashboardView } from './admin/AdminDashboardView'
+import { DoctorManagementView } from './admin/DoctorManagementView'
+import { PatientManagementView } from './admin/PatientManagementView'
+import { ComplaintsView } from './admin/ComplaintsView'
+import { RevenueView } from './admin/RevenueView'
+import { SettingsView } from './admin/SettingsView'
 
-import { COMPLAINTS, PENDING_DOCTORS } from './data/adminMockData'
+import { COMPLAINTS, PENDING_DOCTORS } from '../data/adminMockData'
 
 // ── Admin App ───────────────────────────────────────────────────────────────────
 

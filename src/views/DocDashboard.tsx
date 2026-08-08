@@ -1,17 +1,17 @@
 import React, { useState } from 'react'
-import { DView } from './types'
-import { IC } from './components/ui/Ico'
-import { Sidebar, NavItem } from './components/layout/Sidebar'
-import { SupportBot } from './Chatbots/SupportBot'
+import { DView } from '../types'
+import { IC } from '../components/ui/Ico'
+import { Sidebar, NavItem } from '../components/layout/Sidebar'
+import { SupportBot } from '../Chatbots/SupportBot'
 
 // Views
-import { DocDashboardView } from './views/doctor/DocDashboardView'
-import { AIChatView } from './views/doctor/AIChatView'
-import { MedicineFinderView } from './views/doctor/MedicineFinderView'
-import { PatientsView } from './views/doctor/PatientsView'
-import { PrescriptionsView } from './views/doctor/PrescriptionsView'
-import { EmergencyView } from './views/doctor/EmergencyView'
-import { DoctorProfileView } from './views/doctor/DoctorProfileView'
+import { DocDashboardView } from './doctor/DocDashboardView'
+import { AIChatView } from './doctor/AIChatView'
+import { MedicineFinderView } from './doctor/MedicineFinderView'
+import { PatientsView } from './doctor/PatientsView'
+import { PrescriptionsView } from './doctor/PrescriptionsView'
+import { EmergencyView } from './doctor/EmergencyView'
+import { DoctorProfileView } from './doctor/DoctorProfileView'
 
 // ── Doctor App ───────────────────────────────────────────────────────────────────
 

@@ -1,19 +1,19 @@
 import { useState } from 'react'
-import { SupportBot } from './Chatbots/SupportBot'
+import { SupportBot } from '../Chatbots/SupportBot'
 
 // Types & Icons
-import { PView } from './types'
-import { IC } from './components/ui/Ico'
-import { Sidebar, NavItem } from './components/layout/Sidebar'
+import { PView } from '../types'
+import { IC } from '../components/ui/Ico'
+import { Sidebar, NavItem } from '../components/layout/Sidebar'
 
 // Sub-views from patient directory
-import { PatientDashboardView } from './views/patient/PatientDashboardView'
-import { AIChatView } from './views/patient/AIChatView'
-import { FindDoctorsView } from './views/patient/FindDoctorsView'
-import { AppointmentsView } from './views/patient/AppointmentsView'
-import { RecordsView } from './views/patient/RecordsView'
-import { EmergencyView } from './views/patient/EmergencyView'
-import { PatientProfileView } from './views/patient/PatientProfileView'
+import { PatientDashboardView } from './patient/PatientDashboardView'
+import { AIChatView } from './patient/AIChatView'
+import { FindDoctorsView } from './patient/FindDoctorsView'
+import { AppointmentsView } from './patient/AppointmentsView'
+import { RecordsView } from './patient/RecordsView'
+import { EmergencyView } from './patient/EmergencyView'
+import { PatientProfileView } from './patient/PatientProfileView'
 
 // ── Sidebar ───────────────────────────────────────────────────────────────────
 
