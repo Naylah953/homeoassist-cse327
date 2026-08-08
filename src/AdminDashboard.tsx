@@ -11,9 +11,9 @@ import { ComplaintsView } from './views/admin/ComplaintsView'
 import { RevenueView } from './views/admin/RevenueView'
 import { SettingsView } from './views/admin/SettingsView'
 
-// ── Admin App ───────────────────────────────────────────────────────────────────
-
 import { COMPLAINTS, PENDING_DOCTORS } from './data/adminMockData'
+
+// ── Admin App ───────────────────────────────────────────────────────────────────
 
 export default function AdminDashboard({ onLogout }: { onLogout?: () => void }) {
   const [view, setView] = useState<AView>('dashboard')
@@ -30,6 +30,8 @@ export default function AdminDashboard({ onLogout }: { onLogout?: () => void }) 
   // Badge calculations for sidebar
   const openCount = COMPLAINTS.filter(c => c.status === 'open').length
   const pendingCount = PENDING_DOCTORS.length
+
+// ── Sidebar ───────────────────────────────────────────────────────────────────
 
   const navItems: NavItem<AView>[] = [
     { id: 'dashboard',  label: 'Dashboard',             icon: IC.grid },

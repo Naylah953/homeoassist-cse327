@@ -11,14 +11,17 @@ interface AdminDashboardViewProps {
   goTo: (v: AView) => void
 }
 
-
 export function AdminDashboardView({ goTo }: AdminDashboardViewProps) {
   const openComplaints = COMPLAINTS.filter(c => c.status === 'open').length
   const totalRev = PLANS.reduce((s, p) => s + p.revenue, 0)
 
   return (
     <div>
-      <TopBar title="Admin Dashboard" sub="Thursday, 11 July 2025 · Platform Overview" defaultInitials="SA" avatarBg="#b4654a" />
+      <TopBar 
+        title="Admin Dashboard" 
+        sub="Thursday, 11 July 2025 · Platform Overview" 
+        defaultInitials="SA" 
+        avatarBg="#b4654a" />
       <div className="p-8 flex flex-col gap-6">
         {/* Stats */}
         <div className="grid grid-cols-5 gap-4">
