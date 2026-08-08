@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { HeartPulse, Stethoscope, ShieldCheck } from 'lucide-react';
-import { HomeBot } from './Chatbots/HomeBot';
+import { HomeBot } from '../Chatbots/HomeBot';
 
 interface HomeProps {
   onLogin?: (role: 'doctor' | 'patient' | 'admin') => void;
