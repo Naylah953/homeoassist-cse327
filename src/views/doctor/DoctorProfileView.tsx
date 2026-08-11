@@ -38,12 +38,12 @@ export function DoctorProfileView({ profile, onSave, onProfileClick }: Props) {
               {getInitials(formData.name)}
             </div>
             <div>
-              <h2 className="text-lg font-bold" style={{ fontFamily: 'var(--font-display)', color: '#1b2d20' }}>{formData.name}</h2>
-              <p className="text-xs" style={{ color: '#7a7468' }}>{formData.specialty} · {formData.registrationNo}</p>
+              <h2 className="text-xl font-bold" style={{ fontFamily: 'var(--font-display)', color: '#1b2d20' }}>{formData.name}</h2>
+              <p className="text-sm" style={{ color: '#7a7468' }}>{formData.specialty} · {formData.registrationNo}</p>
             </div>
           </div>
           {savedSuccess && (
-            <span className="px-3 py-1.5 rounded-full bg-emerald-50 text-emerald-700 text-xs font-semibold border border-emerald-200">
+            <span className="px-3 py-1.5 rounded-full bg-emerald-50 text-emerald-700 text-sm font-semibold border border-emerald-200">
               ✓ Profile Saved & Live for Patients
             </span>
           )}
@@ -52,27 +52,27 @@ export function DoctorProfileView({ profile, onSave, onProfileClick }: Props) {
         {/* Profile Settings Form */}
         <Card className="p-6">
           <form onSubmit={handleSubmit} className="flex flex-col gap-5">
-            <h3 className="text-sm font-semibold border-b pb-3" style={{ borderBottomColor: '#ede9e3', fontFamily: 'var(--font-display)' }}>
-              Public Directory Details
+            <h3 className="text-[24px] font-bold border-b pb-3" style={{ borderBottomColor: '#123f0b', fontFamily: 'var(--font-display)' }}>
+              Profile Details
             </h3>
 
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className="block text-[11px] font-bold text-[#7a7468] uppercase tracking-wider mb-1">Full Name & Title</label>
+                <label className="block text-[14px] font-bold text-[#071904] uppercase tracking-wider mb-1">Full Name & Title</label>
                 <input
                   type="text"
                   value={formData.name}
                   onChange={e => setFormData({ ...formData, name: e.target.value })}
-                  className="w-full px-3 py-2 rounded-lg text-xs outline-none bg-[#f5f2ed] border border-[#d6d0c8] focus:border-[#2d6a4f]"
+                  className="w-full px-3 py-2 rounded-lg text-sm outline-none bg-[#f5f2ed] border border-[#d6d0c8] focus:border-[#2d6a4f]"
                 />
               </div>
 
               <div>
-                <label className="block text-[11px] font-bold text-[#7a7468] uppercase tracking-wider mb-1">Specialty</label>
+                <label className="block text-[14px] font-bold text-[#071904] uppercase tracking-wider mb-1">Specialty</label>
                 <select
                   value={formData.specialty}
                   onChange={e => setFormData({ ...formData, specialty: e.target.value })}
-                  className="w-full px-3 py-2 rounded-lg text-xs outline-none bg-[#f5f2ed] border border-[#d6d0c8] focus:border-[#2d6a4f]"
+                  className="w-full px-3 py-2 rounded-lg text-sm outline-none bg-[#f5f2ed] border border-[#d6d0c8] focus:border-[#2d6a4f]"
                 >
                   <option value="Allergies & Respiratory">Allergies & Respiratory</option>
                   <option value="Digestive & IBS">Digestive & IBS</option>
@@ -84,78 +84,78 @@ export function DoctorProfileView({ profile, onSave, onProfileClick }: Props) {
               </div>
 
               <div>
-                <label className="block text-[11px] font-bold text-[#7a7468] uppercase tracking-wider mb-1">Qualifications / Merits</label>
+                <label className="block text-[14px] font-bold text-[#071904] uppercase tracking-wider mb-1">Qualifications / Merits</label>
                 <input
                   type="text"
                   value={formData.qualifications}
                   onChange={e => setFormData({ ...formData, qualifications: e.target.value })}
-                  className="w-full px-3 py-2 rounded-lg text-xs outline-none bg-[#f5f2ed] border border-[#d6d0c8] focus:border-[#2d6a4f]"
+                  className="w-full px-3 py-2 rounded-lg text-sm outline-none bg-[#f5f2ed] border border-[#d6d0c8] focus:border-[#2d6a4f]"
                 />
               </div>
 
               <div>
-                <label className="block text-[11px] font-bold text-[#7a7468] uppercase tracking-wider mb-1">Registration No.</label>
+                <label className="block text-[14px] font-bold text-[#071904] uppercase tracking-wider mb-1">Registration No.</label>
                 <input
                   type="text"
                   value={formData.registrationNo}
                   onChange={e => setFormData({ ...formData, registrationNo: e.target.value })}
-                  className="w-full px-3 py-2 rounded-lg text-xs outline-none bg-[#f5f2ed] border border-[#d6d0c8] focus:border-[#2d6a4f]"
+                  className="w-full px-3 py-2 rounded-lg text-sm outline-none bg-[#f5f2ed] border border-[#d6d0c8] focus:border-[#2d6a4f]"
                 />
               </div>
 
               <div>
-                <label className="block text-[11px] font-bold text-[#7a7468] uppercase tracking-wider mb-1">Years of Experience</label>
+                <label className="block text-[14px] font-bold text-[#071904] uppercase tracking-wider mb-1">Years of Experience</label>
                 <input
                   type="number"
                   value={formData.experienceYears}
                   onChange={e => setFormData({ ...formData, experienceYears: Number(e.target.value) })}
-                  className="w-full px-3 py-2 rounded-lg text-xs outline-none bg-[#f5f2ed] border border-[#d6d0c8] focus:border-[#2d6a4f]"
+                  className="w-full px-3 py-2 rounded-lg text-sm outline-none bg-[#f5f2ed] border border-[#d6d0c8] focus:border-[#2d6a4f]"
                 />
               </div>
 
               <div>
-                <label className="block text-[11px] font-bold text-[#7a7468] uppercase tracking-wider mb-1">Consultation Fee (₹)</label>
+                <label className="block text-[14px] font-bold text-[#071904] uppercase tracking-wider mb-1">Consultation Fee (₹)</label>
                 <input
                   type="number"
                   value={formData.consultationFee}
                   onChange={e => setFormData({ ...formData, consultationFee: Number(e.target.value) })}
-                  className="w-full px-3 py-2 rounded-lg text-xs outline-none bg-[#f5f2ed] border border-[#d6d0c8] focus:border-[#2d6a4f]"
+                  className="w-full px-3 py-2 rounded-lg text-sm outline-none bg-[#f5f2ed] border border-[#d6d0c8] focus:border-[#2d6a4f]"
                 />
               </div>
 
               <div>
-                <label className="block text-[11px] font-bold text-[#7a7468] uppercase tracking-wider mb-1">Email</label>
+                <label className="block text-[14px] font-bold text-[#071904] uppercase tracking-wider mb-1">Email</label>
                 <input
                   type="email"
                   value={formData.email}
                   onChange={e => setFormData({ ...formData, email: e.target.value })}
-                  className="w-full px-3 py-2 rounded-lg text-xs outline-none bg-[#f5f2ed] border border-[#d6d0c8] focus:border-[#2d6a4f]"
+                  className="w-full px-3 py-2 rounded-lg text-sm outline-none bg-[#f5f2ed] border border-[#d6d0c8] focus:border-[#2d6a4f]"
                 />
               </div>
 
               <div>
-                <label className="block text-[11px] font-bold text-[#7a7468] uppercase tracking-wider mb-1">Phone</label>
+                <label className="block text-[14px] font-bold text-[#071904] uppercase tracking-wider mb-1">Phone</label>
                 <input
                   type="text"
                   value={formData.phone}
                   onChange={e => setFormData({ ...formData, phone: e.target.value })}
-                  className="w-full px-3 py-2 rounded-lg text-xs outline-none bg-[#f5f2ed] border border-[#d6d0c8] focus:border-[#2d6a4f]"
+                  className="w-full px-3 py-2 rounded-lg text-sm outline-none bg-[#f5f2ed] border border-[#d6d0c8] focus:border-[#2d6a4f]"
                 />
               </div>
             </div>
 
             <div>
-              <label className="block text-[11px] font-bold text-[#7a7468] uppercase tracking-wider mb-1">Doctor Biography & Merits</label>
+              <label className="block text-[14px] font-bold text-[#071904] uppercase tracking-wider mb-1">Doctor Biography & Merits</label>
               <textarea
                 rows={3}
                 value={formData.bio}
                 onChange={e => setFormData({ ...formData, bio: e.target.value })}
-                className="w-full px-3 py-2 rounded-lg text-xs outline-none bg-[#f5f2ed] border border-[#d6d0c8] focus:border-[#2d6a4f]"
+                className="w-full px-3 py-2 rounded-lg text-sm outline-none bg-[#f5f2ed] border border-[#d6d0c8] focus:border-[#2d6a4f]"
               />
             </div>
 
-            <div className="flex items-center justify-between pt-4 border-t" style={{ borderTopColor: '#ede9e3' }}>
-              <label className="flex items-center gap-2 cursor-pointer text-xs text-[#1b2d20]">
+            <div className="flex items-center justify-between pt-4 border-t" style={{ borderTopColor: '#1b2d20' }}>
+              <label className="flex items-center gap-2 cursor-pointer text-[16px] text-[#1b2d20]">
                 <input
                   type="checkbox"
                   checked={formData.availableForBooking}
@@ -167,7 +167,7 @@ export function DoctorProfileView({ profile, onSave, onProfileClick }: Props) {
 
               <button
                 type="submit"
-                className="px-5 py-2 rounded-xl text-xs font-semibold text-white shadow-sm transition-opacity hover:opacity-90"
+                className="px-5 py-2 rounded-xl text-base font-semibold text-white shadow-sm transition-opacity hover:opacity-90"
                 style={{ background: 'var(--color-primary)' }}
               >
                 Save Changes
