@@ -42,7 +42,7 @@ export function Sidebar<T extends string>({
   const displaySubtext = profile?.subtext || 'admin@homeoassist.in'
 
   return (
-    <aside style={{ width: 240, background: '#131f16', flexShrink: 0 }} className="flex flex-col h-full">
+    <aside style={{ width: 290, background: '#131f16', flexShrink: 0 }} className="flex flex-col h-full">
       {/* Brand / Logo Header */}
       <div className="px-5 py-5" style={{ borderBottom: '1px solid rgba(255,255,255,0.07)' }}>
         <div className="flex items-center gap-2.5">
@@ -52,10 +52,10 @@ export function Sidebar<T extends string>({
             </svg>
           </div>
           <div>
-            <p className="text-sm font-semibold" style={{ color: '#e0ebe2', letterSpacing: '0.01em', fontFamily: 'var(--font-display)' }}>
+            <p className="text-xl font-semibold" style={{ color: '#e0ebe2', letterSpacing: '0.01em', fontFamily: 'var(--font-display)' }}>
               HomeoAssist
             </p>
-            <p className="text-[10px]" style={{ color: 'rgba(224,235,226,0.4)' }}>
+            <p className="text-[16px]" style={{ color: 'rgba(224,235,226,0.4)' }}>
               {portalLabel}
             </p>
           </div>
@@ -83,21 +83,21 @@ export function Sidebar<T extends string>({
             <button
               key={item.id}
               onClick={() => onChange(item.id)}
-              className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-[13px] w-full text-left transition-all duration-150 relative"
+              className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-[17px] w-full text-left transition-all duration-150 relative"
               style={{
                 background: bgColor,
                 color: textColor,
                 fontWeight: isActive ? 500 : 400,
               }}>
               <span style={{ opacity: isActive ? 1 : 0.65 }}>
-                <Ico d={item.icon} size={15} />
+                <Ico d={item.icon} size={20} />
               </span>
               {item.label}
 
               {/* Dynamic Badge */}
               {item.badge !== undefined && item.badge !== 0 && (
                 <span
-                  className="ml-auto text-[10px] font-bold px-1.5 py-0.5 rounded-full"
+                  className="ml-auto text-[12px] font-bold px-1.5 py-0.5 rounded-full"
                   style={{
                     background: item.badgeColor || '#c0392b',
                     color: 'white',
@@ -127,15 +127,15 @@ export function Sidebar<T extends string>({
             onProfileClick ? 'hover:bg-white/5 cursor-pointer' : 'cursor-default'
           }`} >
           <div
-            className="w-8 h-8 rounded-full flex items-center justify-center text-[11px] font-bold flex-shrink-0"
+            className="w-8 h-8 rounded-full flex items-center justify-center text-[18px] font-bold flex-shrink-0"
             style={{ background: 'var(--color-primary)', color: '#f0ede8' }} >
             {initials}
           </div>
           <div className="min-w-0 flex-1">
-            <p className="text-[13px] font-medium truncate" style={{ color: '#e0ebe2' }}>
+            <p className="text-[16px] font-medium truncate" style={{ color: '#e0ebe2' }}>
               {displayName}
             </p>
-            <p className="text-[10px] truncate" style={{ color: 'rgba(224,235,226,0.38)' }}>
+            <p className="text-[13px] truncate" style={{ color: 'rgba(224,235,226,0.38)' }}>
               {displaySubtext}
             </p>
           </div>
@@ -145,7 +145,7 @@ export function Sidebar<T extends string>({
         {onLogout && (
           <button
             onClick={onLogout}
-            className="w-full py-1.5 px-3 rounded-lg flex items-center justify-center gap-2 text-[12px] font-medium text-red-300 hover:text-red-200 hover:bg-red-500/10 transition border border-red-500/20" >
+            className="w-full py-1.5 px-3 rounded-lg flex items-center justify-center gap-2 text-[16px] font-medium text-red-300 hover:text-red-200 hover:bg-red-500/10 transition border border-red-500/20" >
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
               <polyline points="16 17 21 12 16 7" />

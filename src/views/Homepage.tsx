@@ -50,21 +50,21 @@ export default function Home({ onLogin }: HomeProps) {
             HomeoAssist
           </a>
           <div className="flex items-center gap-3">
-            <a href="#features" className="hidden md:block text-slate-800 hover:text-[#235B43] font-medium text-sm mr-2">
+            <a href="#features" className="hidden md:block text-slate-800 hover:text-[#235B43] font-medium text-base mr-2">
               Features
             </a>
-            <a href="#how-it-works" className="hidden md:block text-slate-800 hover:text-[#235B43] font-medium text-sm mr-4">
+            <a href="#how-it-works" className="hidden md:block text-slate-800 hover:text-[#235B43] font-medium text-base mr-4">
               How it works
             </a>
             <button
               onClick={() => openLogin('doctor')}
-              className="px-5 py-1.5 border border-[#112219] text-[#112219] rounded-md font-medium text-sm hover:bg-[#112219]/5 transition"
+              className="px-5 py-1.5 border border-[#112219] text-[#112219] rounded-md font-medium text-base hover:bg-[#112219]/5 transition"
             >
               Log in
             </button>
             <button
               onClick={() => openRegister('doctor')}
-              className="px-5 py-1.5 bg-[#235B43] text-white rounded-md font-medium text-sm hover:bg-[#112219] transition"
+              className="px-5 py-1.5 bg-[#235B43] text-white rounded-md font-medium text-base hover:bg-[#112219] transition"
             >
               Get started
             </button>
@@ -93,13 +93,13 @@ export default function Home({ onLogin }: HomeProps) {
           <div className="flex flex-col sm:flex-row justify-center gap-3">
             <button
               onClick={() => openRegister('patient')}
-              className="px-8 py-3 bg-[#235B43] text-white rounded-lg font-medium text-sm hover:bg-[#112219] transition"
+              className="px-8 py-3 bg-[#235B43] text-white rounded-lg font-medium text-base hover:bg-[#112219] transition"
             >
               Get started — it's free
             </button>
             <button
               onClick={() => openLogin('doctor')}
-              className="px-8 py-3 bg-transparent text-white rounded-lg font-medium text-sm border border-white/60 hover:border-white hover:bg-white/10 transition"
+              className="px-8 py-3 bg-transparent text-white rounded-lg font-medium text-base border border-white/60 hover:border-white hover:bg-white/10 transition"
             >
               Sign in to your account
             </button>
@@ -111,24 +111,24 @@ export default function Home({ onLogin }: HomeProps) {
       <div className="border-b border-slate-900/10 py-8 bg-[#F9FBF9] text-center">
         <div className="max-w-6xl mx-auto px-4 grid grid-cols-2 md:grid-cols-5 gap-6">
           <div>
-            <div className="text-3xl font-bold text-[#235B43]">3</div>
-            <div className="text-xs font-medium text-slate-500 mt-1">User Roles</div>
+            <div className="text-[35px] font-bold text-[#235B43]">3</div>
+            <div className="text-base font-medium text-slate-500 mt-1">User Roles</div>
           </div>
           <div>
-            <div className="text-3xl font-bold text-[#235B43]">AI</div>
-            <div className="text-xs font-medium text-slate-500 mt-1">Chatbot Assistant</div>
+            <div className="text-[35px] font-bold text-[#235B43]">AI</div>
+            <div className="text-base font-medium text-slate-500 mt-1">Chatbot Assistant</div>
           </div>
           <div>
-            <div className="text-3xl font-bold text-[#235B43]">SOS</div>
-            <div className="text-xs font-medium text-slate-500 mt-1">Emergency Alerts</div>
+            <div className="text-[35px] font-bold text-[#235B43]">SOS</div>
+            <div className="text-base font-medium text-slate-500 mt-1">Emergency Alerts</div>
           </div>
           <div>
-            <div className="text-3xl font-bold text-[#235B43]">QR</div>
-            <div className="text-xs font-medium text-slate-500 mt-1">Verified Records</div>
+            <div className="text-[35px] font-bold text-[#235B43]">QR</div>
+            <div className="text-base font-medium text-slate-500 mt-1">Verified Records</div>
           </div>
           <div className="col-span-2 md:col-span-1">
-            <div className="text-3xl font-bold text-[#235B43]">100%</div>
-            <div className="text-xs font-medium text-slate-500 mt-1">Doctor Control</div>
+            <div className="text-[35px] font-bold text-[#235B43]">100%</div>
+            <div className="text-base font-medium text-slate-500 mt-1">Doctor Control</div>
           </div>
         </div>
       </div>
@@ -136,9 +136,9 @@ export default function Home({ onLogin }: HomeProps) {
       {/* FEATURES SECTION */}
       <section id="features" className="py-20 px-4">
         <div className=" max-w-6xl mx-auto">
-          <span className="text-[#235B43] font-bold text-xs uppercase tracking-wider block mb-1">Platform Features</span>
+          <span className="text-[#235B43] font-bold text-sm uppercase tracking-wider block mb-1">Platform Features</span>
           <h2 className="text-4xl font-bold text-[#112219] font-serif mb-3">Everything you need for safe practice</h2>
-          <p className="text-slate-500 text-sm max-w-lg mb-12">
+          <p className="text-slate-500 text-base max-w-lg mb-12">
             From intelligent intake to instant emergency routing, every process supports absolute medical safety.
           </p>
 
@@ -147,7 +147,7 @@ export default function Home({ onLogin }: HomeProps) {
               <div className="w-12 h-12 bg-[#EAF7F0] rounded-xl flex items-center justify-center text-[#235B43] text-xl mb-5">
                 <i className="bi bi-chat-dots-fill"></i>
               </div>
-              <h3 className="text-lg font-bold text-slate-900 mb-2">AI Symptom Chat</h3>
+              <h3 className="text-xl font-bold text-slate-900 mb-2">AI Symptom Chat</h3>
               <p className="text-slate-500 text-xs leading-relaxed">
                 Collects case records via patient conversational language summaries prior to formal clinic entry.
               </p>
@@ -157,8 +157,8 @@ export default function Home({ onLogin }: HomeProps) {
               <div className="w-12 h-12 bg-[#EAF7F0] rounded-xl flex items-center justify-center text-[#235B43] text-xl mb-5">
                 <i className="bi bi-search"></i>
               </div>
-              <h3 className="text-lg font-bold text-slate-900 mb-2">Intelligent CDSS</h3>
-              <p className="text-slate-500 text-xs leading-relaxed">
+              <h3 className="text-xl font-bold text-slate-900 mb-2">Intelligent CDSS</h3>
+              <p className="text-slate-500 text-sm leading-relaxed">
                 Calculates remedy probability matching scores built upon historical repertory diagnostics safely.
               </p>
             </div>
@@ -167,8 +167,8 @@ export default function Home({ onLogin }: HomeProps) {
               <div className="w-12 h-12 bg-[#EAF7F0] rounded-xl flex items-center justify-center text-[#235B43] text-xl mb-5">
                 <i className="bi bi-telephone-plus-fill"></i>
               </div>
-              <h3 className="text-lg font-bold text-slate-900 mb-2">Emergency Routing</h3>
-              <p className="text-slate-500 text-xs leading-relaxed">
+              <h3 className="text-xl font-bold text-slate-900 mb-2">Emergency Routing</h3>
+              <p className="text-slate-500 text-sm leading-relaxed">
                 Automated triage protocols dispatch critical patient calls to fallback doctors instantly.
               </p>
             </div>
@@ -184,24 +184,24 @@ export default function Home({ onLogin }: HomeProps) {
 
           <div className="grid md:grid-cols-4 gap-6">
             <div>
-              <div className="w-9 h-9 bg-[#235B43] text-white rounded-full flex items-center justify-center font-bold text-sm mb-4">1</div>
-              <h3 className="font-bold text-slate-900 mb-2 text-sm">Create an account</h3>
-              <p className="text-slate-500 text-xs leading-relaxed">Register as a practitioner or patient. Providers securely submit credential parameters.</p>
+              <div className="w-9 h-9 bg-[#235B43] text-white rounded-full flex items-center justify-center font-bold text-base mb-4">1</div>
+              <h3 className="font-bold text-slate-900 mb-2 text-base">Create an account</h3>
+              <p className="text-slate-500 text-sm leading-relaxed">Register as a practitioner or patient. Providers securely submit credential parameters.</p>
             </div>
             <div>
-              <div className="w-9 h-9 bg-[#235B43] text-white rounded-full flex items-center justify-center font-bold text-sm mb-4">2</div>
-              <h3 className="font-bold text-slate-900 mb-2 text-sm">Log Symptoms</h3>
-              <p className="text-slate-500 text-xs leading-relaxed">The automated patient assistant converts structural logs into clinic-ready charts.</p>
+              <div className="w-9 h-9 bg-[#235B43] text-white rounded-full flex items-center justify-center font-bold text-base mb-4">2</div>
+              <h3 className="font-bold text-slate-900 mb-2 text-base">Log Symptoms</h3>
+              <p className="text-slate-500 text-sm leading-relaxed">The automated patient assistant converts structural logs into clinic-ready charts.</p>
             </div>
             <div>
-              <div className="w-9 h-9 bg-[#235B43] text-white rounded-full flex items-center justify-center font-bold text-sm mb-4">3</div>
-              <h3 className="font-bold text-slate-900 mb-2 text-sm">Run CDSS Alignment</h3>
-              <p className="text-slate-500 text-xs leading-relaxed">Evaluate ranked probability metrics safely backed inside the doctor screen layout.</p>
+              <div className="w-9 h-9 bg-[#235B43] text-white rounded-full flex items-center justify-center font-bold text-base mb-4">3</div>
+              <h3 className="font-bold text-slate-900 mb-2 text-base">Run CDSS Alignment</h3>
+              <p className="text-slate-500 text-sm leading-relaxed">Evaluate ranked probability metrics safely backed inside the doctor screen layout.</p>
             </div>
             <div>
-              <div className="w-9 h-9 bg-[#235B43] text-white rounded-full flex items-center justify-center font-bold text-sm mb-4">4</div>
-              <h3 className="font-bold text-slate-900 mb-2 text-sm">Secure Dispensation</h3>
-              <p className="text-slate-500 text-xs leading-relaxed">Generate legal prescriptions embedded with trackable quick-response codes.</p>
+              <div className="w-9 h-9 bg-[#235B43] text-white rounded-full flex items-center justify-center font-bold text-base mb-4">4</div>
+              <h3 className="font-bold text-slate-900 mb-2 text-base ">Secure Dispensation</h3>
+              <p className="text-slate-500 text-sm leading-relaxed">Generate legal prescriptions embedded with trackable quick-response codes.</p>
             </div>
           </div>
         </div>
@@ -211,7 +211,7 @@ export default function Home({ onLogin }: HomeProps) {
 
       <section className="py-20 px-4">
         <div className="max-w-6xl mx-auto">
-          <span className="text-[#235B43] font-bold text-[11px] uppercase tracking-[1.2px] block mb-2">WHO IS IT FOR?</span>
+          <span className="text-[#235B43] font-bold text-[16px] uppercase tracking-[1.2px] block mb-2">WHO IS IT FOR?</span>
           <h2 className="text-4xl font-bold text-[#112219] font-serif mb-12">Three roles, one platform</h2>
 
           <div className="grid md:grid-cols-3 gap-6">
@@ -223,20 +223,20 @@ export default function Home({ onLogin }: HomeProps) {
                   <HeartPulse className="w-6 h-6 text-emerald-400" />
                 </div>
                 <h3 className="text-xl font-bold mb-3">Patient Portal</h3>
-                <p className="text-white/75 text-xs leading-relaxed">
+                <p className="text-white/75 text-sm leading-relaxed">
                   Log symptoms easily, process platform payments seamlessly, and store treatment reports directly.
                 </p>
               </div>
               <div className="flex gap-2 mt-8">
                 <button 
                   onClick={() => openLogin('patient')} 
-                  className="flex-1 py-3 border border-white/30 text-white rounded-lg font-medium text-xs hover:bg-white/10 transition"
+                  className="flex-1 py-3 border border-white/30 text-white rounded-lg font-medium text-sm hover:bg-white/10 transition"
                 >
                   Patient Login
                 </button>
                 <button 
                   onClick={() => openRegister('patient')} 
-                  className="flex-1 py-3 bg-[#148352] text-white rounded-lg font-medium text-xs hover:bg-[#148352]/90 transition"
+                  className="flex-1 py-3 bg-[#148352] text-white rounded-lg font-medium text-sm hover:bg-[#148352]/90 transition"
                 >
                   Register →
                 </button>
@@ -251,20 +251,20 @@ export default function Home({ onLogin }: HomeProps) {
                   <Stethoscope className="w-6 h-6 text-emerald-200" />
                 </div>
                 <h3 className="text-xl font-bold mb-3">Certified Doctor</h3>
-                <p className="text-white/75 text-xs leading-relaxed">
+                <p className="text-white/75 text-sm leading-relaxed">
                   Evaluate automated remedy match recommendations while holding master prescription controls.
                 </p>
               </div>
               <div className="flex gap-2 mt-8">
                 <button 
                   onClick={() => openLogin('doctor')} 
-                  className="flex-1 py-3 border border-white/30 text-white rounded-lg font-medium text-xs hover:bg-white/10 transition"
+                  className="flex-1 py-3 border border-white/30 text-white rounded-lg font-medium text-sm hover:bg-white/10 transition"
                 >
                   Doctor Login
                 </button>
                 <button 
                   onClick={() => openRegister('doctor')} 
-                  className="flex-1 py-3 bg-white text-[#112219] rounded-lg font-medium text-xs hover:bg-white/90 transition"
+                  className="flex-1 py-3 bg-white text-[#112219] rounded-lg font-medium text-sm hover:bg-white/90 transition"
                 >
                   Register →
                 </button>
@@ -279,13 +279,13 @@ export default function Home({ onLogin }: HomeProps) {
                   <ShieldCheck className="w-6 h-6 text-[#235B43]" />
                 </div>
                 <h3 className="text-xl font-bold mb-3 text-slate-900">System Admin</h3>
-                <p className="text-slate-500 text-xs leading-relaxed">
+                <p className="text-slate-500 text-sm leading-relaxed">
                   Monitor live platform analytical charts, approve practitioners, and manage medical indices.
                 </p>
               </div>
               <button 
                 onClick={() => openLogin('admin')} 
-                className="w-full mt-8 py-3 bg-[#148352] text-white rounded-lg font-medium text-xs hover:bg-[#148352]/90 transition"
+                className="w-full mt-8 py-3 bg-[#148352] text-white rounded-lg font-medium text-sm hover:bg-[#148352]/90 transition"
               >
                 Admin Login →
               </button>
@@ -365,14 +365,14 @@ export default function Home({ onLogin }: HomeProps) {
               </button>
 
               <h2 className="text-3xl font-serif font-bold text-[#112219] mb-1">Welcome Back</h2>
-              <p className="text-slate-500 text-xs mb-5">Select your role to access your portal.</p>
+              <p className="text-slate-500 text-sm mb-5">Select your role to access your portal.</p>
 
               {/* 3-WAY ROLE SWITCHER TABS */}
               <div className="flex bg-stone-200/60 p-1 rounded-xl mb-6">
                 <button
                   type="button"
                   onClick={() => setLoginRole('doctor')}
-                  className={`flex-1 py-2 text-[11px] font-semibold rounded-lg transition ${
+                  className={`flex-1 py-2 text-[16px] font-semibold rounded-lg transition ${
                     loginRole === 'doctor'
                       ? 'bg-white text-[#235B43] shadow-sm'
                       : 'text-slate-600 hover:text-slate-900'
@@ -383,7 +383,7 @@ export default function Home({ onLogin }: HomeProps) {
                 <button
                   type="button"
                   onClick={() => setLoginRole('patient')}
-                  className={`flex-1 py-2 text-[11px] font-semibold rounded-lg transition ${
+                  className={`flex-1 py-2 text-[16px] font-semibold rounded-lg transition ${
                     loginRole === 'patient'
                       ? 'bg-white text-[#235B43] shadow-sm'
                       : 'text-slate-600 hover:text-slate-900'
@@ -394,7 +394,7 @@ export default function Home({ onLogin }: HomeProps) {
                 <button
                   type="button"
                   onClick={() => setLoginRole('admin')}
-                  className={`flex-1 py-2 text-[11px] font-semibold rounded-lg transition ${
+                  className={`flex-1 py-2 text-[16px] font-semibold rounded-lg transition ${
                     loginRole === 'admin'
                       ? 'bg-white text-[#235B43] shadow-sm'
                       : 'text-slate-600 hover:text-slate-900'
@@ -407,7 +407,7 @@ export default function Home({ onLogin }: HomeProps) {
               <form onSubmit={handleLoginSubmit} className="space-y-4">
                 {loginRole === 'doctor' && (
                   <div>
-                    <label className="block text-xs font-semibold text-slate-800 mb-1.5">
+                    <label className="block text-sm font-semibold text-slate-800 mb-1.5">
                       Doctor Reg. ID / Email
                     </label>
                     <input 
@@ -421,7 +421,7 @@ export default function Home({ onLogin }: HomeProps) {
 
                 {loginRole === 'patient' && (
                   <div>
-                    <label className="block text-xs font-semibold text-slate-800 mb-1.5">
+                    <label className="block text-sm font-semibold text-slate-800 mb-1.5">
                       Phone Number / Patient ID / Email
                     </label>
                     <input 
@@ -435,7 +435,7 @@ export default function Home({ onLogin }: HomeProps) {
 
                 {loginRole === 'admin' && (
                   <div>
-                    <label className="block text-xs font-semibold text-slate-800 mb-1.5">
+                    <label className="block text-sm font-semibold text-slate-800 mb-1.5">
                       Admin Username / Security ID
                     </label>
                     <input 
@@ -448,7 +448,7 @@ export default function Home({ onLogin }: HomeProps) {
                 )}
 
                 <div>
-                  <label className="block text-xs font-semibold text-slate-800 mb-1.5">
+                  <label className="block text-sm font-semibold text-slate-800 mb-1.5">
                     Password
                   </label>
                   <input 
@@ -461,7 +461,7 @@ export default function Home({ onLogin }: HomeProps) {
 
                 <button 
                   type="submit" 
-                  className="w-full py-3 bg-[#235B43] text-white text-xs font-medium rounded-xl hover:bg-[#112219] transition mt-2"
+                  className="w-full py-3 bg-[#235B43] text-white text-sm font-medium rounded-xl hover:bg-[#112219] transition mt-2"
                 >
                   Log In as {loginRole === 'doctor' ? 'Doctor' : loginRole === 'patient' ? 'Patient' : 'Admin'}
                 </button>
@@ -483,14 +483,14 @@ export default function Home({ onLogin }: HomeProps) {
               </button>
 
               <h2 className="text-3xl font-serif font-bold text-[#112219] mb-1">Create Account</h2>
-              <p className="text-slate-500 text-xs mb-5">Select your role to get started with HomeoAssist.</p>
+              <p className="text-slate-500 text-sm mb-5">Select your role to get started with HomeoAssist.</p>
 
               {/* ROLE SWITCHER TABS */}
               <div className="flex bg-stone-200/60 p-1 rounded-xl mb-6 max-w-md">
                 <button
                   type="button"
                   onClick={() => setRegisterRole('doctor')}
-                  className={`flex-1 py-2 text-xs font-semibold rounded-lg transition ${
+                  className={`flex-1 py-2 text-sm font-semibold rounded-lg transition ${
                     registerRole === 'doctor'
                       ? 'bg-white text-[#235B43] shadow-sm'
                       : 'text-slate-600 hover:text-slate-900'
@@ -501,7 +501,7 @@ export default function Home({ onLogin }: HomeProps) {
                 <button
                   type="button"
                   onClick={() => setRegisterRole('patient')}
-                  className={`flex-1 py-2 text-xs font-semibold rounded-lg transition ${
+                  className={`flex-1 py-2 text-sm font-semibold rounded-lg transition ${
                     registerRole === 'patient'
                       ? 'bg-white text-[#235B43] shadow-sm'
                       : 'text-slate-600 hover:text-slate-900'
@@ -516,111 +516,111 @@ export default function Home({ onLogin }: HomeProps) {
                   <>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       <div>
-                        <label className="block text-xs font-semibold text-slate-800 mb-1.5">
+                        <label className="block text-sm font-semibold text-slate-800 mb-1.5">
                           Full Name
                         </label>
                         <input 
                           type="text" 
                           defaultValue="Dr. Anika Rahman" 
                           required 
-                          className="w-full px-3.5 py-2.5 text-xs rounded-xl border border-slate-300 focus:outline-none focus:border-[#235B43] bg-white text-slate-800"
+                          className="w-full px-3.5 py-2.5 text-sm rounded-xl border border-slate-300 focus:outline-none focus:border-[#235B43] bg-white text-slate-800"
                         />
                       </div>
 
                       <div>
-                        <label className="block text-xs font-semibold text-slate-800 mb-1.5">
+                        <label className="block text-sm font-semibold text-slate-800 mb-1.5">
                           Medical Council Reg. ID
                         </label>
                         <input 
                           type="text" 
                           defaultValue="#HOM-4821" 
                           required 
-                          className="w-full px-3.5 py-2.5 text-xs rounded-xl border border-slate-300 focus:outline-none focus:border-[#235B43] bg-white text-slate-800"
+                          className="w-full px-3.5 py-2.5 text-sm rounded-xl border border-slate-300 focus:outline-none focus:border-[#235B43] bg-white text-slate-800"
                         />
                       </div>
 
                       <div>
-                        <label className="block text-xs font-semibold text-slate-800 mb-1.5">
+                        <label className="block text-sm font-semibold text-slate-800 mb-1.5">
                           Email Address
                         </label>
                         <input 
                           type="email" 
                           defaultValue="priya.sharma@clinic.org" 
                           required 
-                          className="w-full px-3.5 py-2.5 text-xs rounded-xl border border-slate-300 focus:outline-none focus:border-[#235B43] bg-white text-slate-800"
+                          className="w-full px-3.5 py-2.5 text-sm rounded-xl border border-slate-300 focus:outline-none focus:border-[#235B43] bg-white text-slate-800"
                         />
                       </div>
 
                       <div>
-                        <label className="block text-xs font-semibold text-slate-800 mb-1.5">
+                        <label className="block text-sm font-semibold text-slate-800 mb-1.5">
                           Contact Number
                         </label>
                         <input 
                           type="text" 
                           defaultValue="+880 17XXXXXXXX" 
                           required 
-                          className="w-full px-3.5 py-2.5 text-xs rounded-xl border border-slate-300 focus:outline-none focus:border-[#235B43] bg-white text-slate-800"
+                          className="w-full px-3.5 py-2.5 text-sm rounded-xl border border-slate-300 focus:outline-none focus:border-[#235B43] bg-white text-slate-800"
                         />
                       </div>
                     </div>
 
                     <div>
-                      <label className="block text-xs font-semibold text-slate-800 mb-1.5">
+                      <label className="block text-sm font-semibold text-slate-800 mb-1.5">
                         Clinic/Chamber Address
                       </label>
                       <input 
                         type="text" 
                         defaultValue="Dhaka, Bangladesh" 
                         required 
-                        className="w-full px-3.5 py-2.5 text-xs rounded-xl border border-slate-300 focus:outline-none focus:border-[#235B43] bg-white text-slate-800"
+                        className="w-full px-3.5 py-2.5 text-sm rounded-xl border border-slate-300 focus:outline-none focus:border-[#235B43] bg-white text-slate-800"
                       />
                     </div>
                   </>
                 ) : (
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
-                      <label className="block text-xs font-semibold text-slate-800 mb-1.5">
+                      <label className="block text-sm font-semibold text-slate-800 mb-1.5">
                         Full Name
                       </label>
                       <input 
                         type="text" 
                         placeholder="John Doe" 
                         required 
-                        className="w-full px-3.5 py-2.5 text-xs rounded-xl border border-slate-300 focus:outline-none focus:border-[#235B43] bg-white text-slate-800"
+                        className="w-full px-3.5 py-2.5 text-sm rounded-xl border border-slate-300 focus:outline-none focus:border-[#235B43] bg-white text-slate-800"
                       />
                     </div>
 
                     <div>
-                      <label className="block text-xs font-semibold text-slate-800 mb-1.5">
+                      <label className="block text-sm font-semibold text-slate-800 mb-1.5">
                         Contact Number
                       </label>
                       <input 
                         type="text" 
                         placeholder="+880 17XXXXXXXX" 
                         required 
-                        className="w-full px-3.5 py-2.5 text-xs rounded-xl border border-slate-300 focus:outline-none focus:border-[#235B43] bg-white text-slate-800"
+                        className="w-full px-3.5 py-2.5 text-sm rounded-xl border border-slate-300 focus:outline-none focus:border-[#235B43] bg-white text-slate-800"
                       />
                     </div>
 
                     <div>
-                      <label className="block text-xs font-semibold text-slate-800 mb-1.5">
+                      <label className="block text-sm font-semibold text-slate-800 mb-1.5">
                         Age
                       </label>
                       <input 
                         type="number" 
                         placeholder="28" 
                         required 
-                        className="w-full px-3.5 py-2.5 text-xs rounded-xl border border-slate-300 focus:outline-none focus:border-[#235B43] bg-white text-slate-800"
+                        className="w-full px-3.5 py-2.5 text-sm rounded-xl border border-slate-300 focus:outline-none focus:border-[#235B43] bg-white text-slate-800"
                       />
                     </div>
 
                     <div>
-                      <label className="block text-xs font-semibold text-slate-800 mb-1.5">
+                      <label className="block text-sm font-semibold text-slate-800 mb-1.5">
                         Gender
                       </label>
                       <select 
                         required 
-                        className="w-full px-3.5 py-2.5 text-xs rounded-xl border border-slate-300 focus:outline-none focus:border-[#235B43] bg-white text-slate-800"
+                        className="w-full px-3.5 py-2.5 text-sm rounded-xl border border-slate-300 focus:outline-none focus:border-[#235B43] bg-white text-slate-800"
                       >
                         <option value="">Select Gender</option>
                         <option value="male">Male</option>
@@ -633,7 +633,7 @@ export default function Home({ onLogin }: HomeProps) {
 
                 <button 
                   type="submit" 
-                  className="w-full py-3 bg-[#235B43] text-white text-xs font-medium rounded-xl hover:bg-[#112219] transition mt-2"
+                  className="w-full py-3 bg-[#235B43] text-white text-sm font-medium rounded-xl hover:bg-[#112219] transition mt-2"
                 >
                   {registerRole === 'doctor' ? 'Submit Registration For Admin Review' : 'Create Patient Account'}
                 </button>
