@@ -31,7 +31,7 @@ export function ComplaintsView() {
           <div className="flex gap-1.5">
             {['All', 'Bug', 'Feature', 'Feedback'].map(f => (
               <button key={f} onClick={() => setTypeFilter(f)}
-                className="px-3 py-1.5 rounded-lg text-[11px] font-medium transition-all"
+                className="px-3 py-1.5 rounded-lg text-[15px] font-medium transition-all"
                 style={typeFilter === f
                   ? { background: '#d8f3dc', border: '1px solid var(--color-primary)', color: 'var(--color-primary)' }
                   : { border: '1px solid #d6d0c8', color: '#7a7468', background: 'white' }}>
@@ -42,7 +42,7 @@ export function ComplaintsView() {
           <div className="flex gap-1.5">
             {['All', 'Open', 'In Review', 'Resolved'].map(f => (
               <button key={f} onClick={() => setStatusFilter(f)}
-                className="px-3 py-1.5 rounded-lg text-[11px] font-medium transition-all"
+                className="px-3 py-1.5 rounded-lg text-[15px] font-medium transition-all"
                 style={statusFilter === f
                   ? { background: '#d8f3dc', border: '1px solid var(--color-primary)', color: 'var(--color-primary)' }
                   : { border: '1px solid #d6d0c8', color: '#7a7468', background: 'white' }}>
@@ -53,7 +53,7 @@ export function ComplaintsView() {
           <div className="flex gap-1.5">
             {['All', 'Doctor', 'Patient'].map(f => (
               <button key={f} onClick={() => setRoleFilter(f)}
-                className="px-3 py-1.5 rounded-lg text-[11px] font-medium transition-all"
+                className="px-3 py-1.5 rounded-lg text-[15px] font-medium transition-all"
                 style={roleFilter === f
                   ? { background: '#d8f3dc', border: '1px solid var(--color-primary)', color: 'var(--color-primary)' }
                   : { border: '1px solid #d6d0c8', color: '#7a7468', background: 'white' }}>
@@ -61,7 +61,7 @@ export function ComplaintsView() {
               </button>
             ))}
           </div>
-          <p className="ml-auto text-[11px] self-center" style={{ color: '#7a7468' }}>{shown.length} results</p>
+          <p className="ml-auto text-[18px] self-center" style={{ color: '#7a7468' }}>{shown.length} results</p>
         </div>
 
         <div className="flex flex-col gap-3">
@@ -74,10 +74,10 @@ export function ComplaintsView() {
                     style={{ background: priorityColor[c.priority] }} />
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2 mb-0.5">
-                      <p className="text-[13px] font-semibold" style={{ color: '#1b2d20' }}>{c.subject}</p>
+                      <p className="text-[18px] font-semibold" style={{ color: '#15271a' }}>{c.subject}</p>
                     </div>
-                    <div className="flex items-center gap-2 text-[11px]" style={{ color: '#7a7468' }}>
-                      <span className="font-medium" style={{ fontFamily: 'var(--font-mono)', color: 'var(--color-primary)', fontSize: 10 }}>{c.id}</span>
+                    <div className="flex items-center gap-2 text-[15px]" style={{ color: '#59564f' }}>
+                      <span className="font-medium" style={{ fontFamily: 'var(--font-mono)', color: 'var(--color-primary)', fontSize: 15 }}>{c.id}</span>
                       <span>·</span>
                       <span>{c.from}</span>
                       <Badge label={c.role === 'doctor' ? 'Doctor' : 'Patient'} variant={c.role === 'doctor' ? 'new' : 'default'} />
@@ -98,31 +98,31 @@ export function ComplaintsView() {
               </div>
 
               {expanded === c.id && (
-                <div className="px-5 py-4 flex flex-col gap-4" style={{ borderTop: '1px solid #ede9e3', background: '#fafaf9' }}>
+                <div className="px-5 py-4 flex flex-col gap-4" style={{ borderTop: '1px solid #03003c', background: '#fafaf9' }}>
                   <div>
-                    <p className="text-[10px] font-bold uppercase tracking-wider mb-2" style={{ color: '#7a7468' }}>User Message</p>
-                    <p className="text-[12px] leading-relaxed" style={{ color: '#1b2d20' }}>{c.message}</p>
+                    <p className="text-[16px] font-bold uppercase tracking-wider mb-2" style={{ color: '#010033' }}>User Message</p>
+                    <p className="text-[16px] leading-relaxed" style={{ color: '#080b26' }}>{c.message}</p>
                   </div>
                   {c.adminNote && (
-                    <div className="px-4 py-3 rounded-lg" style={{ background: '#d8f3dc', border: '1px solid #a7d9b4' }}>
-                      <p className="text-[10px] font-bold uppercase tracking-wider mb-1" style={{ color: 'var(--color-primary)' }}>Admin Note</p>
-                      <p className="text-[12px]" style={{ color: '#1b2d20' }}>{c.adminNote}</p>
+                    <div className="px-4 py-3 rounded-lg" style={{ background: '#eff6ff', border: '1px solid #3e9dfc' }}>
+                      <p className="text-[15px] font-bold uppercase tracking-wider mb-1" style={{ color: '#010033' }}>Admin Note</p>
+                      <p className="text-[15px]" style={{ color: '#1b2d20' }}>{c.adminNote}</p>
                     </div>
                   )}
                   <div className="flex gap-2">
                     {c.status !== 'resolved' && (
-                      <button className="px-4 py-1.5 rounded-lg text-[12px] font-semibold transition-opacity hover:opacity-90"
+                      <button className="px-4 py-1.5 rounded-lg text-[15px] font-semibold transition-opacity hover:opacity-90"
                         style={{ background: 'var(--color-primary)', color: '#f0ede8' }}>
                         Mark Resolved
                       </button>
                     )}
                     {c.status === 'open' && (
-                      <button className="px-4 py-1.5 rounded-lg text-[12px] font-medium transition-colors hover:bg-amber-50"
+                      <button className="px-4 py-1.5 rounded-lg text-[15px] font-medium transition-colors hover:bg-amber-50"
                         style={{ border: '1px solid #f59e0b', color: '#92400e' }}>
                         Move to In Review
                       </button>
                     )}
-                    <button className="px-4 py-1.5 rounded-lg text-[12px] font-medium transition-colors hover:bg-[#f5f2ed]"
+                    <button className="px-4 py-1.5 rounded-lg text-[15px] font-medium transition-colors hover:bg-[#f5f2ed]"
                       style={{ border: '1px solid #d6d0c8', color: '#7a7468' }}>
                       Add Note
                     </button>

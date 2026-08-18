@@ -33,7 +33,7 @@ export function DoctorManagementView() {
         <div className="flex gap-2">
           {(['pending', 'verified', 'declined'] as const).map(t => (
             <button key={t} onClick={() => setTab(t)}
-              className="px-4 py-1.5 rounded-lg text-[12px] font-medium transition-all capitalize relative"
+              className="px-4 py-1.5 rounded-lg text-[15px] font-medium transition-all capitalize relative"
               style={tab === t
                 ? { background: '#d8f3dc', border: '1px solid var(--color-primary)', color: 'var(--color-primary)' }
                 : { border: '1px solid #d6d0c8', color: '#7a7468', background: 'white' }}>
@@ -43,29 +43,29 @@ export function DoctorManagementView() {
               )}
             </button>
           ))}
-          <button className="flex items-center gap-2 px-4 py-1.5 rounded-lg text-[12px] font-semibold ml-auto transition-opacity hover:opacity-90"
+          <button className="flex items-center gap-2 px-4 py-1.5 rounded-lg text-[15px] font-semibold ml-auto transition-opacity hover:opacity-90"
             style={{ background: 'var(--color-primary)', color: '#f0ede8' }}>
-            <Ico d={IC.download} size={13} /> Export List
+            <Ico d={IC.download} size={15} /> Export List
           </button>
         </div>
 
         {tab === 'pending' && (
           <div className="flex flex-col gap-4">
             {pending.length === 0
-              ? <p className="text-[13px] text-center py-12" style={{ color: '#7a7468' }}>No pending verifications.</p>
+              ? <p className="text-[18px] text-center py-12" style={{ color: '#7a7468' }}>No pending verifications.</p>
               : pending.map((doc, i) => (
                 <Card key={i} className="p-5">
                   <div className="flex items-start gap-4 mb-4">
-                    <div className="w-12 h-12 rounded-full flex items-center justify-center text-[13px] font-bold flex-shrink-0"
+                    <div className="w-12 h-12 rounded-full flex items-center justify-center text-[18px] font-bold flex-shrink-0"
                       style={{ background: '#d8f3dc', color: 'var(--color-primary)' }}>{doc.initials}</div>
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-3 mb-1">
-                        <h3 className="text-[15px] font-semibold" style={{ fontFamily: 'var(--font-display)', fontStyle: 'italic', color: '#1b2d20' }}>{doc.name}</h3>
+                        <h3 className="text-[18px] font-bold" style={{ color: '#1b2d20' }}>{doc.name}</h3>
                         <Badge label="Pending Review" variant="warning" />
                         {!doc.docs && <Badge label="Documents Incomplete" variant="danger" />}
                       </div>
-                      <p className="text-[12px] mb-1" style={{ color: '#7a7468' }}>{doc.qual} · {doc.specialty} · {doc.exp} yrs experience</p>
-                      <div className="flex items-center gap-4 text-[11px]" style={{ color: '#7a7468' }}>
+                      <p className="text-[14px] font-medium mb-1" style={{ color: '#7a7468' }}>{doc.qual} · {doc.specialty} · {doc.exp} yrs experience</p>
+                      <div className="flex items-center gap-4 text-[14px]" style={{ color: '#7a7468' }}>
                         <span style={{ fontFamily: 'var(--font-mono)', color: 'var(--color-primary)', fontWeight: 600 }}>{doc.reg}</span>
                         <span>📍 {doc.city}</span>
                         <span>Submitted {doc.submitted}</span>
@@ -73,23 +73,23 @@ export function DoctorManagementView() {
                     </div>
                   </div>
                   <div className="px-4 py-3 rounded-lg mb-4" style={{ background: '#f5f2ed', border: '1px solid #ede9e3' }}>
-                    <p className="text-[10px] font-bold uppercase tracking-wider mb-1" style={{ color: '#7a7468' }}>Registration Note</p>
-                    <p className="text-[12px]" style={{ color: '#1b2d20' }}>{doc.note}</p>
+                    <p className="text-[13px] font-bold uppercase tracking-wider mb-1" style={{ color: '#7a7468' }}>Registration Note</p>
+                    <p className="text-[15px]" style={{ color: '#1b2d20' }}>{doc.note}</p>
                   </div>
                   <div className="flex gap-3">
-                    <button className="flex items-center gap-2 px-4 py-2 rounded-lg text-[12px] font-medium transition-colors hover:bg-[#f5f2ed]"
+                    <button className="flex items-center gap-2 px-4 py-2 rounded-lg text-[15px] font-medium transition-colors hover:bg-[#f5f2ed]"
                       style={{ border: '1px solid #d6d0c8', color: '#1b2d20' }}>
-                      <Ico d={IC.eye} size={13} /> View Full Application
+                      <Ico d={IC.eye} size={15} /> View Full Application
                     </button>
                     <button onClick={() => setDeclineModal(doc)}
-                      className="flex items-center gap-2 px-4 py-2 rounded-lg text-[12px] font-medium transition-colors hover:bg-red-50"
+                      className="flex items-center gap-2 px-4 py-2 rounded-lg text-[15px] font-medium transition-colors hover:bg-red-50"
                       style={{ border: '1px solid #fca5a5', color: '#dc2626' }}>
-                      <Ico d={IC.x} size={13} /> Decline
+                      <Ico d={IC.x} size={15} /> Decline
                     </button>
                     <button onClick={() => setApproved(a => [...a, doc.reg])}
-                      className="flex items-center gap-2 px-4 py-2 rounded-lg text-[12px] font-semibold ml-auto transition-opacity hover:opacity-90"
+                      className="flex items-center gap-2 px-4 py-2 rounded-lg text-[15px] font-semibold ml-auto transition-opacity hover:opacity-90"
                       style={{ background: 'var(--color-primary)', color: '#f0ede8' }}>
-                      <Ico d={IC.check} size={13} /> Approve & Verify
+                      <Ico d={IC.check} size={15} /> Approve & Verify
                     </button>
                   </div>
                 </Card>
@@ -100,8 +100,15 @@ export function DoctorManagementView() {
 
         {tab === 'verified' && (
           <Card>
-            <div className="px-5 py-3 grid text-[10px] font-bold uppercase tracking-widest"
-              style={{ gridTemplateColumns: '180px 80px 1fr 100px 90px 80px 90px', borderBottom: '1px solid #d6d0c8', color: '#7a7468' }}>
+            {/* Table Header */}
+            <div 
+              className="px-5 py-3 grid text-[14px] font-bold uppercase tracking-widest"
+              style={{ 
+                gridTemplateColumns: '180px 155px 1.6fr 1.1fr 150px 100px 90px', 
+                borderBottom: '3px solid #021e52', 
+                color: '#021e52' 
+              }}
+            >
               <span>Doctor</span>
               <span>Reg. No.</span>
               <span>Specialty</span>
@@ -110,22 +117,40 @@ export function DoctorManagementView() {
               <span>Status</span>
               <span>Actions</span>
             </div>
+
+            {/* Table Rows */}
             {verified.map((doc, i) => (
-              <div key={i} className="px-5 py-3.5 grid items-center gap-3 transition-colors hover:bg-[#f5f2ed]"
-                style={{ gridTemplateColumns: '180px 80px 1fr 100px 90px 80px 90px', borderBottom: i < verified.length - 1 ? '1px solid #ede9e3' : 'none' }}>
+              <div 
+                key={i} 
+                className="px-5 py-3.5 grid items-center gap-3 transition-colors hover:bg-[#f5f2ed]"
+                style={{ 
+                  gridTemplateColumns: '170px 140px 1.8fr 1.2fr 120px 100px 80px', 
+                  borderBottom: i < verified.length - 1 ? '1px solid #04338b' : 'none' 
+                }}
+              >
                 <div className="flex items-center gap-2 min-w-0">
-                  <div className="w-7 h-7 rounded-full flex items-center justify-center text-[9px] font-bold flex-shrink-0"
-                    style={{ background: '#d8f3dc', color: 'var(--color-primary)' }}>{doc.initials}</div>
-                  <span className="text-[12px] font-medium truncate" style={{ color: '#1b2d20' }}>{doc.name}</span>
+                  <div 
+                    className="w-7 h-7 rounded-full flex items-center justify-center text-[15px] font-bold flex-shrink-0"
+                    style={{ background: '#d8f3dc', color: 'var(--color-primary)' }}
+                  >
+                    {doc.initials}
+                  </div>
+                  <span className="text-[15px] font-medium truncate" style={{ color: '#1b2d20' }}>{doc.name}</span>
                 </div>
-                <span className="text-[10px] font-semibold" style={{ fontFamily: 'var(--font-mono)', color: 'var(--color-primary)' }}>{doc.reg}</span>
-                <span className="text-[11px] truncate" style={{ color: '#7a7468' }}>{doc.specialty} · {doc.exp} yrs</span>
-                <span className="text-[11px]" style={{ color: '#7a7468' }}>{doc.joined}</span>
-                <span className="text-[12px] font-semibold" style={{ color: '#1b2d20' }}>{doc.patients}</span>
+
+                <span className="text-[15px] font-semibold" style={{ fontFamily: 'var(--font-mono)', color: '#042563' }}>{doc.reg}</span>
+                <span className="text-[15px] truncate" style={{ color: '#7a7468' }}>{doc.specialty} · {doc.exp} yrs</span>
+                <span className="text-[15px]" style={{ color: '#7a7468' }}>{doc.joined}</span>
+                <span className="text-[15px] font-semibold" style={{ color: '#1b2d20' }}>{doc.patients}</span>
                 <Badge label={doc.status === 'active' ? 'Active' : 'Suspended'} variant={doc.status === 'active' ? 'success' : 'danger'} />
+                
                 <div className="flex items-center gap-1">
-                  <button className="p-1.5 rounded-lg hover:bg-[#ede9e3] transition-colors" style={{ color: '#7a7468' }}><Ico d={IC.eye} size={13} /></button>
-                  <button className="p-1.5 rounded-lg hover:bg-[#ede9e3] transition-colors" style={{ color: '#7a7468' }}><Ico d={IC.edit} size={13} /></button>
+                  <button className="p-1.5 rounded-lg hover:bg-[#ede9e3] transition-colors" style={{ color: '#7a7468' }}>
+                    <Ico d={IC.eye} size={15} />
+                  </button>
+                  <button className="p-1.5 rounded-lg hover:bg-[#ede9e3] transition-colors" style={{ color: '#7a7468' }}>
+                    <Ico d={IC.edit} size={15} />
+                  </button>
                 </div>
               </div>
             ))}
@@ -133,9 +158,8 @@ export function DoctorManagementView() {
         )}
 
         {tab === 'declined' && (
-          <div className="text-center py-16" style={{ color: '#7a7468' }}>
-            <Ico d={IC.doc} size={32} />
-            <p className="text-[13px] mt-3">No declined applications on record.</p>
+          <div className="flex flex-col items-center justify-center text-center py-16" style={{ color: '#7a7468' }}>            <Ico d={IC.doc} size={32} />
+            <p className="text-[18px] mt-3">No declined applications on record.</p>
           </div>
         )}
       </div>
@@ -148,27 +172,27 @@ export function DoctorManagementView() {
           <div className="w-full max-w-md mx-4 rounded-2xl overflow-hidden shadow-2xl bg-white" onClick={e => e.stopPropagation()}>
             <div className="px-6 py-5 flex items-center justify-between" style={{ borderBottom: '1px solid #d6d0c8' }}>
               <div>
-                <h3 className="text-[15px] font-semibold" style={{ fontFamily: 'var(--font-display)' }}>Decline Application</h3>
-                <p className="text-[11px] mt-0.5" style={{ color: '#7a7468' }}>{declineModal.name}</p>
+                <h3 className="text-[20px] font-bold" style={{ fontFamily: 'var(--font-display)' }}>Decline Application</h3>
+                <p className="text-[16px] font-medium mt-0.5" style={{ color: '#7a7468' }}>{declineModal.name}</p>
               </div>
               <button onClick={() => setDeclineModal(null)} className="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-[#f5f2ed]" style={{ color: '#7a7468' }}>
-                <Ico d={IC.x} size={16} />
+                <Ico d={IC.x} size={20} />
               </button>
             </div>
             <div className="px-6 py-5 flex flex-col gap-4">
               <div>
-                <p className="text-[10px] font-bold uppercase tracking-widest mb-2" style={{ color: '#7a7468' }}>Reason for Decline</p>
+                <p className="text-[15px] font-bold uppercase tracking-widest mb-2" style={{ color: '#3d3b36' }}>Reason for Decline</p>
                 <textarea value={declineReason} onChange={e => setDeclineReason(e.target.value)}
                   placeholder="Provide a reason (this will be shared with the applicant)…"
                   rows={4}
-                  className="w-full px-3 py-2.5 rounded-lg text-[13px] outline-none resize-none"
+                  className="w-full px-3 py-2.5 rounded-lg text-[15px] outline-none resize-none"
                   style={{ border: '1px solid #d6d0c8', background: '#f5f2ed', color: '#1b2d20', fontFamily: 'var(--font-sans)' }} />
               </div>
               <div className="flex gap-3">
-                <button onClick={() => setDeclineModal(null)} className="flex-1 py-2.5 rounded-xl text-[13px] font-medium transition-colors hover:bg-[#f5f2ed]"
+                <button onClick={() => setDeclineModal(null)} className="flex-1 py-2.5 rounded-xl text-[15px] font-medium transition-colors hover:bg-[#f5f2ed]"
                   style={{ border: '1px solid #d6d0c8', color: '#1b2d20' }}>Cancel</button>
                 <button onClick={() => { setDeclined(d => [...d, declineModal.reg]); setDeclineModal(null); setDeclineReason('') }}
-                  className="flex-1 py-2.5 rounded-xl text-[13px] font-semibold transition-opacity hover:opacity-90"
+                  className="flex-1 py-2.5 rounded-xl text-[15px] font-semibold transition-opacity hover:opacity-90"
                   style={{ background: '#c0392b', color: 'white' }}>Confirm Decline</button>
               </div>
             </div>
