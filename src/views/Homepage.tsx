@@ -107,8 +107,6 @@ export default function Home({ onLogin }: HomeProps) {
         </div>
       </header>
 
-{/* #dbeae1 */}
-
       {/* STATS BAR */} 
       <div className="border-b border-slate-900/10 py-8" style={{ backgroundColor: '#dbeae1' }} text-center>
         <div className="max-w-6xl mx-auto px-4 grid grid-cols-2 md:grid-cols-5 gap-6">
