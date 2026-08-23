@@ -4,7 +4,11 @@ import { HomeBot } from '../Chatbots/HomeBot';
 import LoginModal from '../components/ui/LoginModal';
 import RegisterModal from '../components/ui/RegisterModal';
 
-export default function Home() {
+interface HomeProps {
+  onLogin?: (role: 'doctor' | 'patient' | 'admin') => void;
+}
+
+export default function Home({ onLogin }: HomeProps) {
   // Modal state management: 'login' | 'register' | null
   const [activeModal, setActiveModal] = useState<'login' | 'register' | null>(null);
 
@@ -326,7 +330,16 @@ export default function Home() {
       </footer>
 
       {/* --- MODALS OVERLAY LAYER --- */}
-      {activeModal === 'login' && <LoginModal onClose={closeModal} />}
+      {/* Homepage.tsx */}
+      {activeModal === 'login' && (
+        <LoginModal 
+          onClose={closeModal} 
+          onLoginSuccess={(role) => {
+            if (onLogin) onLogin(role); // Pass role up to App.tsx
+            closeModal();
+          }} 
+        />
+      )}
       {activeModal === 'register' && <RegisterModal onClose={closeModal} />}
 
       {/* FLOATING BOT COMPONENT */}
