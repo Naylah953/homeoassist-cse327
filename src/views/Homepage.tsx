@@ -1,8 +1,6 @@
 import { useState } from 'react';
 import { HeartPulse, Stethoscope, ShieldCheck } from 'lucide-react';
 import { HomeBot } from '../Chatbots/HomeBot';
-import LoginModal from '../components/ui/LoginModal';
-import RegisterModal from '../components/ui/RegisterModal';
 
 interface HomeProps {
   onLogin?: (role: 'doctor' | 'patient' | 'admin') => void;
@@ -12,15 +10,33 @@ export default function Home({ onLogin }: HomeProps) {
   // Modal state management: 'login' | 'register' | null
   const [activeModal, setActiveModal] = useState<'login' | 'register' | null>(null);
 
-  const openLogin = () => {
+  // Role toggles for modals
+  const [loginRole, setLoginRole] = useState<'doctor' | 'patient' | 'admin'>('doctor');
+  const [registerRole, setRegisterRole] = useState<'doctor' | 'patient'>('doctor');
+
+  const openLogin = (role: 'doctor' | 'patient' | 'admin' = 'doctor') => {
+    setLoginRole(role);
     setActiveModal('login');
   };
 
-  const openRegister = () => {
+  const openRegister = (role: 'doctor' | 'patient' = 'doctor') => {
+    setRegisterRole(role);
     setActiveModal('register');
   };
 
   const closeModal = () => setActiveModal(null);
+
+  const handleLoginSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    closeModal();
+    if (onLogin) onLogin(loginRole);
+  };
+
+  const handleRegisterSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    closeModal();
+    if (onLogin) onLogin(registerRole);
+  };
 
   return (
     <div className="min-h-screen bg-white text-slate-800 font-sans relative">
@@ -41,13 +57,13 @@ export default function Home({ onLogin }: HomeProps) {
               How it works
             </a>
             <button
-              onClick={() => openLogin()}
+              onClick={() => openLogin('doctor')}
               className="px-5 py-1.5 border border-[#112219] text-[#112219] rounded-md font-medium text-base hover:bg-[#112219]/5 transition"
             >
               Log in
             </button>
             <button
-              onClick={() => openRegister()}
+              onClick={() => openRegister('doctor')}
               className="px-5 py-1.5 bg-[#235B43] text-white rounded-md font-medium text-base hover:bg-[#112219] transition"
             >
               Get started
@@ -76,13 +92,13 @@ export default function Home({ onLogin }: HomeProps) {
           </p>
           <div className="flex flex-col sm:flex-row justify-center gap-3">
             <button
-              onClick={() => openRegister()}
+              onClick={() => openRegister('patient')}
               className="px-8 py-3 bg-[#235B43] text-white rounded-lg font-medium text-base hover:bg-[#112219] transition"
             >
               Get started — it's free
             </button>
             <button
-              onClick={() => openLogin()}
+              onClick={() => openLogin('doctor')}
               className="px-8 py-3 bg-transparent text-white rounded-lg font-medium text-base border border-white/60 hover:border-white hover:bg-white/10 transition"
             >
               Sign in to your account
@@ -213,13 +229,13 @@ export default function Home({ onLogin }: HomeProps) {
               </div>
               <div className="flex gap-2 mt-8">
                 <button 
-                  onClick={() => openLogin()} 
+                  onClick={() => openLogin('patient')} 
                   className="flex-1 py-3 border border-white/30 text-white rounded-lg font-medium text-sm hover:bg-white/10 transition"
                 >
                   Patient Login
                 </button>
                 <button 
-                  onClick={() => openRegister()} 
+                  onClick={() => openRegister('patient')} 
                   className="flex-1 py-3 bg-[#148352] text-white rounded-lg font-medium text-sm hover:bg-[#148352]/90 transition"
                 >
                   Register →
@@ -241,13 +257,13 @@ export default function Home({ onLogin }: HomeProps) {
               </div>
               <div className="flex gap-2 mt-8">
                 <button 
-                  onClick={() => openLogin()} 
+                  onClick={() => openLogin('doctor')} 
                   className="flex-1 py-3 border border-white/30 text-white rounded-lg font-medium text-sm hover:bg-white/10 transition"
                 >
                   Doctor Login
                 </button>
                 <button 
-                  onClick={() => openRegister()} 
+                  onClick={() => openRegister('doctor')} 
                   className="flex-1 py-3 bg-white text-[#112219] rounded-lg font-medium text-sm hover:bg-white/90 transition"
                 >
                   Register →
@@ -268,7 +284,7 @@ export default function Home({ onLogin }: HomeProps) {
                 </p>
               </div>
               <button 
-                onClick={() => openLogin()} 
+                onClick={() => openLogin('admin')} 
                 className="w-full mt-8 py-3 bg-[#148352] text-white rounded-lg font-medium text-sm hover:bg-[#148352]/90 transition"
               >
                 Admin Login →
@@ -284,10 +300,10 @@ export default function Home({ onLogin }: HomeProps) {
           <h2 className="text-3xl font-serif font-bold mb-3">Ready to practice safely?</h2>
           <p className="text-base opacity-90 mb-6">Join HomeoAssist today and optimize your clinical workflows.</p>
           <div className="flex justify-center gap-3">
-            <button onClick={() => openRegister()} className="px-6 py-2.5 bg-[#112219] text-white rounded-md text-base font-medium hover:opacity-90 transition">
+            <button onClick={() => openRegister('doctor')} className="px-6 py-2.5 bg-[#112219] text-white rounded-md text-base font-medium hover:opacity-90 transition">
               Create free account
             </button>
-            <button onClick={() => openLogin()} className="px-6 py-2.5 border border-white text-white rounded-md text-base font-medium hover:bg-white/10 transition">
+            <button onClick={() => openLogin('doctor')} className="px-6 py-2.5 border border-white text-white rounded-md text-base font-medium hover:bg-white/10 transition">
               Sign in
             </button>
           </div>
@@ -307,8 +323,8 @@ export default function Home({ onLogin }: HomeProps) {
               <div>
                 <h4 className="text-white font-bold tracking-wider uppercase mb-3">Platform</h4>
                 <ul className="space-y-2">
-                  <li><button onClick={() => openRegister()} className="hover:text-white">Register</button></li>
-                  <li><button onClick={() => openLogin()} className="hover:text-white">Log In</button></li>
+                  <li><button onClick={() => openRegister('doctor')} className="hover:text-white">Register</button></li>
+                  <li><button onClick={() => openLogin('doctor')} className="hover:text-white">Log In</button></li>
                   <li><a href="#features" className="hover:text-white">Features</a></li>
                 </ul>
               </div>
@@ -330,17 +346,302 @@ export default function Home({ onLogin }: HomeProps) {
       </footer>
 
       {/* --- MODALS OVERLAY LAYER --- */}
-      {/* Homepage.tsx */}
-      {activeModal === 'login' && (
-        <LoginModal 
-          onClose={closeModal} 
-          onLoginSuccess={(role) => {
-            if (onLogin) onLogin(role); // Pass role up to App.tsx
-            closeModal();
-          }} 
-        />
+      {activeModal && (
+        <div 
+          className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4"
+          onClick={closeModal}
+        >
+          {/* LOGIN MODAL */}
+          {activeModal === 'login' && (
+            <div 
+              className="bg-[#FCFBF7] rounded-3xl max-w-md w-full p-8 relative shadow-2xl border border-stone-200"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <button 
+                onClick={closeModal} 
+                className="absolute top-6 right-6 text-slate-400 hover:text-slate-700 transition"
+              >
+                ✕
+              </button>
+
+              <h2 className="text-3xl font-serif font-bold text-[#112219] mb-1">Welcome Back</h2>
+              <p className="text-slate-500 text-sm mb-5">Select your role to access your portal.</p>
+
+              {/* 3-WAY ROLE SWITCHER TABS */}
+              <div className="flex bg-stone-200/60 p-1 rounded-xl mb-6">
+                <button
+                  type="button"
+                  onClick={() => setLoginRole('doctor')}
+                  className={`flex-1 py-2 text-[16px] font-semibold rounded-lg transition ${
+                    loginRole === 'doctor'
+                      ? 'bg-white text-[#235B43] shadow-sm'
+                      : 'text-slate-600 hover:text-slate-900'
+                  }`}
+                >
+                  🩺 Doctor
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setLoginRole('patient')}
+                  className={`flex-1 py-2 text-[16px] font-semibold rounded-lg transition ${
+                    loginRole === 'patient'
+                      ? 'bg-white text-[#235B43] shadow-sm'
+                      : 'text-slate-600 hover:text-slate-900'
+                  }`}
+                >
+                  👤 Patient
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setLoginRole('admin')}
+                  className={`flex-1 py-2 text-[16px] font-semibold rounded-lg transition ${
+                    loginRole === 'admin'
+                      ? 'bg-white text-[#235B43] shadow-sm'
+                      : 'text-slate-600 hover:text-slate-900'
+                  }`}
+                >
+                  🛡️ Admin
+                </button>
+              </div>
+
+              <form onSubmit={handleLoginSubmit} className="space-y-4">
+                {loginRole === 'doctor' && (
+                  <div>
+                    <label className="block text-sm font-semibold text-slate-800 mb-1.5">
+                      Doctor Reg. ID / Email
+                    </label>
+                    <input 
+                      type="text" 
+                      defaultValue="dr.anika@homeoassist.com" 
+                      required 
+                      className="w-full px-3.5 py-2.5 text-xs rounded-xl border border-slate-300 focus:outline-none focus:border-[#235B43] bg-white text-slate-800"
+                    />
+                  </div>
+                )}
+
+                {loginRole === 'patient' && (
+                  <div>
+                    <label className="block text-sm font-semibold text-slate-800 mb-1.5">
+                      Phone Number / Patient ID / Email
+                    </label>
+                    <input 
+                      type="text" 
+                      placeholder="+8801700000000 or patient@email.com"
+                      required 
+                      className="w-full px-3.5 py-2.5 text-xs rounded-xl border border-slate-300 focus:outline-none focus:border-[#235B43] bg-white text-slate-800"
+                    />
+                  </div>
+                )}
+
+                {loginRole === 'admin' && (
+                  <div>
+                    <label className="block text-sm font-semibold text-slate-800 mb-1.5">
+                      Admin Username / Security ID
+                    </label>
+                    <input 
+                      type="text" 
+                      defaultValue="admin_sys"
+                      required 
+                      className="w-full px-3.5 py-2.5 text-xs rounded-xl border border-slate-300 focus:outline-none focus:border-[#235B43] bg-white text-slate-800"
+                    />
+                  </div>
+                )}
+
+                <div>
+                  <label className="block text-sm font-semibold text-slate-800 mb-1.5">
+                    Password
+                  </label>
+                  <input 
+                    type="password" 
+                    defaultValue="••••••••" 
+                    required 
+                    className="w-full px-3.5 py-2.5 text-xs rounded-xl border border-slate-300 focus:outline-none focus:border-[#235B43] bg-white text-slate-800"
+                  />
+                </div>
+
+                <button 
+                  type="submit" 
+                  className="w-full py-3 bg-[#235B43] text-white text-sm font-medium rounded-xl hover:bg-[#112219] transition mt-2"
+                >
+                  Log In as {loginRole === 'doctor' ? 'Doctor' : loginRole === 'patient' ? 'Patient' : 'Admin'}
+                </button>
+              </form>
+            </div>
+          )}
+
+          {/* REGISTER MODAL */}
+          {activeModal === 'register' && (
+            <div 
+              className="bg-[#FCFBF7] rounded-3xl max-w-2xl w-full p-8 relative shadow-2xl border border-stone-200"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <button 
+                onClick={closeModal} 
+                className="absolute top-6 right-6 text-slate-400 hover:text-slate-700 transition"
+              >
+                ✕
+              </button>
+
+              <h2 className="text-3xl font-serif font-bold text-[#112219] mb-1">Create Account</h2>
+              <p className="text-slate-500 text-sm mb-5">Select your role to get started with HomeoAssist.</p>
+
+              {/* ROLE SWITCHER TABS */}
+              <div className="flex bg-stone-200/60 p-1 rounded-xl mb-6 max-w-md">
+                <button
+                  type="button"
+                  onClick={() => setRegisterRole('doctor')}
+                  className={`flex-1 py-2 text-sm font-semibold rounded-lg transition ${
+                    registerRole === 'doctor'
+                      ? 'bg-white text-[#235B43] shadow-sm'
+                      : 'text-slate-600 hover:text-slate-900'
+                  }`}
+                >
+                  🩺 Doctor Registration
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setRegisterRole('patient')}
+                  className={`flex-1 py-2 text-sm font-semibold rounded-lg transition ${
+                    registerRole === 'patient'
+                      ? 'bg-white text-[#235B43] shadow-sm'
+                      : 'text-slate-600 hover:text-slate-900'
+                  }`}
+                >
+                  👤 Patient Registration
+                </button>
+              </div>
+
+              <form onSubmit={handleRegisterSubmit} className="space-y-4">
+                {registerRole === 'doctor' ? (
+                  <>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div>
+                        <label className="block text-sm font-semibold text-slate-800 mb-1.5">
+                          Full Name
+                        </label>
+                        <input 
+                          type="text" 
+                          defaultValue="Dr. Anika Rahman" 
+                          required 
+                          className="w-full px-3.5 py-2.5 text-sm rounded-xl border border-slate-300 focus:outline-none focus:border-[#235B43] bg-white text-slate-800"
+                        />
+                      </div>
+
+                      <div>
+                        <label className="block text-sm font-semibold text-slate-800 mb-1.5">
+                          Medical Council Reg. ID
+                        </label>
+                        <input 
+                          type="text" 
+                          defaultValue="#HOM-4821" 
+                          required 
+                          className="w-full px-3.5 py-2.5 text-sm rounded-xl border border-slate-300 focus:outline-none focus:border-[#235B43] bg-white text-slate-800"
+                        />
+                      </div>
+
+                      <div>
+                        <label className="block text-sm font-semibold text-slate-800 mb-1.5">
+                          Email Address
+                        </label>
+                        <input 
+                          type="email" 
+                          defaultValue="priya.sharma@clinic.org" 
+                          required 
+                          className="w-full px-3.5 py-2.5 text-sm rounded-xl border border-slate-300 focus:outline-none focus:border-[#235B43] bg-white text-slate-800"
+                        />
+                      </div>
+
+                      <div>
+                        <label className="block text-sm font-semibold text-slate-800 mb-1.5">
+                          Contact Number
+                        </label>
+                        <input 
+                          type="text" 
+                          defaultValue="+880 17XXXXXXXX" 
+                          required 
+                          className="w-full px-3.5 py-2.5 text-sm rounded-xl border border-slate-300 focus:outline-none focus:border-[#235B43] bg-white text-slate-800"
+                        />
+                      </div>
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-semibold text-slate-800 mb-1.5">
+                        Clinic/Chamber Address
+                      </label>
+                      <input 
+                        type="text" 
+                        defaultValue="Dhaka, Bangladesh" 
+                        required 
+                        className="w-full px-3.5 py-2.5 text-sm rounded-xl border border-slate-300 focus:outline-none focus:border-[#235B43] bg-white text-slate-800"
+                      />
+                    </div>
+                  </>
+                ) : (
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-sm font-semibold text-slate-800 mb-1.5">
+                        Full Name
+                      </label>
+                      <input 
+                        type="text" 
+                        placeholder="John Doe" 
+                        required 
+                        className="w-full px-3.5 py-2.5 text-sm rounded-xl border border-slate-300 focus:outline-none focus:border-[#235B43] bg-white text-slate-800"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-semibold text-slate-800 mb-1.5">
+                        Contact Number
+                      </label>
+                      <input 
+                        type="text" 
+                        placeholder="+880 17XXXXXXXX" 
+                        required 
+                        className="w-full px-3.5 py-2.5 text-sm rounded-xl border border-slate-300 focus:outline-none focus:border-[#235B43] bg-white text-slate-800"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-semibold text-slate-800 mb-1.5">
+                        Age
+                      </label>
+                      <input 
+                        type="number" 
+                        placeholder="28" 
+                        required 
+                        className="w-full px-3.5 py-2.5 text-sm rounded-xl border border-slate-300 focus:outline-none focus:border-[#235B43] bg-white text-slate-800"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-semibold text-slate-800 mb-1.5">
+                        Gender
+                      </label>
+                      <select 
+                        required 
+                        className="w-full px-3.5 py-2.5 text-sm rounded-xl border border-slate-300 focus:outline-none focus:border-[#235B43] bg-white text-slate-800"
+                      >
+                        <option value="">Select Gender</option>
+                        <option value="male">Male</option>
+                        <option value="female">Female</option>
+                        <option value="other">Other</option>
+                      </select>
+                    </div>
+                  </div>
+                )}
+
+                <button 
+                  type="submit" 
+                  className="w-full py-3 bg-[#235B43] text-white text-sm font-medium rounded-xl hover:bg-[#112219] transition mt-2"
+                >
+                  {registerRole === 'doctor' ? 'Submit Registration For Admin Review' : 'Create Patient Account'}
+                </button>
+              </form>
+            </div>
+          )}
+        </div>
       )}
-      {activeModal === 'register' && <RegisterModal onClose={closeModal} />}
 
       {/* FLOATING BOT COMPONENT */}
       <HomeBot />
