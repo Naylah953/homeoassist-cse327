@@ -501,7 +501,7 @@ export default function Home() {
                     <input
                       ref={loginEmailRef}
                       type="email"
-                      defaultValue="anika@homeoassist.com"
+                      placeholder="doctor@homeoassist.com"
                       required
                       className="w-full px-3.5 py-2.5 text-xs rounded-xl border border-slate-300 focus:outline-none focus:border-[#235B43] bg-white text-slate-800"
                     />
@@ -516,7 +516,7 @@ export default function Home() {
                     <input
                       ref={loginEmailRef}
                       type="email"
-                      placeholder="patient@email.com"
+                      placeholder="patient@gmail.com"
                       required
                       className="w-full px-3.5 py-2.5 text-xs rounded-xl border border-slate-300 focus:outline-none focus:border-[#235B43] bg-white text-slate-800"
                     />
@@ -531,7 +531,7 @@ export default function Home() {
                     <input
                       ref={loginEmailRef}
                       type="email"
-                      defaultValue="admin@homeoassist.com"
+                      placeholder="admin@homeoassist.com"
                       required
                       className="w-full px-3.5 py-2.5 text-xs rounded-xl border border-slate-300 focus:outline-none focus:border-[#235B43] bg-white text-slate-800"
                     />

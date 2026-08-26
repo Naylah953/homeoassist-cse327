@@ -7,20 +7,27 @@ import { appointmentsApi, Appointment } from '../../api/appointments'
 
 interface AppointmentsProps {
   onProfileClick?: () => void
-  profile?: Record<string, unknown>
+  profile?: any
+  appointments?: any[]
+  onCancelAppointment?: (id: string) => void
 }
 
-export function AppointmentsView({ onProfileClick, profile }: AppointmentsProps) {
-  const [tab, setTab]               = useState<'upcoming' | 'past' | 'invoices'>('upcoming')
+export function AppointmentsView({ onProfileClick, profile, appointments: propAppointments = [], onCancelAppointment } : AppointmentsProps) {
+  const [tab, setTab] = useState<'upcoming' | 'past' | 'invoices'>('upcoming')
   const [appointments, setAppointments] = useState<Appointment[]>([])
-  const [loading, setLoading]       = useState(true)
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     appointmentsApi.list()
-      .then(res => setAppointments(res.data))
-      .catch(console.error)
+      .then(res => {
+        // Use API data if available, otherwise fallback to propAppointments
+        setAppointments(res.data?.length ? res.data : propAppointments)
+      })
+      .catch(() => {
+        setAppointments(propAppointments)
+      })
       .finally(() => setLoading(false))
-  }, [])
+  }, [propAppointments])
 
   const upcoming = appointments.filter(a => a.status === 'upcoming')
   const past      = appointments.filter(a => a.status === 'completed' || a.status === 'cancelled')

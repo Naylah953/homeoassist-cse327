@@ -1,4 +1,5 @@
 import { Ico, IC } from '../ui/Ico';
+import { useAuth } from '@/context/AuthContext';
 
 interface TopBarProps {
   title: string;
@@ -7,7 +8,7 @@ interface TopBarProps {
   defaultInitials?: string;
   onProfileClick?: () => void;
   onNotificationClick?: () => void;
-  avatarBg?: string; // Allows customizing the avatar color per role if needed
+  avatarBg?: string;
 }
 
 export const TopBar: React.FC<TopBarProps> = ({
@@ -19,7 +20,11 @@ export const TopBar: React.FC<TopBarProps> = ({
   onNotificationClick,
   avatarBg = 'var(--color-primary)',
 }) => {
-  // Compute user initials dynamically with fallback
+  const { user } = useAuth();
+  
+  // Resolve actual user name from profile prop or auth context
+  const activeName = user?.name || profile?.name;
+
   const getInitials = (name?: string) => {
     if (!name) return defaultInitials;
     return name
@@ -35,12 +40,12 @@ export const TopBar: React.FC<TopBarProps> = ({
   return (
     <div
       className="flex items-center justify-between px-8 py-4 sticky top-0 z-10"
-      style={{ background: 'rgba(245,242,237,0.88)', backdropFilter: 'blur(8px)', borderBottom: '1px solid #d6d0c8', }}>
+      style={{ background: 'rgba(245,242,237,0.88)', backdropFilter: 'blur(8px)', borderBottom: '1px solid #d6d0c8' }}>
       {/* Title & Subtitle */}
       <div>
         <h1
           className="text-[19px] font-semibold"
-          style={{ fontFamily: 'var(--font-display)', color: 'var(--color-foreground, #1b2d20)', }}> {title}
+          style={{ fontFamily: 'var(--font-display)', color: 'var(--color-foreground, #1b2d20)' }}> {title}
         </h1>
         {sub && ( <p className="text-[11px] mt-0.5" style={{ color: '#7a7468' }}> {sub} </p> )}
       </div>
@@ -62,7 +67,7 @@ export const TopBar: React.FC<TopBarProps> = ({
           disabled={!isClickable}
           title={isClickable ? 'View & Edit Profile' : undefined}
           className={`w-8 h-8 rounded-full flex items-center justify-center text-[11px] font-bold transition-transform ${ isClickable ? 'cursor-pointer hover:scale-105 active:scale-95' : 'cursor-default' }`}
-          style={{ background: avatarBg, color: '#ffffff', }} > {getInitials(profile?.name)}
+          style={{ background: avatarBg, color: '#ffffff' }} > {getInitials(activeName)}
         </button>
       </div>
     </div>

@@ -1,4 +1,5 @@
 import { Ico, IC } from "../ui/Ico"
+import { useAuth } from "@/context/AuthContext"
 
 export interface NavItem<T extends string = string> {
   id: T
@@ -18,7 +19,7 @@ interface SidebarProps<T extends string> {
   onProfileClick?: () => void
   profile?: {
     name?: string
-    subtext?: string // e.g. "admin@homeoassist.in" or "BHMS · #HOM-4821" or "PAT-9821"
+    subtext?: string
     initials?: string
   }
 }
@@ -32,14 +33,17 @@ export function Sidebar<T extends string>({
   onProfileClick,
   profile,
 }: SidebarProps<T>) {
+  const { user } = useAuth()
+
   const getInitials = (name?: string) => {
-    if (!name) return 'SA'
+    if (!name) return 'U'
     return name.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase()
   }
 
-  const initials = profile?.initials || getInitials(profile?.name)
-  const displayName = profile?.name || 'Super Admin'
-  const displaySubtext = profile?.subtext || 'admin@homeoassist.in'
+  // Use passed profile first, fallback to AuthContext user
+  const displayName = user?.name || profile?.name || 'User'
+  const displaySubtext = user?.email || profile?.subtext || (user?.id ? `Patient #${user.id}` : 'Member')
+  const initials = getInitials(displayName)
 
   return (
     <aside style={{ width: 240, background: '#131f16', flexShrink: 0 }} className="flex flex-col h-full">
@@ -68,7 +72,6 @@ export function Sidebar<T extends string>({
           const isActive = active === item.id
           const isEmergency = item.isEmergency
 
-          // Custom styling for active vs inactive vs emergency states
           let bgColor = 'transparent'
           let textColor = 'rgba(224,235,226,0.65)'
 
@@ -94,7 +97,6 @@ export function Sidebar<T extends string>({
               </span>
               {item.label}
 
-              {/* Dynamic Badge */}
               {item.badge !== undefined && item.badge !== 0 && (
                 <span
                   className="ml-auto text-[10px] font-bold px-1.5 py-0.5 rounded-full"
@@ -107,11 +109,11 @@ export function Sidebar<T extends string>({
                 </span>
               )}
 
-              {/* Emergency Inactive Dot Indicator */}
               {isEmergency && !isActive && !item.badge && (
                 <span
                   className="ml-auto w-2 h-2 rounded-full flex-shrink-0"
-                  style={{ background: '#ef4444', boxShadow: '0 0 6px rgba(239,68,68,0.6)' }} /> )}
+                  style={{ background: '#ef4444', boxShadow: '0 0 6px rgba(239,68,68,0.6)' }} />
+              )}
             </button>
           )
         })}
@@ -119,7 +121,6 @@ export function Sidebar<T extends string>({
 
       {/* Profile & Sign Out Footer */}
       <div className="p-3 flex flex-col gap-2" style={{ borderTop: '1px solid rgba(255,255,255,0.07)' }}>
-        {/* Profile Card */}
         <button
           onClick={onProfileClick}
           disabled={!onProfileClick}
@@ -141,7 +142,6 @@ export function Sidebar<T extends string>({
           </div>
         </button>
 
-        {/* Sign Out Button */}
         {onLogout && (
           <button
             onClick={onLogout}

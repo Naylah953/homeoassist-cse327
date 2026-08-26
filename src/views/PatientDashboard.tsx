@@ -17,7 +17,7 @@ import { PatientProfileView } from './patient/PatientProfileView'
 
 // ── Sidebar ───────────────────────────────────────────────────────────────────
 
-function PatientSidebar({ active, onChange, profile, onLogout, }: { active: PView, onChange: (v: PView) => void, profile: any, onLogout: () => void }) {
+function PatientSidebar({ active, onChange, profile, onLogout }: { active: PView, onChange: (v: PView) => void, profile: any, onLogout: () => void }) {
   const navItems: NavItem<PView>[] = [
     { id: 'dashboard',    label: 'Dashboard',       icon: IC.grid },
     { id: 'chat',         label: 'AI Symptom Chat', icon: IC.chat },
@@ -48,6 +48,20 @@ function PatientSidebar({ active, onChange, profile, onLogout, }: { active: PVie
 export default function Patient_Dashboard({ onLogout }: { onLogout?: () => void }) {
   const [view, setView] = useState<PView>('dashboard')
 
+  // Shared Appointments State
+  const [appointments, setAppointments] = useState<any[]>([
+    {
+      id: '1',
+      doctorName: 'Dr. Shahida Shereen',
+      specialty: 'Paediatrics',
+      date: '2 Sept 2026',
+      time: '15:00',
+      type: 'In-Person',
+      fee: '৳750.00',
+      status: 'unpaid'
+    }
+  ])
+
   const [patientProfile, setPatientProfile] = useState({
     name: 'Raisa Hossain',
     patientId: 'Patient #P-00124',
@@ -69,14 +83,66 @@ export default function Patient_Dashboard({ onLogout }: { onLogout?: () => void 
     }
   }
 
+  // Handler for adding new appointments from FindDoctorsView
+  const handleBookAppointment = (newAppt: any) => {
+    setAppointments(prev => [newAppt, ...prev])
+  }
+
+  // Handler for cancelling appointments from AppointmentsView
+  const handleCancelAppointment = (id: string) => {
+    setAppointments(prev => prev.filter(a => a.id !== id))
+  }
+
   const views: Record<PView, React.ReactNode> = {
-    dashboard: ( <PatientDashboardView goTo={setView} onProfileClick={openProfile} profile={patientProfile} /> ),
-    chat: ( <AIChatView goTo={setView} onProfileClick={openProfile} profile={patientProfile} /> ),
-    doctors: ( <FindDoctorsView onProfileClick={openProfile} profile={patientProfile} /> ),
-    appointments: ( <AppointmentsView onProfileClick={openProfile} profile={patientProfile} /> ),
-    records: ( <RecordsView onProfileClick={openProfile} profile={patientProfile} /> ),
-    emergency: ( <EmergencyView onProfileClick={openProfile} profile={patientProfile} /> ),
-    profile: ( <PatientProfileView profile={patientProfile} onSave={setPatientProfile} onProfileClick={openProfile} /> ),
+    dashboard: ( 
+      <PatientDashboardView 
+        goTo={setView} 
+        onProfileClick={openProfile} 
+        profile={patientProfile} 
+        appointments={appointments} 
+      /> 
+    ),
+    chat: ( 
+      <AIChatView 
+        goTo={setView} 
+        onProfileClick={openProfile} 
+        profile={patientProfile} 
+      /> 
+    ),
+    doctors: ( 
+      <FindDoctorsView 
+        onProfileClick={openProfile} 
+        profile={patientProfile}
+        onBookAppointment={handleBookAppointment} 
+      /> 
+    ),
+    appointments: ( 
+      <AppointmentsView 
+        onProfileClick={openProfile} 
+        profile={patientProfile} 
+        appointments={appointments}
+        onCancelAppointment={handleCancelAppointment} 
+      /> 
+    ),
+    records: ( 
+      <RecordsView 
+        onProfileClick={openProfile} 
+        profile={patientProfile} 
+      /> 
+    ),
+    emergency: ( 
+      <EmergencyView 
+        onProfileClick={openProfile} 
+        profile={patientProfile} 
+      /> 
+    ),
+    profile: ( 
+      <PatientProfileView 
+        profile={patientProfile} 
+        onSave={setPatientProfile} 
+        onProfileClick={openProfile} 
+      /> 
+    ),
   }
 
   return (

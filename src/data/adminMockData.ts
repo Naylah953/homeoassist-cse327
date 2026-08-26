@@ -1,28 +1,9 @@
-export const PENDING_DOCTORS = [
-  {
-    name: 'Dr. Sameer Kapoor', initials: 'SK', qual: 'BHMS, MD (Homeopathy)',
-    reg: 'UP-HOM-2847', specialty: 'Paediatric Homeopathy', exp: 6,
-    city: 'Delhi, India', submitted: '9 Jul 2025', docs: true,
-    note: 'Registered with Delhi Homeopathic Council. 6 years at Kapoor Wellness Clinic.',
-  },
-  {
-    name: 'Dr. Nisha Pillai', initials: 'NP', qual: 'BHMS',
-    reg: 'KA-HOM-1934', specialty: 'Dermatology & Skin', exp: 4,
-    city: 'Bangalore, India', submitted: '10 Jul 2025', docs: true,
-    note: 'Karnataka Medical Council registered. Specialises in chronic skin conditions.',
-  },
-  {
-    name: 'Dr. Tanvir Ahmed', initials: 'TA', qual: 'MD (Homeopathy)',
-    reg: 'MH-HOM-3621', specialty: 'General & Acute Homeopathy', exp: 8,
-    city: 'Mumbai, India', submitted: '11 Jul 2025', docs: false,
-    note: 'Documents partially uploaded. Certificate of practice pending.',
-  },
-]
+export const PENDING_DOCTORS = []
 
 export const VERIFIED_DOCTORS = [
   { name: 'Dr. Priya Sharma',  initials: 'PS', reg: 'HOM-4821', specialty: 'Allergies & Respiratory', exp: 12, patients: 247, joined: '15 Jan 2025', status: 'active'    },
   { name: 'Dr. Amit Joshi',    initials: 'AJ', reg: 'HOM-3614', specialty: 'Digestive & IBS',         exp: 9,  patients: 189, joined: '20 Feb 2025', status: 'active'    },
-  { name: 'Dr. Leela Nair',    initials: 'LN', reg: 'HOM-5027', specialty: 'Women\'s Health',          exp: 15, patients: 312, joined: '8 Mar 2025',  status: 'active'    },
+  { name: 'Dr. Leela Nair',    initials: 'LN', reg: 'HOM-5027', specialty: "Women's Health",          exp: 15, patients: 312, joined: '8 Mar 2025',  status: 'active'    },
   { name: 'Dr. Rohan Mehta',   initials: 'RM', reg: 'HOM-2891', specialty: 'Skin & Dermatology',       exp: 7,  patients: 124, joined: '1 Apr 2025',  status: 'active'    },
   { name: 'Dr. Shalini Verma', initials: 'SV', reg: 'HOM-6102', specialty: 'Paediatrics',              exp: 11, patients: 201, joined: '12 May 2025', status: 'active'    },
   { name: 'Dr. Karan Bose',    initials: 'KB', reg: 'HOM-1743', specialty: 'Arthritis & Joints',       exp: 18, patients: 298, joined: '3 Jun 2025',  status: 'suspended' },
@@ -49,17 +30,17 @@ export const COMPLAINTS = [
   },
   {
     id: 'TKT-20250711-042', from: 'Anjali Mehta',     role: 'patient', type: 'bug',
-    priority: 'medium', status: 'open',
+    priority: 'medium', status: 'resolved',
     subject: 'AI chat history lost on refresh',
     message: 'When I refreshed the browser during an AI symptom chat, all my previous messages disappeared. I had to start over from scratch.',
-    submitted: '11 Jul · 10:42 AM', adminNote: '',
+    submitted: '11 Jul · 10:42 AM', adminNote: 'Local storage sync updated.',
   },
   {
     id: 'TKT-20250710-038', from: 'Dr. Amit Joshi',    role: 'doctor',  type: 'feature',
-    priority: 'low',    status: 'open',
+    priority: 'low',    status: 'resolved',
     subject: 'Voice notes in patient records',
     message: 'Would love to be able to record short voice notes during consultation instead of typing lengthy observations. Could save significant time.',
-    submitted: '10 Jul · 04:30 PM', adminNote: '',
+    submitted: '10 Jul · 04:30 PM', adminNote: 'Added to product backlog.',
   },
   {
     id: 'TKT-20250709-034', from: 'Kavitha Reddy',    role: 'patient', type: 'bug',
@@ -77,17 +58,17 @@ export const COMPLAINTS = [
   },
   {
     id: 'TKT-20250707-028', from: 'Dr. Leela Nair',    role: 'doctor',  type: 'feedback',
-    priority: 'low',    status: 'open',
+    priority: 'low',    status: 'resolved',
     subject: 'AI summary — excellent feature!',
     message: 'The AI symptom summary is incredibly helpful before consultations. Would love to see a PDF export option for the summary to attach to physical records.',
-    submitted: '7 Jul · 03:55 PM', adminNote: '',
+    submitted: '7 Jul · 03:55 PM', adminNote: 'Feedback noted.',
   },
   {
     id: 'TKT-20250706-025', from: 'Meera Singh',       role: 'patient', type: 'feature',
-    priority: 'low',    status: 'open',
+    priority: 'low',    status: 'resolved',
     subject: 'Dark mode request',
     message: 'I often use the app late at night before sleep. A dark mode option would reduce eye strain significantly. Even a simple toggle would help.',
-    submitted: '6 Jul · 09:40 PM', adminNote: '',
+    submitted: '6 Jul · 09:40 PM', adminNote: 'Planned for future release.',
   },
   {
     id: 'TKT-20250705-022', from: 'Dr. Karan Bose',    role: 'doctor',  type: 'bug',

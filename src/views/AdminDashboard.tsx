@@ -22,22 +22,33 @@ export default function AdminDashboard({ onLogout }: { onLogout?: () => void }) 
     if (onLogout) {
       onLogout()
     } else {
-      // Fallback redirect if no custom handler is passed
       window.location.href = '/'
     }
   }
 
-  // Badge calculations for sidebar
+  // Safe Badge calculations (hides badge completely when 0)
   const openCount = COMPLAINTS.filter(c => c.status === 'open').length
   const pendingCount = PENDING_DOCTORS.length
 
-// ── Sidebar ───────────────────────────────────────────────────────────────────
+  // ── Sidebar ───────────────────────────────────────────────────────────────────
 
   const navItems: NavItem<AView>[] = [
     { id: 'dashboard',  label: 'Dashboard',             icon: IC.grid },
-    { id: 'doctors',    label: 'Doctor Management',     icon: IC.shield, badge: pendingCount, badgeColor: '#c0392b' },
+    { 
+      id: 'doctors',    
+      label: 'Doctor Management',     
+      icon: IC.shield, 
+      badge: pendingCount > 0 ? pendingCount : undefined, 
+      badgeColor: '#c0392b' 
+    },
     { id: 'patients',   label: 'Patient Management',    icon: IC.users },
-    { id: 'complaints', label: 'Complaints & Feedback', icon: IC.flag,   badge: openCount,    badgeColor: '#c9913d' },
+    { 
+      id: 'complaints', 
+      label: 'Complaints & Feedback', 
+      icon: IC.flag,   
+      badge: openCount > 0 ? openCount : undefined, 
+      badgeColor: '#c9913d' 
+    },
     { id: 'revenue',    label: 'Revenue & Plans',       icon: IC.coin },
     { id: 'settings',   label: 'System Settings',       icon: IC.settings },
   ]
@@ -51,7 +62,6 @@ export default function AdminDashboard({ onLogout }: { onLogout?: () => void }) 
         background: '#f5f2ed',
       }}
     >
-      {/* Shared generic Sidebar configured for Admin */}
       <Sidebar
         portalLabel="Admin Console"
         navItems={navItems}
@@ -65,7 +75,6 @@ export default function AdminDashboard({ onLogout }: { onLogout?: () => void }) 
         }}
       />
 
-      {/* Main Content Area */}
       <main
         style={{
           flex: 1,

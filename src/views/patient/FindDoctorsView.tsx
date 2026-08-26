@@ -8,7 +8,8 @@ import { appointmentsApi } from '../../api/appointments'
 
 interface PatientDoctorsViewProps {
   onProfileClick?: () => void
-  profile?: Record<string, unknown>
+  profile?: any
+  onBookAppointment?: (newAppt: any) => void
 }
 
 export function FindDoctorsView({ onProfileClick, profile }: PatientDoctorsViewProps) {
@@ -26,7 +27,7 @@ export function FindDoctorsView({ onProfileClick, profile }: PatientDoctorsViewP
   const specialties = ['All','Allergies & Respiratory','Digestive & IBS',"Women's Health",'Skin & Dermatology','Paediatrics','Joint & Arthritis']
 
   const SLOTS = ['09:00','10:00','11:00','14:00','15:00','16:00']
-  const DATES = ['Mon 17 Aug','Tue 18 Aug','Wed 19 Aug']
+  const DATES = ['Tue 1 Sep', 'Wed 2 Sep', 'Thu 3 Sep']
 
   useEffect(() => {
     const params: Record<string,string> = {}
