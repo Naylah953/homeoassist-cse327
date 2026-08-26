@@ -22,6 +22,9 @@ export const authApi = {
   login: (email: string, password: string, role: string) =>
     api.post<LoginResponse>('/auth/login', { email, password, role }),
 
+  googleLogin: (credential: string, role: 'doctor' | 'patient') =>
+    api.post<LoginResponse>('/auth/google', { credential, role }),
+
   registerPatient: (data: RegisterPatientInput) =>
     api.post<LoginResponse>('/auth/register/patient', data),
 

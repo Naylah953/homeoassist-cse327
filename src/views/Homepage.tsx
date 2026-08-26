@@ -3,6 +3,8 @@ import { HeartPulse, Stethoscope, ShieldCheck } from 'lucide-react';
 import { HomeBot } from '../Chatbots/HomeBot';
 import { useAuth } from '../context/AuthContext';
 import { AuthService } from '../services/AuthService';
+import { authApi } from '@/api/auth';
+import { GoogleLogin } from '@react-oauth/google';
 
 export default function Home() {
   const { login } = useAuth();
@@ -29,6 +31,40 @@ export default function Home() {
   const regGenderRef  = useRef<HTMLSelectElement>(null);
   const regRegNoRef   = useRef<HTMLInputElement>(null);
   const regAddressRef = useRef<HTMLInputElement>(null);
+
+  // Google Login Handler
+  const handleGoogleLogin = async (credential: string) => {
+    setError('');
+    setLoading(true);
+
+    try {
+      const res = await authApi.googleLogin(credential, loginRole === 'admin' ? 'patient' : loginRole);
+      login(res.token, res.role, res.user as never);
+      closeModal(); 
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : 'Google sign-in failed');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleGoogleRegistration = async (
+    credential: string,
+    role: 'patient' | 'doctor' ) => {
+
+    setError('');
+    setLoading(true);
+
+    try {
+      const res = await authApi.googleLogin( credential, role );
+      login( res.token, res.role, res.user as never );
+      closeModal();
+    } catch (err: unknown) {
+      setError( err instanceof Error ? err.message : 'Google registration failed' );
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const openLogin = (role: 'doctor' | 'patient' | 'admin' = 'doctor') => {
     setLoginRole(role); setError(''); setActiveModal('login');
@@ -523,6 +559,32 @@ export default function Home() {
                   {loading ? 'Signing in…' : `Log In as ${loginRole === 'doctor' ? 'Doctor' : loginRole === 'patient' ? 'Patient' : 'Admin'}`}
                 </button>
               </form>
+
+              {/* --- GOOGLE LOGIN (HIDDEN FOR ADMINS) --- */}
+              {loginRole !== 'admin' && (
+                <>
+                  <div className="flex items-center gap-3 my-4">
+                    <div className="h-px bg-slate-200 flex-1" />
+                    <span className="text-xs text-slate-400 font-medium">OR</span>
+                    <div className="h-px bg-slate-200 flex-1" />
+                  </div>
+
+                  <div className="flex justify-center">
+                    <GoogleLogin
+                      onSuccess={(credentialResponse) => {
+                        if (credentialResponse.credential) {
+                          handleGoogleLogin(credentialResponse.credential);
+                        }
+                      }}
+                      onError={() => {
+                        setError('Google sign-in failed');
+                      }}
+                      text="continue_with"
+                    />
+                  </div>
+                </>
+              )}
+
             </div>
           )}
 
@@ -651,6 +713,35 @@ export default function Home() {
                   {loading ? 'Creating account…' : `Register as ${registerRole === 'doctor' ? 'Doctor' : 'Patient'}`}
                 </button>
               </form>
+
+              {/* --- GOOGLE REGISTRATION --- */}
+              {registerRole === 'patient' && (
+                <>
+                  <div className="flex items-center gap-3 my-4">
+                    <div className="h-px bg-slate-200 flex-1" />
+                    <span className="text-xs text-slate-400 font-medium">OR</span>
+                    <div className="h-px bg-slate-200 flex-1" />
+                  </div>
+
+                  <div className="flex justify-center">
+                    <GoogleLogin
+                      onSuccess={(credentialResponse) => {
+                        if (credentialResponse.credential) {
+                          handleGoogleRegistration(
+                            credentialResponse.credential,
+                            'patient'
+                          );
+                        }
+                      }}
+                      onError={() => {
+                        setError('Google registration failed');
+                      }}
+                      text="signup_with"
+                    />
+                  </div>
+                </>
+              )}
+
             </div>
           )}
         </div>
