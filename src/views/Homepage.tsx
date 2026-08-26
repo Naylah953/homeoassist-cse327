@@ -1,11 +1,13 @@
 import { useState, useRef } from 'react';
 import { HeartPulse, Stethoscope, ShieldCheck } from 'lucide-react';
 import { HomeBot } from '../Chatbots/HomeBot';
-import { authApi } from '../api/auth';
 import { useAuth } from '../context/AuthContext';
+import { AuthService } from '../services/AuthService';
 
 export default function Home() {
   const { login } = useAuth();
+
+  const authService = AuthService.getInstance();
 
   // Modal state management: 'login' | 'register' | null
   const [activeModal, setActiveModal] = useState<'login' | 'register' | null>(null);
@@ -42,7 +44,7 @@ export default function Home() {
     try {
       const email    = loginEmailRef.current?.value ?? '';
       const password = loginPasswordRef.current?.value ?? '';
-      const res = await authApi.login(email, password, loginRole);
+      const res = await authService.login(email, password, loginRole);
       login(res.token, res.role, res.user as never);
       closeModal();
     } catch (err: unknown) {
@@ -57,7 +59,7 @@ export default function Home() {
     setError(''); setLoading(true);
     try {
       if (registerRole === 'patient') {
-        const res = await authApi.registerPatient({
+        const res = await authService.registerPatient({
           name:     regNameRef.current?.value ?? '',
           email:    regEmailRef.current?.value ?? '',
           password: regPasswordRef.current?.value ?? '',
@@ -67,7 +69,7 @@ export default function Home() {
         });
         login(res.token, res.role, res.user as never);
       } else {
-        const res = await authApi.registerDoctor({
+        const res = await authService.registerDoctor({
           name:           regNameRef.current?.value ?? '',
           email:          regEmailRef.current?.value ?? '',
           password:       regPasswordRef.current?.value ?? '',
