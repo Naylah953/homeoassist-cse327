@@ -1,26 +1,89 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { HeartPulse, Stethoscope, ShieldCheck } from 'lucide-react';
 import { HomeBot } from '../Chatbots/HomeBot';
-import LoginModal from '../components/ui/LoginModal';
-import RegisterModal from '../components/ui/RegisterModal';
+import { authApi } from '../api/auth';
+import { useAuth } from '../context/AuthContext';
 
-interface HomeProps {
-  onLogin?: (role: 'doctor' | 'patient' | 'admin') => void;
-}
+export default function Home() {
+  const { login } = useAuth();
 
-export default function Home({ onLogin }: HomeProps) {
   // Modal state management: 'login' | 'register' | null
   const [activeModal, setActiveModal] = useState<'login' | 'register' | null>(null);
+  const [loginRole, setLoginRole]     = useState<'doctor' | 'patient' | 'admin'>('doctor');
+  const [registerRole, setRegisterRole] = useState<'doctor' | 'patient'>('doctor');
+  const [error, setError]   = useState('');
+  const [loading, setLoading] = useState(false);
 
-  const openLogin = () => {
-    setActiveModal('login');
+  // Login form refs
+  const loginEmailRef    = useRef<HTMLInputElement>(null);
+  const loginPasswordRef = useRef<HTMLInputElement>(null);
+
+  // Register form refs
+  const regNameRef    = useRef<HTMLInputElement>(null);
+  const regEmailRef   = useRef<HTMLInputElement>(null);
+  const regPasswordRef= useRef<HTMLInputElement>(null);
+  const regPhoneRef   = useRef<HTMLInputElement>(null);
+  const regAgeRef     = useRef<HTMLInputElement>(null);
+  const regGenderRef  = useRef<HTMLSelectElement>(null);
+  const regRegNoRef   = useRef<HTMLInputElement>(null);
+  const regAddressRef = useRef<HTMLInputElement>(null);
+
+  const openLogin = (role: 'doctor' | 'patient' | 'admin' = 'doctor') => {
+    setLoginRole(role); setError(''); setActiveModal('login');
+  };
+  const openRegister = (role: 'doctor' | 'patient' = 'doctor') => {
+    setRegisterRole(role); setError(''); setActiveModal('register');
+  };
+  const closeModal = () => { setActiveModal(null); setError(''); };
+
+  const handleLoginSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError(''); setLoading(true);
+    try {
+      const email    = loginEmailRef.current?.value ?? '';
+      const password = loginPasswordRef.current?.value ?? '';
+      const res = await authApi.login(email, password, loginRole);
+      login(res.token, res.role, res.user as never);
+      closeModal();
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : 'Login failed');
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const openRegister = () => {
-    setActiveModal('register');
+  const handleRegisterSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError(''); setLoading(true);
+    try {
+      if (registerRole === 'patient') {
+        const res = await authApi.registerPatient({
+          name:     regNameRef.current?.value ?? '',
+          email:    regEmailRef.current?.value ?? '',
+          password: regPasswordRef.current?.value ?? '',
+          phone:    regPhoneRef.current?.value,
+          age:      regAgeRef.current?.value ? parseInt(regAgeRef.current.value) : undefined,
+          gender:   regGenderRef.current?.value,
+        });
+        login(res.token, res.role, res.user as never);
+      } else {
+        const res = await authApi.registerDoctor({
+          name:           regNameRef.current?.value ?? '',
+          email:          regEmailRef.current?.value ?? '',
+          password:       regPasswordRef.current?.value ?? '',
+          reg_no:         regRegNoRef.current?.value ?? '',
+          phone:          regPhoneRef.current?.value,
+          address:        regAddressRef.current?.value,
+        });
+        login(res.token, res.role, res.user as never);
+      }
+      closeModal();
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : 'Registration failed');
+    } finally {
+      setLoading(false);
+    }
   };
-
-  const closeModal = () => setActiveModal(null);
 
   return (
     <div className="min-h-screen bg-white text-slate-800 font-sans relative">
@@ -34,21 +97,21 @@ export default function Home({ onLogin }: HomeProps) {
             HomeoAssist
           </a>
           <div className="flex items-center gap-3">
-            <a href="#features" className="hidden md:block text-slate-800 hover:text-[#235B43] font-medium text-base mr-2">
+            <a href="#features" className="hidden md:block text-slate-800 hover:text-[#235B43] font-medium text-sm mr-2">
               Features
             </a>
-            <a href="#how-it-works" className="hidden md:block text-slate-800 hover:text-[#235B43] font-medium text-base mr-4">
+            <a href="#how-it-works" className="hidden md:block text-slate-800 hover:text-[#235B43] font-medium text-sm mr-4">
               How it works
             </a>
             <button
-              onClick={() => openLogin()}
-              className="px-5 py-1.5 border border-[#112219] text-[#112219] rounded-md font-medium text-base hover:bg-[#112219]/5 transition"
+              onClick={() => openLogin('doctor')}
+              className="px-5 py-1.5 border border-[#112219] text-[#112219] rounded-md font-medium text-sm hover:bg-[#112219]/5 transition"
             >
               Log in
             </button>
             <button
-              onClick={() => openRegister()}
-              className="px-5 py-1.5 bg-[#235B43] text-white rounded-md font-medium text-base hover:bg-[#112219] transition"
+              onClick={() => openRegister('doctor')}
+              className="px-5 py-1.5 bg-[#235B43] text-white rounded-md font-medium text-sm hover:bg-[#112219] transition"
             >
               Get started
             </button>
@@ -76,14 +139,14 @@ export default function Home({ onLogin }: HomeProps) {
           </p>
           <div className="flex flex-col sm:flex-row justify-center gap-3">
             <button
-              onClick={() => openRegister()}
-              className="px-8 py-3 bg-[#235B43] text-white rounded-lg font-medium text-base hover:bg-[#112219] transition"
+              onClick={() => openRegister('patient')}
+              className="px-8 py-3 bg-[#235B43] text-white rounded-lg font-medium text-sm hover:bg-[#112219] transition"
             >
               Get started — it's free
             </button>
             <button
-              onClick={() => openLogin()}
-              className="px-8 py-3 bg-transparent text-white rounded-lg font-medium text-base border border-white/60 hover:border-white hover:bg-white/10 transition"
+              onClick={() => openLogin('doctor')}
+              className="px-8 py-3 bg-transparent text-white rounded-lg font-medium text-sm border border-white/60 hover:border-white hover:bg-white/10 transition"
             >
               Sign in to your account
             </button>
@@ -91,28 +154,28 @@ export default function Home({ onLogin }: HomeProps) {
         </div>
       </header>
 
-      {/* STATS BAR */} 
-      <div className="border-b border-slate-900/10 py-8" style={{ backgroundColor: '#dbeae1' }} text-center>
+      {/* STATS BAR */}
+      <div className="border-b border-slate-900/10 py-8 bg-[#F9FBF9] text-center">
         <div className="max-w-6xl mx-auto px-4 grid grid-cols-2 md:grid-cols-5 gap-6">
           <div>
-            <div className="text-[35px] font-bold text-[#235B43]">3</div>
-            <div className="text-base font-medium text-slate-500 mt-1">User Roles</div>
+            <div className="text-3xl font-bold text-[#235B43]">3</div>
+            <div className="text-xs font-medium text-slate-500 mt-1">User Roles</div>
           </div>
           <div>
-            <div className="text-[35px] font-bold text-[#235B43]">AI</div>
-            <div className="text-base font-medium text-slate-500 mt-1">Chatbot Assistant</div>
+            <div className="text-3xl font-bold text-[#235B43]">AI</div>
+            <div className="text-xs font-medium text-slate-500 mt-1">Chatbot Assistant</div>
           </div>
           <div>
-            <div className="text-[35px] font-bold text-[#235B43]">SOS</div>
-            <div className="text-base font-medium text-slate-500 mt-1">Emergency Alerts</div>
+            <div className="text-3xl font-bold text-[#235B43]">SOS</div>
+            <div className="text-xs font-medium text-slate-500 mt-1">Emergency Alerts</div>
           </div>
           <div>
-            <div className="text-[35px] font-bold text-[#235B43]">QR</div>
-            <div className="text-base font-medium text-slate-500 mt-1">Verified Records</div>
+            <div className="text-3xl font-bold text-[#235B43]">QR</div>
+            <div className="text-xs font-medium text-slate-500 mt-1">Verified Records</div>
           </div>
           <div className="col-span-2 md:col-span-1">
-            <div className="text-[35px] font-bold text-[#235B43]">100%</div>
-            <div className="text-base font-medium text-slate-500 mt-1">Doctor Control</div>
+            <div className="text-3xl font-bold text-[#235B43]">100%</div>
+            <div className="text-xs font-medium text-slate-500 mt-1">Doctor Control</div>
           </div>
         </div>
       </div>
@@ -120,39 +183,39 @@ export default function Home({ onLogin }: HomeProps) {
       {/* FEATURES SECTION */}
       <section id="features" className="py-20 px-4">
         <div className=" max-w-6xl mx-auto">
-          <span className="text-[#235B43] font-bold text-sm uppercase tracking-wider block mb-1">Platform Features</span>
+          <span className="text-[#235B43] font-bold text-xs uppercase tracking-wider block mb-1">Platform Features</span>
           <h2 className="text-4xl font-bold text-[#112219] font-serif mb-3">Everything you need for safe practice</h2>
-          <p className="text-slate-500 text-base max-w-lg mb-12">
+          <p className="text-slate-500 text-sm max-w-lg mb-12">
             From intelligent intake to instant emergency routing, every process supports absolute medical safety.
           </p>
 
           <div className="grid md:grid-cols-3 gap-6">
-            <div className="bg-[#dff9e9] p-8 rounded-2xl border border-slate-900/5">
-              <div className="w-12 h-12 bg-[#EAF7F0] border border-[#235B43]/25 rounded-xl flex items-center justify-center text-[#235B43] text-xl mb-5">
+            <div className="bg-[#F9FBF9] p-8 rounded-2xl border border-slate-900/5">
+              <div className="w-12 h-12 bg-[#EAF7F0] rounded-xl flex items-center justify-center text-[#235B43] text-xl mb-5">
                 <i className="bi bi-chat-dots-fill"></i>
               </div>
-              <h3 className="text-xl font-bold text-slate-900 mb-2">AI Symptom Chat</h3>
-              <p className="text-slate-500 text-sm leading-relaxed">
+              <h3 className="text-lg font-bold text-slate-900 mb-2">AI Symptom Chat</h3>
+              <p className="text-slate-500 text-xs leading-relaxed">
                 Collects case records via patient conversational language summaries prior to formal clinic entry.
               </p>
-            </div>  
+            </div>
 
-            <div className="bg-[#dff9e9] p-8 rounded-2xl border border-slate-900/5">
-              <div className="w-12 h-12 bg-[#EAF7F0] border border-[#235B43]/25 rounded-xl flex items-center justify-center text-[#235B43] text-xl mb-5">
+            <div className="bg-[#F9FBF9] p-8 rounded-2xl border border-slate-900/5">
+              <div className="w-12 h-12 bg-[#EAF7F0] rounded-xl flex items-center justify-center text-[#235B43] text-xl mb-5">
                 <i className="bi bi-search"></i>
               </div>
-              <h3 className="text-xl font-bold text-slate-900 mb-2">Intelligent CDSS</h3>
-              <p className="text-slate-500 text-sm leading-relaxed">
+              <h3 className="text-lg font-bold text-slate-900 mb-2">Intelligent CDSS</h3>
+              <p className="text-slate-500 text-xs leading-relaxed">
                 Calculates remedy probability matching scores built upon historical repertory diagnostics safely.
               </p>
             </div>
 
-            <div className="bg-[#dff9e9] p-8 rounded-2xl border border-slate-900/5">
-              <div className="w-12 h-12 bg-[#EAF7F0] border border-[#235B43]/25 rounded-xl flex items-center justify-center text-[#235B43] text-xl mb-5">
+            <div className="bg-[#F9FBF9] p-8 rounded-2xl border border-slate-900/5">
+              <div className="w-12 h-12 bg-[#EAF7F0] rounded-xl flex items-center justify-center text-[#235B43] text-xl mb-5">
                 <i className="bi bi-telephone-plus-fill"></i>
               </div>
-              <h3 className="text-xl font-bold text-slate-900 mb-2">Emergency Routing</h3>
-              <p className="text-slate-500 text-sm leading-relaxed">
+              <h3 className="text-lg font-bold text-slate-900 mb-2">Emergency Routing</h3>
+              <p className="text-slate-500 text-xs leading-relaxed">
                 Automated triage protocols dispatch critical patient calls to fallback doctors instantly.
               </p>
             </div>
@@ -161,31 +224,31 @@ export default function Home({ onLogin }: HomeProps) {
       </section>
 
       {/* HOW IT WORKS SECTION */}
-      <section id="how-it-works" className="py-20 px-4 bg-[#F8F7F3] border border-[#112219]/20">
+      <section id="how-it-works" className="py-20 px-4 bg-[#F8F7F3]">
         <div className="max-w-6xl mx-auto">
           <span className="text-[#235B43] font-bold text-xs uppercase tracking-wider block mb-1">How It Works</span>
           <h2 className="text-4xl font-bold text-[#112219] font-serif mb-12">Care mapping in 4 simple steps</h2>
 
           <div className="grid md:grid-cols-4 gap-6">
             <div>
-              <div className="w-9 h-9 bg-[#235B43] text-white rounded-full flex items-center justify-center font-bold text-base mb-4">1</div>
-              <h3 className="font-bold text-slate-900 mb-2 text-lg">Create an account</h3>
-              <p className="text-slate-500 text-sm leading-relaxed">Register as a practitioner or patient. Providers securely submit credential parameters.</p>
+              <div className="w-9 h-9 bg-[#235B43] text-white rounded-full flex items-center justify-center font-bold text-sm mb-4">1</div>
+              <h3 className="font-bold text-slate-900 mb-2 text-sm">Create an account</h3>
+              <p className="text-slate-500 text-xs leading-relaxed">Register as a practitioner or patient. Providers securely submit credential parameters.</p>
             </div>
             <div>
-              <div className="w-9 h-9 bg-[#235B43] text-white rounded-full flex items-center justify-center font-bold text-base mb-4">2</div>
-              <h3 className="font-bold text-slate-900 mb-2 text-lg">Log Symptoms</h3>
-              <p className="text-slate-500 text-sm leading-relaxed">The automated patient assistant converts structural logs into clinic-ready charts.</p>
+              <div className="w-9 h-9 bg-[#235B43] text-white rounded-full flex items-center justify-center font-bold text-sm mb-4">2</div>
+              <h3 className="font-bold text-slate-900 mb-2 text-sm">Log Symptoms</h3>
+              <p className="text-slate-500 text-xs leading-relaxed">The automated patient assistant converts structural logs into clinic-ready charts.</p>
             </div>
             <div>
-              <div className="w-9 h-9 bg-[#235B43] text-white rounded-full flex items-center justify-center font-bold text-base mb-4">3</div>
-              <h3 className="font-bold text-slate-900 mb-2 text-lg">Run CDSS Alignment</h3>
-              <p className="text-slate-500 text-sm leading-relaxed">Evaluate ranked probability metrics safely backed inside the doctor screen layout.</p>
+              <div className="w-9 h-9 bg-[#235B43] text-white rounded-full flex items-center justify-center font-bold text-sm mb-4">3</div>
+              <h3 className="font-bold text-slate-900 mb-2 text-sm">Run CDSS Alignment</h3>
+              <p className="text-slate-500 text-xs leading-relaxed">Evaluate ranked probability metrics safely backed inside the doctor screen layout.</p>
             </div>
             <div>
-              <div className="w-9 h-9 bg-[#235B43] text-white rounded-full flex items-center justify-center font-bold text-base mb-4">4</div>
-              <h3 className="font-bold text-slate-900 mb-2 text-lg ">Secure Dispensation</h3>
-              <p className="text-slate-500 text-sm leading-relaxed">Generate legal prescriptions embedded with trackable quick-response codes.</p>
+              <div className="w-9 h-9 bg-[#235B43] text-white rounded-full flex items-center justify-center font-bold text-sm mb-4">4</div>
+              <h3 className="font-bold text-slate-900 mb-2 text-sm">Secure Dispensation</h3>
+              <p className="text-slate-500 text-xs leading-relaxed">Generate legal prescriptions embedded with trackable quick-response codes.</p>
             </div>
           </div>
         </div>
@@ -195,7 +258,7 @@ export default function Home({ onLogin }: HomeProps) {
 
       <section className="py-20 px-4">
         <div className="max-w-6xl mx-auto">
-          <span className="text-[#235B43] font-bold text-[16px] uppercase tracking-[1.2px] block mb-2">WHO IS IT FOR?</span>
+          <span className="text-[#235B43] font-bold text-[11px] uppercase tracking-[1.2px] block mb-2">WHO IS IT FOR?</span>
           <h2 className="text-4xl font-bold text-[#112219] font-serif mb-12">Three roles, one platform</h2>
 
           <div className="grid md:grid-cols-3 gap-6">
@@ -207,20 +270,20 @@ export default function Home({ onLogin }: HomeProps) {
                   <HeartPulse className="w-6 h-6 text-emerald-400" />
                 </div>
                 <h3 className="text-xl font-bold mb-3">Patient Portal</h3>
-                <p className="text-white/75 text-sm leading-relaxed">
+                <p className="text-white/75 text-xs leading-relaxed">
                   Log symptoms easily, process platform payments seamlessly, and store treatment reports directly.
                 </p>
               </div>
               <div className="flex gap-2 mt-8">
                 <button 
-                  onClick={() => openLogin()} 
-                  className="flex-1 py-3 border border-white/30 text-white rounded-lg font-medium text-sm hover:bg-white/10 transition"
+                  onClick={() => openLogin('patient')} 
+                  className="flex-1 py-3 border border-white/30 text-white rounded-lg font-medium text-xs hover:bg-white/10 transition"
                 >
                   Patient Login
                 </button>
                 <button 
-                  onClick={() => openRegister()} 
-                  className="flex-1 py-3 bg-[#148352] text-white rounded-lg font-medium text-sm hover:bg-[#148352]/90 transition"
+                  onClick={() => openRegister('patient')} 
+                  className="flex-1 py-3 bg-[#148352] text-white rounded-lg font-medium text-xs hover:bg-[#148352]/90 transition"
                 >
                   Register →
                 </button>
@@ -235,20 +298,20 @@ export default function Home({ onLogin }: HomeProps) {
                   <Stethoscope className="w-6 h-6 text-emerald-200" />
                 </div>
                 <h3 className="text-xl font-bold mb-3">Certified Doctor</h3>
-                <p className="text-white/75 text-sm leading-relaxed">
+                <p className="text-white/75 text-xs leading-relaxed">
                   Evaluate automated remedy match recommendations while holding master prescription controls.
                 </p>
               </div>
               <div className="flex gap-2 mt-8">
                 <button 
-                  onClick={() => openLogin()} 
-                  className="flex-1 py-3 border border-white/30 text-white rounded-lg font-medium text-sm hover:bg-white/10 transition"
+                  onClick={() => openLogin('doctor')} 
+                  className="flex-1 py-3 border border-white/30 text-white rounded-lg font-medium text-xs hover:bg-white/10 transition"
                 >
                   Doctor Login
                 </button>
                 <button 
-                  onClick={() => openRegister()} 
-                  className="flex-1 py-3 bg-white text-[#112219] rounded-lg font-medium text-sm hover:bg-white/90 transition"
+                  onClick={() => openRegister('doctor')} 
+                  className="flex-1 py-3 bg-white text-[#112219] rounded-lg font-medium text-xs hover:bg-white/90 transition"
                 >
                   Register →
                 </button>
@@ -263,13 +326,13 @@ export default function Home({ onLogin }: HomeProps) {
                   <ShieldCheck className="w-6 h-6 text-[#235B43]" />
                 </div>
                 <h3 className="text-xl font-bold mb-3 text-slate-900">System Admin</h3>
-                <p className="text-slate-500 text-sm leading-relaxed">
+                <p className="text-slate-500 text-xs leading-relaxed">
                   Monitor live platform analytical charts, approve practitioners, and manage medical indices.
                 </p>
               </div>
               <button 
-                onClick={() => openLogin()} 
-                className="w-full mt-8 py-3 bg-[#148352] text-white rounded-lg font-medium text-sm hover:bg-[#148352]/90 transition"
+                onClick={() => openLogin('admin')} 
+                className="w-full mt-8 py-3 bg-[#148352] text-white rounded-lg font-medium text-xs hover:bg-[#148352]/90 transition"
               >
                 Admin Login →
               </button>
@@ -282,12 +345,12 @@ export default function Home({ onLogin }: HomeProps) {
       <div className="bg-[#235B43] text-white py-16 px-4 text-center">
         <div className="max-w-xl mx-auto">
           <h2 className="text-3xl font-serif font-bold mb-3">Ready to practice safely?</h2>
-          <p className="text-base opacity-90 mb-6">Join HomeoAssist today and optimize your clinical workflows.</p>
+          <p className="text-sm opacity-90 mb-6">Join HomeoAssist today and optimize your clinical workflows.</p>
           <div className="flex justify-center gap-3">
-            <button onClick={() => openRegister()} className="px-6 py-2.5 bg-[#112219] text-white rounded-md text-base font-medium hover:opacity-90 transition">
+            <button onClick={() => openRegister('doctor')} className="px-6 py-2.5 bg-[#112219] text-white rounded-md text-sm font-medium hover:opacity-90 transition">
               Create free account
             </button>
-            <button onClick={() => openLogin()} className="px-6 py-2.5 border border-white text-white rounded-md text-base font-medium hover:bg-white/10 transition">
+            <button onClick={() => openLogin('doctor')} className="px-6 py-2.5 border border-white text-white rounded-md text-sm font-medium hover:bg-white/10 transition">
               Sign in
             </button>
           </div>
@@ -295,7 +358,7 @@ export default function Home({ onLogin }: HomeProps) {
       </div>
 
       {/* FOOTER */}
-      <footer className="bg-[#112219] text-slate-400 text-[15.5px] py-14 px-4">
+      <footer className="bg-[#112219] text-slate-400 text-xs py-14 px-4">
         <div className="max-w-6xl mx-auto">
           <div className="grid md:grid-cols-2 gap-8 mb-8">
             <div>
@@ -307,8 +370,8 @@ export default function Home({ onLogin }: HomeProps) {
               <div>
                 <h4 className="text-white font-bold tracking-wider uppercase mb-3">Platform</h4>
                 <ul className="space-y-2">
-                  <li><button onClick={() => openRegister()} className="hover:text-white">Register</button></li>
-                  <li><button onClick={() => openLogin()} className="hover:text-white">Log In</button></li>
+                  <li><button onClick={() => openRegister('doctor')} className="hover:text-white">Register</button></li>
+                  <li><button onClick={() => openLogin('doctor')} className="hover:text-white">Log In</button></li>
                   <li><a href="#features" className="hover:text-white">Features</a></li>
                 </ul>
               </div>
@@ -330,17 +393,266 @@ export default function Home({ onLogin }: HomeProps) {
       </footer>
 
       {/* --- MODALS OVERLAY LAYER --- */}
-      {/* Homepage.tsx */}
-      {activeModal === 'login' && (
-        <LoginModal 
-          onClose={closeModal} 
-          onLoginSuccess={(role) => {
-            if (onLogin) onLogin(role); // Pass role up to App.tsx
-            closeModal();
-          }} 
-        />
+      {activeModal && (
+        <div 
+          className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4"
+          onClick={closeModal}
+        >
+          {/* LOGIN MODAL */}
+          {activeModal === 'login' && (
+            <div 
+              className="bg-[#FCFBF7] rounded-3xl max-w-md w-full p-8 relative shadow-2xl border border-stone-200"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <button 
+                onClick={closeModal} 
+                className="absolute top-6 right-6 text-slate-400 hover:text-slate-700 transition"
+              >
+                ✕
+              </button>
+
+              <h2 className="text-3xl font-serif font-bold text-[#112219] mb-1">Welcome Back</h2>
+              <p className="text-slate-500 text-xs mb-5">Select your role to access your portal.</p>
+
+              {/* 3-WAY ROLE SWITCHER TABS */}
+              <div className="flex bg-stone-200/60 p-1 rounded-xl mb-6">
+                <button
+                  type="button"
+                  onClick={() => setLoginRole('doctor')}
+                  className={`flex-1 py-2 text-[11px] font-semibold rounded-lg transition ${
+                    loginRole === 'doctor'
+                      ? 'bg-white text-[#235B43] shadow-sm'
+                      : 'text-slate-600 hover:text-slate-900'
+                  }`}
+                >
+                  🩺 Doctor
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setLoginRole('patient')}
+                  className={`flex-1 py-2 text-[11px] font-semibold rounded-lg transition ${
+                    loginRole === 'patient'
+                      ? 'bg-white text-[#235B43] shadow-sm'
+                      : 'text-slate-600 hover:text-slate-900'
+                  }`}
+                >
+                  👤 Patient
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setLoginRole('admin')}
+                  className={`flex-1 py-2 text-[11px] font-semibold rounded-lg transition ${
+                    loginRole === 'admin'
+                      ? 'bg-white text-[#235B43] shadow-sm'
+                      : 'text-slate-600 hover:text-slate-900'
+                  }`}
+                >
+                  🛡️ Admin
+                </button>
+              </div>
+
+              <form onSubmit={handleLoginSubmit} className="space-y-4">
+                {error && (
+                  <div className="px-3 py-2 rounded-lg bg-red-50 border border-red-200 text-xs text-red-700">{error}</div>
+                )}
+                {loginRole === 'doctor' && (
+                  <div>
+                    <label className="block text-xs font-semibold text-slate-800 mb-1.5">
+                      Email Address
+                    </label>
+                    <input
+                      ref={loginEmailRef}
+                      type="email"
+                      defaultValue="anika@homeoassist.com"
+                      required
+                      className="w-full px-3.5 py-2.5 text-xs rounded-xl border border-slate-300 focus:outline-none focus:border-[#235B43] bg-white text-slate-800"
+                    />
+                  </div>
+                )}
+
+                {loginRole === 'patient' && (
+                  <div>
+                    <label className="block text-xs font-semibold text-slate-800 mb-1.5">
+                      Email Address
+                    </label>
+                    <input
+                      ref={loginEmailRef}
+                      type="email"
+                      placeholder="patient@email.com"
+                      required
+                      className="w-full px-3.5 py-2.5 text-xs rounded-xl border border-slate-300 focus:outline-none focus:border-[#235B43] bg-white text-slate-800"
+                    />
+                  </div>
+                )}
+
+                {loginRole === 'admin' && (
+                  <div>
+                    <label className="block text-xs font-semibold text-slate-800 mb-1.5">
+                      Admin Email
+                    </label>
+                    <input
+                      ref={loginEmailRef}
+                      type="email"
+                      defaultValue="admin@homeoassist.com"
+                      required
+                      className="w-full px-3.5 py-2.5 text-xs rounded-xl border border-slate-300 focus:outline-none focus:border-[#235B43] bg-white text-slate-800"
+                    />
+                  </div>
+                )}
+
+                <div>
+                  <label className="block text-xs font-semibold text-slate-800 mb-1.5">
+                    Password
+                  </label>
+                  <input
+                    ref={loginPasswordRef}
+                    type="password"
+                    placeholder="Enter your password"
+                    required
+                    className="w-full px-3.5 py-2.5 text-xs rounded-xl border border-slate-300 focus:outline-none focus:border-[#235B43] bg-white text-slate-800"
+                  />
+                </div>
+
+                <button
+                  type="submit"
+                  disabled={loading}
+                  className="w-full py-3 bg-[#235B43] text-white text-xs font-medium rounded-xl hover:bg-[#112219] transition mt-2 disabled:opacity-60"
+                >
+                  {loading ? 'Signing in…' : `Log In as ${loginRole === 'doctor' ? 'Doctor' : loginRole === 'patient' ? 'Patient' : 'Admin'}`}
+                </button>
+              </form>
+            </div>
+          )}
+
+          {/* REGISTER MODAL */}
+          {activeModal === 'register' && (
+            <div 
+              className="bg-[#FCFBF7] rounded-3xl max-w-2xl w-full p-8 relative shadow-2xl border border-stone-200"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <button 
+                onClick={closeModal} 
+                className="absolute top-6 right-6 text-slate-400 hover:text-slate-700 transition"
+              >
+                ✕
+              </button>
+
+              <h2 className="text-3xl font-serif font-bold text-[#112219] mb-1">Create Account</h2>
+              <p className="text-slate-500 text-xs mb-5">Select your role to get started with HomeoAssist.</p>
+
+              {/* ROLE SWITCHER TABS */}
+              <div className="flex bg-stone-200/60 p-1 rounded-xl mb-6 max-w-md">
+                <button
+                  type="button"
+                  onClick={() => setRegisterRole('doctor')}
+                  className={`flex-1 py-2 text-xs font-semibold rounded-lg transition ${
+                    registerRole === 'doctor'
+                      ? 'bg-white text-[#235B43] shadow-sm'
+                      : 'text-slate-600 hover:text-slate-900'
+                  }`}
+                >
+                  🩺 Doctor Registration
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setRegisterRole('patient')}
+                  className={`flex-1 py-2 text-xs font-semibold rounded-lg transition ${
+                    registerRole === 'patient'
+                      ? 'bg-white text-[#235B43] shadow-sm'
+                      : 'text-slate-600 hover:text-slate-900'
+                  }`}
+                >
+                  👤 Patient Registration
+                </button>
+              </div>
+
+              <form onSubmit={handleRegisterSubmit} className="space-y-4">
+                {error && (
+                  <div className="px-3 py-2 rounded-lg bg-red-50 border border-red-200 text-xs text-red-700">{error}</div>
+                )}
+                {registerRole === 'doctor' ? (
+                  <>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div>
+                        <label className="block text-xs font-semibold text-slate-800 mb-1.5">Full Name</label>
+                        <input ref={regNameRef} type="text" placeholder="Dr. Full Name" required
+                          className="w-full px-3.5 py-2.5 text-xs rounded-xl border border-slate-300 focus:outline-none focus:border-[#235B43] bg-white text-slate-800" />
+                      </div>
+                      <div>
+                        <label className="block text-xs font-semibold text-slate-800 mb-1.5">Medical Council Reg. ID</label>
+                        <input ref={regRegNoRef} type="text" placeholder="#HOM-0000" required
+                          className="w-full px-3.5 py-2.5 text-xs rounded-xl border border-slate-300 focus:outline-none focus:border-[#235B43] bg-white text-slate-800" />
+                      </div>
+                      <div>
+                        <label className="block text-xs font-semibold text-slate-800 mb-1.5">Email Address</label>
+                        <input ref={regEmailRef} type="email" placeholder="doctor@clinic.com" required
+                          className="w-full px-3.5 py-2.5 text-xs rounded-xl border border-slate-300 focus:outline-none focus:border-[#235B43] bg-white text-slate-800" />
+                      </div>
+                      <div>
+                        <label className="block text-xs font-semibold text-slate-800 mb-1.5">Contact Number</label>
+                        <input ref={regPhoneRef} type="text" placeholder="+880 17XXXXXXXX"
+                          className="w-full px-3.5 py-2.5 text-xs rounded-xl border border-slate-300 focus:outline-none focus:border-[#235B43] bg-white text-slate-800" />
+                      </div>
+                    </div>
+                    <div>
+                      <label className="block text-xs font-semibold text-slate-800 mb-1.5">Clinic / Chamber Address</label>
+                      <input ref={regAddressRef} type="text" placeholder="Dhaka, Bangladesh"
+                        className="w-full px-3.5 py-2.5 text-xs rounded-xl border border-slate-300 focus:outline-none focus:border-[#235B43] bg-white text-slate-800" />
+                    </div>
+                    <div>
+                      <label className="block text-xs font-semibold text-slate-800 mb-1.5">Password</label>
+                      <input ref={regPasswordRef} type="password" placeholder="Create a password" required
+                        className="w-full px-3.5 py-2.5 text-xs rounded-xl border border-slate-300 focus:outline-none focus:border-[#235B43] bg-white text-slate-800" />
+                    </div>
+                  </>
+                ) : (
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-xs font-semibold text-slate-800 mb-1.5">Full Name</label>
+                      <input ref={regNameRef} type="text" placeholder="Your full name" required
+                        className="w-full px-3.5 py-2.5 text-xs rounded-xl border border-slate-300 focus:outline-none focus:border-[#235B43] bg-white text-slate-800" />
+                    </div>
+                    <div>
+                      <label className="block text-xs font-semibold text-slate-800 mb-1.5">Email Address</label>
+                      <input ref={regEmailRef} type="email" placeholder="you@email.com" required
+                        className="w-full px-3.5 py-2.5 text-xs rounded-xl border border-slate-300 focus:outline-none focus:border-[#235B43] bg-white text-slate-800" />
+                    </div>
+                    <div>
+                      <label className="block text-xs font-semibold text-slate-800 mb-1.5">Contact Number</label>
+                      <input ref={regPhoneRef} type="text" placeholder="+880 17XXXXXXXX"
+                        className="w-full px-3.5 py-2.5 text-xs rounded-xl border border-slate-300 focus:outline-none focus:border-[#235B43] bg-white text-slate-800" />
+                    </div>
+                    <div>
+                      <label className="block text-xs font-semibold text-slate-800 mb-1.5">Age</label>
+                      <input ref={regAgeRef} type="number" placeholder="28"
+                        className="w-full px-3.5 py-2.5 text-xs rounded-xl border border-slate-300 focus:outline-none focus:border-[#235B43] bg-white text-slate-800" />
+                    </div>
+                    <div>
+                      <label className="block text-xs font-semibold text-slate-800 mb-1.5">Gender</label>
+                      <select ref={regGenderRef}
+                        className="w-full px-3.5 py-2.5 text-xs rounded-xl border border-slate-300 focus:outline-none focus:border-[#235B43] bg-white text-slate-800">
+                        <option value="">Select Gender</option>
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
+                        <option value="Other">Other</option>
+                      </select>
+                    </div>
+                    <div>
+                      <label className="block text-xs font-semibold text-slate-800 mb-1.5">Password</label>
+                      <input ref={regPasswordRef} type="password" placeholder="Create a password" required
+                        className="w-full px-3.5 py-2.5 text-xs rounded-xl border border-slate-300 focus:outline-none focus:border-[#235B43] bg-white text-slate-800" />
+                    </div>
+                  </div>
+                )}
+                <button type="submit" disabled={loading}
+                  className="w-full py-3 bg-[#235B43] text-white text-xs font-medium rounded-xl hover:bg-[#112219] transition mt-2 disabled:opacity-60">
+                  {loading ? 'Creating account…' : `Register as ${registerRole === 'doctor' ? 'Doctor' : 'Patient'}`}
+                </button>
+              </form>
+            </div>
+          )}
+        </div>
       )}
-      {activeModal === 'register' && <RegisterModal onClose={closeModal} />}
 
       {/* FLOATING BOT COMPONENT */}
       <HomeBot />

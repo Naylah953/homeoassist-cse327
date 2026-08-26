@@ -112,7 +112,7 @@ export function SupportBot({ role, userName }: Props) {
           }}
         >
           {/* Header */}
-          <div style={{ background: '#0d3116', padding: '14px 16px', display: 'flex', alignItems: 'center', gap: 10 }}>
+          <div style={{ background: '#131f16', padding: '14px 16px', display: 'flex', alignItems: 'center', gap: 10 }}>
             <div
               style={{
                 width: 28,
@@ -131,10 +131,10 @@ export function SupportBot({ role, userName }: Props) {
               </svg>
             </div>
             <div style={{ flex: 1 }}>
-              <p style={{ color: '#e0ebe2', fontSize: 18, fontWeight: 600, fontFamily: 'var(--font-display)', margin: 0 }}>
+              <p style={{ color: '#e0ebe2', fontSize: 13, fontWeight: 600, fontFamily: 'var(--font-display)', margin: 0 }}>
                 Help & Feedback
               </p>
-              <p style={{ color: 'rgba(224,235,226,0.45)', fontSize: 14, margin: 0 }}>
+              <p style={{ color: 'rgba(224,235,226,0.45)', fontSize: 10, margin: 0 }}>
                 HomeoAssist · {role === 'doctor' ? 'Doctor Portal' : 'Patient Portal'}
               </p>
             </div>
@@ -150,7 +150,7 @@ export function SupportBot({ role, userName }: Props) {
             <div style={{ padding: 16, display: 'flex', flexDirection: 'column', gap: 14 }}>
               {/* Category Selector */}
               <div>
-                <p style={{ fontSize: 13, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em', color: '#7a7468', marginBottom: 8 }}>
+                <p style={{ fontSize: 10, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em', color: '#7a7468', marginBottom: 8 }}>
                   What would you like to report?
                 </p>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
@@ -173,7 +173,7 @@ export function SupportBot({ role, userName }: Props) {
                           textAlign: 'left',
                           transition: 'all 0.15s',
                           fontFamily: 'var(--font-sans)',
-                          fontSize: 13,
+                          fontSize: 12,
                           fontWeight: isSelected ? 600 : 400
                         }}
                       >
@@ -189,7 +189,7 @@ export function SupportBot({ role, userName }: Props) {
 
               {/* Description Input */}
               <div>
-                <p style={{ fontSize: 12, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em', color: '#7a7468', marginBottom: 6 }}>
+                <p style={{ fontSize: 10, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em', color: '#7a7468', marginBottom: 6 }}>
                   Description
                 </p>
                 <textarea
@@ -211,7 +211,7 @@ export function SupportBot({ role, userName }: Props) {
                     border: '1px solid #d6d0c8',
                     background: '#f5f2ed',
                     color: '#1b2d20',
-                    fontSize: 14,
+                    fontSize: 12,
                     lineHeight: 1.5,
                     resize: 'none',
                     outline: 'none',
@@ -219,7 +219,7 @@ export function SupportBot({ role, userName }: Props) {
                     boxSizing: 'border-box'
                   }}
                 />
-                <p style={{ fontSize: 12, color: text.length < 10 ? '#7a7468' : 'var(--color-primary, #2d6a4f)', marginTop: 4, textAlign: 'right' }}>
+                <p style={{ fontSize: 10, color: text.length < 10 ? '#7a7468' : 'var(--color-primary, #2d6a4f)', marginTop: 4, textAlign: 'right' }}>
                   {text.length} / 500 {text.length < 10 && text.length > 0 && '(min 10 chars)'}
                 </p>
               </div>
@@ -227,7 +227,7 @@ export function SupportBot({ role, userName }: Props) {
               {/* Priority Selector (Only visible for bugs) */}
               {category === 'bug' && (
                 <div>
-                  <p style={{ fontSize: 12, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em', color: '#7a7468', marginBottom: 6 }}>
+                  <p style={{ fontSize: 10, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em', color: '#7a7468', marginBottom: 6 }}>
                     Priority
                   </p>
                   <div style={{ display: 'flex', gap: 6 }}>
@@ -244,7 +244,7 @@ export function SupportBot({ role, userName }: Props) {
                             border: isSelected ? `1px solid ${priorityColors[p]}` : '1px solid #d6d0c8',
                             background: isSelected ? `${priorityColors[p]}18` : 'white',
                             color: isSelected ? priorityColors[p] : '#7a7468',
-                            fontSize: 13,
+                            fontSize: 11,
                             fontWeight: isSelected ? 600 : 400,
                             cursor: 'pointer',
                             textTransform: 'capitalize',
@@ -262,7 +262,7 @@ export function SupportBot({ role, userName }: Props) {
 
               {/* Action Bar */}
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderTop: '1px solid #ede9e3', paddingTop: 12 }}>
-                <p style={{ fontSize: 13, color: '#7a7468', margin: 0 }}>
+                <p style={{ fontSize: 10, color: '#7a7468', margin: 0 }}>
                   Sent as <strong style={{ color: '#1b2d20' }}>{userName}</strong>
                 </p>
                 <button
@@ -277,7 +277,7 @@ export function SupportBot({ role, userName }: Props) {
                     background: canSubmit ? 'var(--color-primary, #2d6a4f)' : '#ede9e3',
                     color: canSubmit ? '#f0ede8' : '#7a7468',
                     border: 'none',
-                    fontSize: 16,
+                    fontSize: 12,
                     fontWeight: 600,
                     cursor: canSubmit ? 'pointer' : 'not-allowed',
                     fontFamily: 'var(--font-sans)',

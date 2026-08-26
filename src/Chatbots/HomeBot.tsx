@@ -119,8 +119,8 @@ export const HomeBot: React.FC = () => {
                 HA
               </div>
               <div>
-                <h3 className="font-serif font-bold text-lg leading-tight">HomeoAssist Guide</h3>
-                <p className="text-sm text-emerald-100/80">Ask us anything about our platform</p>
+                <h3 className="font-serif font-bold text-base leading-tight">HomeoAssist Guide</h3>
+                <p className="text-xs text-emerald-100/80">Ask us anything about our platform</p>
               </div>
             </div>
             <button 
@@ -160,7 +160,7 @@ export const HomeBot: React.FC = () => {
               <button
                 key={idx}
                 onClick={() => handleSend(faq.q)}
-                className="text-sm bg-white text-[#2E5B44] hover:bg-[#2E5B44] hover:text-white px-2.5 py-1 rounded-full border border-[#d6d0c8] whitespace-nowrap transition-colors flex-shrink-0"
+                className="text-xs bg-white text-[#2E5B44] hover:bg-[#2E5B44] hover:text-white px-2.5 py-1 rounded-full border border-[#d6d0c8] whitespace-nowrap transition-colors flex-shrink-0"
               >
                 {faq.q}
               </button>
