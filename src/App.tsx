@@ -1,59 +1,52 @@
-import { useState } from 'react';
 import Homepage from './views/Homepage';
 import DocDashboard from './views/DocDashboard';
 import PatientDashboard from './views/PatientDashboard';
 import AdminDashboard from './views/AdminDashboard';
-
-export type UserRole = 'home' | 'doctor' | 'patient' | 'admin';
+import { useAuth } from './context/AuthContext';
 
 export default function App() {
-  const [currentRole, setCurrentRole] = useState<UserRole>('home');
+  const { role, user, logout } = useAuth();
 
-  const handleLogin = (role: 'doctor' | 'patient' | 'admin') => {
-    setCurrentRole(role);
-  };
-
-  const handleLogout = () => {
-    setCurrentRole('home');
-  };
+  const displayName =
+    role === 'doctor'  ? `Dr. ${(user?.name as string) ?? 'Doctor'}`     :
+    role === 'patient' ? ((user?.name as string) ?? 'Patient')            :
+    role === 'admin'   ? ((user?.username as string) ?? 'Admin')          :
+    '';
 
   return (
     <div className="min-h-screen bg-slate-50 text-slate-900 antialiased">
-      {currentRole === 'home' && ( <Homepage onLogin={handleLogin} /> )}
+      {role === 'home' && <Homepage />}
 
-      {currentRole === 'doctor' && (
+      {role === 'doctor' && (
         <div>
-          {/* Top Banner with Logout */}
           <div className="bg-[#13241C] text-white px-4 py-2 flex justify-between items-center text-xs">
-            <span>Logged in as: <strong>Dr. Anika Rahman (NSU Chamber)</strong></span>
-            <button onClick={handleLogout} className="underline hover:text-red-300 transition-colors">
-              Logout to Homepage
+            <span>Logged in as: <strong>{displayName}</strong></span>
+            <button onClick={logout} className="underline hover:text-red-300 transition-colors">
+              Logout
             </button>
           </div>
           <DocDashboard />
         </div>
       )}
 
-      {currentRole === 'patient' && (
+      {role === 'patient' && (
         <div>
-          {/* Top Banner with Logout */}
           <div className="bg-[#13241C] text-white px-4 py-2 flex justify-between items-center text-xs">
-            <span>Logged in as: <strong>Raisa Hossain</strong></span>
-            <button onClick={handleLogout} className="underline hover:text-red-300 transition-colors">
-              Logout to Homepage
+            <span>Logged in as: <strong>{displayName}</strong></span>
+            <button onClick={logout} className="underline hover:text-red-300 transition-colors">
+              Logout
             </button>
           </div>
           <PatientDashboard />
         </div>
       )}
 
-      {currentRole === 'admin' && (
+      {role === 'admin' && (
         <div>
-          {/* Top Banner with Logout */}
           <div className="bg-[#13241C] text-white px-4 py-2 flex justify-between items-center text-xs">
-            <span>Logged in as: <strong>Admin</strong></span>
-            <button onClick={handleLogout} className="underline hover:text-red-300 transition-colors">
-              Logout to Homepage
+            <span>Logged in as: <strong>{displayName}</strong></span>
+            <button onClick={logout} className="underline hover:text-red-300 transition-colors">
+              Logout
             </button>
           </div>
           <AdminDashboard />
@@ -62,5 +55,3 @@ export default function App() {
     </div>
   );
 }
-
-

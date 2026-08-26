@@ -10,6 +10,6 @@ export function Badge({ label, variant = 'default' }: { label: string; variant?:
     new:     'bg-blue-50 text-blue-600 border border-blue-200',
     gold:    'bg-amber-50 text-amber-700 border border-amber-300',
   }
-  return <span className={cx('inline-flex items-center px-2 py-0.5 rounded-full text-[15px] font-medium whitespace-nowrap', s[variant])}>{label}</span>
+  return <span className={cx('inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-medium whitespace-nowrap', s[variant])}>{label}</span>
 }
 

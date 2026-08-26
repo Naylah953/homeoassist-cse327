@@ -19,9 +19,9 @@ export const StatCard: React.FC<StatCardProps> = ({ label, value, sub, gold, war
 
   return (
     <Card className={`p-5 flex flex-col gap-2.5 ${className}`}>
-      <p className="text-[15px] font-bold uppercase tracking-widest text-[#7a7468]"> {label} </p>
-      <p className="text-[35px] font-bold leading-none" style={{ fontFamily: 'var(--font-display)', color: getValueColor(), }}> {value} </p>
-      <p className="text-sm text-[#7a7468]">{sub}</p>
+      <p className="text-[10px] font-bold uppercase tracking-widest text-[#7a7468]"> {label} </p>
+      <p className="text-[32px] font-bold leading-none" style={{ fontFamily: 'var(--font-display)', color: getValueColor(), }}> {value} </p>
+      <p className="text-xs text-[#7a7468]">{sub}</p>
     </Card>
   );
 };

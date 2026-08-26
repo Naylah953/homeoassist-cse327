@@ -32,17 +32,17 @@ export function DocDashboardView( { onProfileClick }: Props) {
           {/* Schedule */}
           <Card>
             <div className="px-5 py-4 flex items-center justify-between" style={{ borderBottom: '1px solid #d6d0c8' }}>
-              <h2 className="text-[25px] font-bold" style={{ fontFamily: 'var(--font-display)' }}>Today's Schedule</h2>
+              <h2 className="text-[13px] font-semibold" style={{ fontFamily: 'var(--font-display)' }}>Today's Schedule</h2>
               <Badge label="8 appointments" />
             </div>
             <div>
               {SCHEDULE.map((a, i) => (
                 <div key={i} className="px-5 py-3 flex items-center gap-4 transition-colors hover:bg-[#f5f2ed]"
                   style={{ borderBottom: i < SCHEDULE.length - 1 ? '1px solid #ede9e3' : 'none' }}>
-                  <span className="text-[18px] w-11 flex-shrink-0" style={{ fontFamily: 'var(--font-mono)', color: '#043a0a' }}>{a.time}</span>
+                  <span className="text-[11px] w-11 flex-shrink-0" style={{ fontFamily: 'var(--font-mono)', color: '#7a7468' }}>{a.time}</span>
                   <div className="flex-1 min-w-0">
-                    <p className="text-[18px] font-medium" style={{ color: '#1b2d20' }}>{a.patient}</p>
-                    <p className="text-[15px] truncate" style={{ color: '#7a7468' }}>{a.condition}</p>
+                    <p className="text-[13px] font-medium" style={{ color: '#1b2d20' }}>{a.patient}</p>
+                    <p className="text-[11px] truncate" style={{ color: '#7a7468' }}>{a.condition}</p>
                   </div>
                   {a.type === 'new' && <Badge label="New" variant="new" />}
                   <Badge
@@ -58,7 +58,7 @@ export function DocDashboardView( { onProfileClick }: Props) {
             {/* AI Activity */}
             <Card>
               <div className="px-5 py-4" style={{ borderBottom: '1px solid #d6d0c8' }}>
-                <h2 className="text-[20px] font-bold" style={{ fontFamily: 'var(--font-display)' }}>AI Activity</h2>
+                <h2 className="text-[13px] font-semibold" style={{ fontFamily: 'var(--font-display)' }}>AI Activity</h2>
               </div>
               <div className="p-4 flex flex-col gap-3">
                 {[
@@ -70,10 +70,10 @@ export function DocDashboardView( { onProfileClick }: Props) {
                   <div key={i} className="flex items-start gap-3">
                     <span className="w-2 h-2 rounded-full mt-1.5 flex-shrink-0" style={{ background: item.color }} />
                     <div className="flex-1 min-w-0">
-                      <p className="text-[16px] font-medium" style={{ color: '#1b2d20' }}>{item.event}</p>
-                      <p className="text-[14px]" style={{ color: '#7a7468' }}>{item.patient}</p>
+                      <p className="text-[12px] font-medium" style={{ color: '#1b2d20' }}>{item.event}</p>
+                      <p className="text-[11px]" style={{ color: '#7a7468' }}>{item.patient}</p>
                     </div>
-                    <p className="text-[15px] flex-shrink-0" style={{ fontFamily: 'var(--font-mono)', color: '#043a0a' }}>{item.time}</p>
+                    <p className="text-[10px] flex-shrink-0" style={{ fontFamily: 'var(--font-mono)', color: '#7a7468' }}>{item.time}</p>
                   </div>
                 ))}
               </div>
@@ -81,18 +81,18 @@ export function DocDashboardView( { onProfileClick }: Props) {
 
             {/* Quick Actions */}
             <Card className="p-4">
-              <h2 className="text-[20px] font-bold mb-3" style={{ fontFamily: 'var(--font-display)' }}>Quick Actions</h2>
+              <h2 className="text-[13px] font-semibold mb-3" style={{ fontFamily: 'var(--font-display)' }}>Quick Actions</h2>
               <div className="flex flex-col gap-2">
                 {[
-                  { label: 'New Prescription',   icon: IC.plus     },
+                  { label: 'New Prescription',  icon: IC.plus     },
                   { label: 'Add Patient',        icon: IC.users    },
                   { label: 'Medicine Lookup',    icon: IC.pill     },
                   { label: 'View Analytics',     icon: IC.activity },
                 ].map((a, i) => (
                   <button key={i}
-                    className="flex items-center gap-2.5 px-3 py-2 rounded-lg text-[16px] font-medium w-full text-left transition-colors hover:bg-[#f5f2ed]"
+                    className="flex items-center gap-2.5 px-3 py-2 rounded-lg text-[12px] font-medium w-full text-left transition-colors hover:bg-[#f5f2ed]"
                     style={{ border: '1px solid #d6d0c8', color: '#1b2d20' }}>
-                    <span style={{ color: 'var(--color-primary)' }}><Ico d={a.icon} size={20} /></span>
+                    <span style={{ color: 'var(--color-primary)' }}><Ico d={a.icon} size={14} /></span>
                     {a.label}
                   </button>
                 ))}

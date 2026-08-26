@@ -30,25 +30,24 @@ export function PatientProfileView({ profile, onSave, onProfileClick }: Props) {
         profile={profile}
         avatarBg="var(--color-accent)"
         defaultInitials="RH"
-      />             
-
+      />
       <div className="p-8 max-w-4xl mx-auto flex flex-col gap-6">
         <Card className="p-6">
           <form onSubmit={handleSave} className="flex flex-col gap-6">
-            <div className="flex items-center gap-4 pb-6 border-b pb-3" style={{ borderBottomColor: '#7e5d00'}}>
-              <div className="w-14 h-14 rounded-full flex items-center justify-center text-lg font-bold"
-                style={{ background: 'var(--color-accent)', color: '#f0ede8' }}>
+            <div className="flex items-center gap-4 pb-6 border-b border-[#ede9e3]">
+              <div className="w-16 h-16 rounded-full flex items-center justify-center text-xl font-bold"
+                style={{ background: 'var(--color-accent)', color: 'white' }}>
                 {form.name.split(' ').map((n: string) => n[0]).join('').substring(0, 2).toUpperCase()}
               </div>
               <div>
-                <h2 className="text-xl font-bold" style={{ color: '#1b2d20', fontFamily: 'var(--font-display)' }}>{form.name}</h2>
-                <p className="text-sm" style={{ color: '#7a7468' }}>{form.patientId} · Pro Plan Member</p>
+                <h2 className="text-lg font-semibold" style={{ color: '#1b2d20', fontFamily: 'var(--font-display)' }}>{form.name}</h2>
+                <p className="text-xs" style={{ color: '#7a7468' }}>{form.patientId} · Pro Plan Member</p>
               </div>
             </div>
 
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className="block text-[14px] font-bold text-[#071904] uppercase tracking-wider mb-1" >Full Name</label>
+                <label className="block text-xs font-semibold uppercase tracking-wider mb-1" style={{ color: '#7a7468' }}>Full Name</label>
                 <input
                   type="text"
                   value={form.name}
@@ -58,7 +57,7 @@ export function PatientProfileView({ profile, onSave, onProfileClick }: Props) {
               </div>
 
               <div>
-                <label className="block text-[14px] font-bold text-[#071904] uppercase tracking-wider mb-1" >Email Address</label>
+                <label className="block text-xs font-semibold uppercase tracking-wider mb-1" style={{ color: '#7a7468' }}>Email Address</label>
                 <input
                   type="email"
                   value={form.email}
@@ -68,7 +67,7 @@ export function PatientProfileView({ profile, onSave, onProfileClick }: Props) {
               </div>
 
               <div>
-                <label className="block text-[14px] font-bold text-[#071904] uppercase tracking-wider mb-1"   >Phone Number</label>
+                <label className="block text-xs font-semibold uppercase tracking-wider mb-1" style={{ color: '#7a7468' }}>Phone Number</label>
                 <input
                   type="text"
                   value={form.phone}
@@ -78,7 +77,7 @@ export function PatientProfileView({ profile, onSave, onProfileClick }: Props) {
               </div>
 
               <div>
-                <label className="block text-[14px] font-bold text-[#071904] uppercase tracking-wider mb-1" >Date of Birth</label>
+                <label className="block text-xs font-semibold uppercase tracking-wider mb-1" style={{ color: '#7a7468' }}>Date of Birth</label>
                 <input
                   type="text"
                   value={form.dob}
@@ -88,7 +87,7 @@ export function PatientProfileView({ profile, onSave, onProfileClick }: Props) {
               </div>
 
               <div>
-                <label className="block text-[14px] font-bold text-[#071904] uppercase tracking-wider mb-1" >Blood Group</label>
+                <label className="block text-xs font-semibold uppercase tracking-wider mb-1" style={{ color: '#7a7468' }}>Blood Group</label>
                 <input
                   type="text"
                   value={form.bloodGroup}
@@ -98,7 +97,7 @@ export function PatientProfileView({ profile, onSave, onProfileClick }: Props) {
               </div>
 
               <div>
-                <label className="block text-[14px] font-bold text-[#071904] uppercase tracking-wider mb-1" >Address</label>
+                <label className="block text-xs font-semibold uppercase tracking-wider mb-1" style={{ color: '#7a7468' }}>Address</label>
                 <input
                   type="text"
                   value={form.address}
@@ -109,7 +108,7 @@ export function PatientProfileView({ profile, onSave, onProfileClick }: Props) {
             </div>
 
             <div>
-              <label className="block text-[14px] font-bold text-[#071904] uppercase tracking-wider mb-1" >Known Allergies & Conditions</label>
+              <label className="block text-xs font-semibold uppercase tracking-wider mb-1" style={{ color: '#7a7468' }}>Known Allergies & Conditions</label>
               <textarea
                 rows={3}
                 value={form.allergies}
@@ -121,11 +120,11 @@ export function PatientProfileView({ profile, onSave, onProfileClick }: Props) {
             <div className="flex items-center gap-4">
               <button
                 type="submit"
-                className="px-6 py-2.5 rounded-xl text-sm font-semibold text-white transition-opacity hover:opacity-90"
+                className="px-6 py-2.5 rounded-xl text-xs font-semibold text-white transition-opacity hover:opacity-90"
                 style={{ background: 'var(--color-primary)' }}>
                 Save Profile
               </button>
-              {saved && <span className="text-sm text-green-700 font-medium">✓ Profile updated successfully!</span>}
+              {saved && <span className="text-xs text-green-700 font-medium">✓ Profile updated successfully!</span>}
             </div>
           </form>
         </Card>

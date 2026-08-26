@@ -1,30 +1,49 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { TopBar } from '../../components/layout/Topbar'
 import { Card } from '../../components/ui/Card'
 import { Badge } from '../../components/ui/Badge'
 import { Ico, IC } from '../../components/ui/Ico'
-import { PRESCRIBED_PRESCRIPTIONS } from '../../data/doctorMockData'
+import { prescriptionsApi, Prescription } from '../../api/prescriptions'
+import { API_BASE } from '../../api/client'
 
-// ── Prescriptions ─────────────────────────────────────────────────────────────
-
-interface Props {
-  onProfileClick?: () => void
-}
+interface Props { onProfileClick?: () => void }
 
 export function PrescriptionsView({ onProfileClick }: Props) {
-  const [filter, setFilter] = useState('All')
-  const filters = ['All', 'Active', 'Dispensed']
-  const shown = filter === 'All' ? PRESCRIBED_PRESCRIPTIONS : PRESCRIBED_PRESCRIPTIONS.filter(rx => rx.status === filter.toLowerCase())
+  const [prescriptions, setPrescriptions] = useState<Prescription[]>([])
+  const [loading, setLoading]             = useState(true)
+  const [filter, setFilter]               = useState('All')
+
+  useEffect(() => {
+    prescriptionsApi.list()
+      .then(r => setPrescriptions(r.data))
+      .catch(console.error)
+      .finally(() => setLoading(false))
+  }, [])
+
+  const shown = filter === 'All' ? prescriptions
+    : prescriptions.filter(rx => rx.status === filter.toLowerCase())
+
+  const downloadPDF = (id: number) => {
+    const token = localStorage.getItem('token')
+    const a     = document.createElement('a')
+    a.href      = `${API_BASE}/pdf/prescription/${id}?token=${token}`
+    a.download  = `HomeoAssist-RX-${id}.pdf`
+    a.target    = '_blank'
+    document.body.appendChild(a)
+    a.click()
+    document.body.removeChild(a)
+  }
 
   return (
     <div>
-      <TopBar title="Prescriptions" sub="Digital prescriptions with QR verification" onProfileClick={onProfileClick} avatarBg="var(--color-primary)" defaultInitials="AR"/>
+      <TopBar title="Prescriptions" sub="Digital prescriptions with QR verification"
+        onProfileClick={onProfileClick} avatarBg="var(--color-primary)" defaultInitials="AR" />
       <div className="p-8 flex flex-col gap-5">
         <div className="flex items-center justify-between">
           <div className="flex gap-2">
-            {filters.map(f => (
+            {['All','active','completed'].map(f => (
               <button key={f} onClick={() => setFilter(f)}
-                className="px-3 py-1.5 rounded-lg text-[16px] font-medium transition-all"
+                className="px-3 py-1.5 rounded-lg text-[12px] font-medium transition-all capitalize"
                 style={filter === f
                   ? { background: '#d8f3dc', border: '1px solid var(--color-primary)', color: 'var(--color-primary)' }
                   : { border: '1px solid #d6d0c8', color: '#7a7468', background: 'white' }}>
@@ -32,37 +51,43 @@ export function PrescriptionsView({ onProfileClick }: Props) {
               </button>
             ))}
           </div>
-          <button className="flex items-center gap-2 px-4 py-2 rounded-lg text-[16px] font-semibold transition-opacity hover:opacity-90"
-            style={{ background: 'var(--color-primary)', color: '#f0ede8' }}>
-            <Ico d={IC.plus} size={20} /> New Prescription
-          </button>
         </div>
 
-        <Card>
-          <div className="px-5 py-3 grid text-[15px] font-bold uppercase tracking-widest"
-            style={{ gridTemplateColumns: '140px 1fr 1fr 110px 100px 90px', borderBottom: '5px solid #153e00', color: '#063204' }}>
-            <span>Rx ID</span><span>Patient</span><span>Medicines</span><span>Date</span><span>Status</span><span>Actions</span>
-          </div>
-          {shown.map((rx, i) => (
-            <div key={i} className="px-5 py-3.5 grid items-center gap-3 transition-colors hover:bg-[#f5f2ed]"
-              style={{ gridTemplateColumns: '130px 1fr 1fr 110px 100px 90px', borderBottom: i < shown.length - 1 ? '1px solid #23612e' : 'none' }}>
-              <span className="text-[15px] font-semibold" style={{ fontFamily: 'var(--font-mono)', color: 'var(--color-primary)' }}>{rx.id}</span>
-              <span className="text-[16px] font-medium" style={{ color: '#1b2d20' }}>{rx.patient}</span>
-              <span className="text-[15px] truncate" style={{ color: '#1b2d20' }}>{rx.medicines}</span>
-              <span className="text-[15px]" style={{ color: '#7a7468' }}>{rx.date}</span>
-              <Badge label={rx.status === 'dispensed' ? 'Dispensed' : 'Active'} variant={rx.status === 'dispensed' ? 'success' : 'accent'} />
-              <div className="flex items-center gap-1">
-                {[IC.eye, IC.download, IC.qr].map((ic, j) => (
-                  <button key={j}
-                    className="p-1.5 rounded-lg transition-colors hover:bg-[#ede9e3]"
-                    style={{ color: j === 2 && rx.verified ? '#2d6a4f' : '#7a7468' }}>
-                    <Ico d={ic} size={15} />
-                  </button>
-                ))}
-              </div>
+        {loading ? (
+          <p className="text-center py-12 text-[13px]" style={{ color: '#7a7468' }}>Loading prescriptions…</p>
+        ) : shown.length === 0 ? (
+          <p className="text-center py-12 text-[13px]" style={{ color: '#7a7468' }}>No prescriptions found.</p>
+        ) : (
+          <Card>
+            <div className="px-5 py-3 grid text-[10px] font-bold uppercase tracking-widest"
+              style={{ gridTemplateColumns: '80px 1fr 1fr 120px 100px 90px', borderBottom: '1px solid #d6d0c8', color: '#7a7468' }}>
+              <span>Rx ID</span><span>Patient</span><span>Medicines</span><span>Date</span><span>Status</span><span>Actions</span>
             </div>
-          ))}
-        </Card>
+            {shown.map((rx, i) => (
+              <div key={rx.id} className="px-5 py-3.5 grid items-center gap-3 transition-colors hover:bg-[#f5f2ed]"
+                style={{ gridTemplateColumns: '80px 1fr 1fr 120px 100px 90px', borderBottom: i < shown.length-1 ? '1px solid #ede9e3' : 'none' }}>
+                <span className="text-[11px] font-semibold" style={{ fontFamily: 'var(--font-mono)', color: 'var(--color-primary)' }}>RX-{rx.id}</span>
+                <span className="text-[13px] font-medium" style={{ color: '#1b2d20' }}>{rx.patient_name}</span>
+                <span className="text-[11px] truncate" style={{ color: '#7a7468' }}>
+                  {rx.medicines?.map(m => `${m.name} ${m.potency}`).join(', ') || '—'}
+                </span>
+                <span className="text-[11px]" style={{ color: '#7a7468' }}>
+                  {new Date(rx.created_at).toLocaleDateString('en-GB', { day:'numeric', month:'short', year:'numeric' })}
+                </span>
+                <Badge label={rx.status === 'active' ? 'Active' : 'Completed'} variant={rx.status === 'active' ? 'accent' : 'success'} />
+                <div className="flex items-center gap-1">
+                  <button onClick={() => downloadPDF(rx.id)}
+                    className="p-1.5 rounded-lg transition-colors hover:bg-[#ede9e3]" style={{ color: '#7a7468' }} title="Download PDF">
+                    <Ico d={IC.download} size={13} />
+                  </button>
+                  <button className="p-1.5 rounded-lg transition-colors hover:bg-[#ede9e3]" style={{ color: '#7a7468' }} title="QR Verify">
+                    <Ico d={IC.qr} size={13} />
+                  </button>
+                </div>
+              </div>
+            ))}
+          </Card>
+        )}
       </div>
     </div>
   )
